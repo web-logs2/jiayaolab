@@ -44,7 +44,7 @@ export const fetchPostByConditions = async (
  * 发布帖子
  * @param title 帖子标题
  * @param content 帖子内容
- * @param published 是否全部可见
+ * @param published 是否公开
  */
 export const publishPost = async (
   title: string,

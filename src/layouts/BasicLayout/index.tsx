@@ -4,7 +4,7 @@ import {
   GithubOutlined,
   MailOutlined,
 } from '@ant-design/icons'
-import { Col, Layout, Menu, Row, Spin, Typography } from 'antd'
+import { Button, Col, Layout, Menu, Row, Spin, Typography } from 'antd'
 import { FC, Suspense } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import avatar from '../../assets/avatar.png'
@@ -41,6 +41,14 @@ const BasicLayout: FC = () => {
             { key: '/profile', label: '我的', disabled: true },
           ]}
         />
+        <div className={classes.flexGrow} />
+        <Button
+          type="primary"
+          onClick={() => navigate('/post/publish')}
+          hidden={location.pathname === '/post/publish'}
+        >
+          发帖
+        </Button>
       </Header>
       <Content className={classes.content}>
         <Suspense

@@ -1,4 +1,4 @@
-import { ConfigProvider } from 'antd'
+import { App as AntdApp, ConfigProvider } from 'antd'
 import 'antd/dist/reset.css'
 import locale from 'antd/locale/zh_CN'
 import dayjs from 'dayjs'
@@ -20,9 +20,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <ReduxProvider store={store}>
       <HelmetProvider>
         <ConfigProvider locale={locale}>
-          <React.Suspense fallback={<GlobalLoading />}>
-            <RouterProvider router={createBrowserRouter(routes)} />
-          </React.Suspense>
+          <AntdApp>
+            <React.Suspense fallback={<GlobalLoading />}>
+              <RouterProvider router={createBrowserRouter(routes)} />
+            </React.Suspense>
+          </AntdApp>
         </ConfigProvider>
       </HelmetProvider>
     </ReduxProvider>
