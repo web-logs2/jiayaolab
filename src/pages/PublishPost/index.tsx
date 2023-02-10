@@ -13,6 +13,7 @@ import {
 } from 'antd'
 import { FC, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import HeadTitle from '../../components/HeadTitle'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { publishingPost } from '../../services/post'
 import { addDraft } from '../../store/features/draftSlice'
@@ -67,86 +68,89 @@ const PublishPost: FC = () => {
   }
 
   return (
-    <Card>
-      <Title level={3}>发布帖子</Title>
-      <Paragraph type="warning">
-        注：切换页面后当前撰写的内容将会保存在草稿箱，帖子发布成功或点击取消发布帖子后将清空草稿箱。
-      </Paragraph>
-      <Form
-        scrollToFirstError
-        onFinish={onFinish}
-        disabled={publishing}
-        autoComplete="off"
-        initialValues={{ title, content }}
-      >
-        <Form.Item
-          name="title"
-          rules={[{ required: true, message: '* 标题不能为空！' }]}
+    <>
+      <HeadTitle prefix="发布帖子" />
+      <Card>
+        <Title level={3}>发布帖子</Title>
+        <Paragraph type="warning">
+          注：切换页面后当前撰写的内容将会保存在草稿箱，帖子发布成功或点击取消发布帖子后将清空草稿箱。
+        </Paragraph>
+        <Form
+          scrollToFirstError
+          onFinish={onFinish}
+          disabled={publishing}
+          autoComplete="off"
+          initialValues={{ title, content }}
         >
-          <Input
-            value={title}
-            onChange={e => addDraftHandler(e.target.value, content)}
-            placeholder="标题"
-            showCount
-            maxLength={32}
-          />
-        </Form.Item>
-        <Form.Item
-          name="content"
-          rules={[{ required: true, message: '* 内容详情不能为空！' }]}
-        >
-          <TextArea
-            value={content}
-            onChange={e => addDraftHandler(title, e.target.value)}
-            placeholder="内容详情"
-            autoSize={{ minRows: 8 }}
-            showCount
-            maxLength={256}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Space>
-            <Checkbox
-              checked={publicly}
-              onChange={e => setPublicly(e.target.checked)}
+          <Form.Item
+            name="title"
+            rules={[{ required: true, message: '* 标题不能为空！' }]}
+          >
+            <Input
+              value={title}
+              onChange={e => addDraftHandler(e.target.value, content)}
+              placeholder="标题"
+              showCount
+              maxLength={32}
             />
-            <Text>公开访问</Text>
-            <Tooltip title="所有用户都能阅读这篇帖子">
-              <Text type="secondary">
-                <QuestionCircleOutlined />
-              </Text>
-            </Tooltip>
-          </Space>
-        </Form.Item>
-        <Form.Item>
-          <Space>
-            <Button type="primary" htmlType="submit" loading={publishing}>
-              {publishing ? '发布中…' : '发布'}
-            </Button>
-            <Popconfirm
-              title="取消发布"
-              description={
-                <>
-                  <Text>确定要取消发布帖子吗？</Text>
-                  <br />
-                  <Text type="danger">（撰写的内容将会被清除）</Text>
-                </>
-              }
-              onConfirm={() => {
-                // 清空草稿
-                addDraftHandler('', '')
-                navigate('/posts')
-                message.warning('帖子已取消发布！')
-              }}
-              okText="是"
-              cancelText="否"
-            >
-              <Button>取消</Button>
-            </Popconfirm>
-          </Space>
-        </Form.Item>
-      </Form>
-    </Card>
+          </Form.Item>
+          <Form.Item
+            name="content"
+            rules={[{ required: true, message: '* 内容详情不能为空！' }]}
+          >
+            <TextArea
+              value={content}
+              onChange={e => addDraftHandler(title, e.target.value)}
+              placeholder="内容详情"
+              autoSize={{ minRows: 8 }}
+              showCount
+              maxLength={256}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Space>
+              <Checkbox
+                checked={publicly}
+                onChange={e => setPublicly(e.target.checked)}
+              />
+              <Text>公开访问</Text>
+              <Tooltip title="所有用户都能阅读这篇帖子">
+                <Text type="secondary">
+                  <QuestionCircleOutlined />
+                </Text>
+              </Tooltip>
+            </Space>
+          </Form.Item>
+          <Form.Item>
+            <Space>
+              <Button type="primary" htmlType="submit" loading={publishing}>
+                {publishing ? '发布中…' : '发布'}
+              </Button>
+              <Popconfirm
+                title="取消发布"
+                description={
+                  <>
+                    <Text>确定要取消发布帖子吗？</Text>
+                    <br />
+                    <Text type="danger">（撰写的内容将会被清除）</Text>
+                  </>
+                }
+                onConfirm={() => {
+                  // 清空草稿
+                  addDraftHandler('', '')
+                  navigate('/posts')
+                  message.warning('帖子已取消发布！')
+                }}
+                okText="是"
+                cancelText="否"
+              >
+                <Button>取消</Button>
+              </Popconfirm>
+            </Space>
+          </Form.Item>
+        </Form>
+      </Card>
+    </>
   )
 }
 
