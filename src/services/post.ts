@@ -44,17 +44,17 @@ export const fetchPostByConditions = async (
  * 发布帖子
  * @param title 帖子标题
  * @param content 帖子内容
- * @param published 是否公开
+ * @param publicly 是否公开
  */
-export const publishPost = async (
+export const publishingPost = async (
   title: string,
   content: string,
-  published: boolean
+  publicly: boolean
 ): Promise<ResponseModelType<string>> => {
   return await api.post('/post', {
     title,
     content,
-    published,
+    published: publicly,
   })
 }
 

@@ -3,6 +3,7 @@ import {
   CopyrightOutlined,
   GithubOutlined,
   MailOutlined,
+  UploadOutlined,
 } from '@ant-design/icons'
 import { Button, Col, Layout, Menu, Row, Spin, Typography } from 'antd'
 import { FC, Suspense } from 'react'
@@ -44,8 +45,10 @@ const BasicLayout: FC = () => {
         <div className={classes.flexGrow} />
         <Button
           type="primary"
-          onClick={() => navigate('/post/publish')}
-          hidden={location.pathname === '/post/publish'}
+          onClick={() => navigate('/publish')}
+          hidden={location.pathname === '/publish'}
+          disabled={location.pathname === '/publish'}
+          icon={<UploadOutlined />}
         >
           发帖
         </Button>

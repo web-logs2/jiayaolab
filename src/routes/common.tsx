@@ -21,10 +21,10 @@ const commonRoutes: RouteObject[] = [
       { index: true, element: <PageNotFound /> },
       // 携带ID访问，服务器根据ID返回相应内容
       { path: ':id', element: <PostDetail /> },
-      // 发布帖子
-      { path: 'publish', element: <PublishPost /> },
     ],
   },
+  // 发布帖子
+  { path: '/publish', element: <PublishPost /> },
   // 帖子概览
   { path: '/posts', element: <PostOverview /> },
 ]

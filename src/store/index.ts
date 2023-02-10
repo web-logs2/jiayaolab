@@ -1,8 +1,10 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import draftSlice from './features/draftSlice'
 import postSlice from './features/postSlice'
 
 const reducer = combineReducers({
   postSlice,
+  draftSlice,
 })
 const store = configureStore({
   reducer,
