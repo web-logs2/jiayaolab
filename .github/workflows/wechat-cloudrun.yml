@@ -1,0 +1,59 @@
+name: Build and Deploy to WeChat Cloud Run
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    env:
+      VITE_API_URL: ${{ secrets.VITE_API_URL }}
+      WXCLOUD_APPID: ${{ secrets.WXCLOUD_APPID }}
+      WXCLOUD_CLI_SECRET: ${{ secrets.WXCLOUD_CLI_SECRET }}
+      WXCLOUD_ENVID: ${{ secrets.WXCLOUD_ENVID }}
+    runs-on: ${{ fromJSON('["ubuntu-latest", "self-hosted"]')[github.repository == 'github/docs-internal'] }}
+    environment:
+      name: Production
+      url: https://blog-1gcfooywbefdba05-1313195483.tcloudbaseapp.com
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7.26.2
+
+      - name: Set node version to 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.12.x
+          cache: pnpm
+
+      - name: Install deps
+        run: |
+          npm i -g cross-env
+          pnpm install
+
+      - name: Install @wxcloud/cli
+        run: npm i -g @wxcloud/cli
+
+      - name: Login @wxcloud/cli
+        run: wxcloud login --appId "$WXCLOUD_APPID" --privateKey "$WXCLOUD_CLI_SECRET"
+
+      - name: Build
+        run: cross-env VITE_API_URL="$VITE_API_URL" pnpm build
+
+      - name: Deploy to WeChat Cloud Run
+        run: wxcloud storage:upload dist --envId="$WXCLOUD_ENVID" --remotePath=/ --mode=staticstorage
