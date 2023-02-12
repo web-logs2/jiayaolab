@@ -17,12 +17,18 @@ const commonRoutes: RouteObject[] = [
   {
     path: '/post',
     children: [
-      // 在不带参数、无效参数访问时，显示页面不存在组件
       { index: true, element: <PageNotFound /> },
-      // 发布帖子
       { path: 'new', element: <AddNewPost /> },
-      // 携带ID访问，服务器根据ID返回相应内容
-      { path: ':id', element: <PostDetail /> },
+      { path: '*', element: <PageNotFound /> },
+      {
+        path: 'detail',
+        children: [
+          { index: true, element: <PageNotFound /> },
+          // 携带ID访问，服务器根据ID返回相应内容
+          { path: ':id', element: <PostDetail /> },
+          { path: '*', element: <PageNotFound /> },
+        ],
+      },
     ],
   },
   // 帖子概览
