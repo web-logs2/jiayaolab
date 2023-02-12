@@ -45,9 +45,9 @@ const BasicLayout: FC = () => {
         <div className={classes.flexGrow} />
         <Button
           type="primary"
-          onClick={() => navigate('/publish')}
-          hidden={location.pathname === '/publish'}
-          disabled={location.pathname === '/publish'}
+          onClick={() => navigate('/post/new')}
+          hidden={location.pathname === '/post/new'}
+          disabled={location.pathname === '/post/new'}
           icon={<UploadOutlined />}
         >
           发帖

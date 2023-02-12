@@ -20,7 +20,7 @@ import { addDraft } from '../../store/features/draftSlice'
 
 const { Title, Text, Paragraph } = Typography
 const { TextArea } = Input
-const PublishPost: FC = () => {
+const AddNewPost: FC = () => {
   const navigate = useNavigate()
   // 公开访问选项
   const [publicly, setPublicly] = useState<boolean>(true)
@@ -33,7 +33,7 @@ const PublishPost: FC = () => {
   const addDraftHandler = (title: string, content: string) =>
     dispatch(addDraft({ title, content }))
   const { message } = AntdApp.useApp()
-  const key = 'PublishPost'
+  const key = 'AddNewPost'
   // 发布按钮的逻辑处理
   const onFinish = () => {
     // 开始发布
@@ -154,4 +154,4 @@ const PublishPost: FC = () => {
   )
 }
 
-export default PublishPost
+export default AddNewPost
