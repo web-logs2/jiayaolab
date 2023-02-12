@@ -6,6 +6,7 @@ const server = new CloudBaseRunServer().express
 
 // 帖子
 server.get('/post/get', require('./service/post/getPost').main)
+server.get('/post/search', require('./service/post/searchPost').main)
 server.post('/post/add', require('./service/post/addPost').main)
 
 async function main() {

@@ -1,1 +1,1 @@
-export type OrderByModuleType = 'desc' | 'asc'
+export type OrderByModuleType = 'DESC' | 'ASC'

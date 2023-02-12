@@ -1,14 +1,24 @@
 const { Post } = require('../../../app')
-const { Op } = require('sequelize')
 
 exports.main = async (req, res) => {
   // 单次查询最大数量
   const limit = 5
-  const { current, sortField, sortOrder, keywords } = req.query
+  const { id, current, sortField } = req.query
 
   try {
-    // 主页请求
-    if (current && sortField && !sortOrder && !keywords) {
+    if (id && !current && !sortField) {
+      const post = await Post.findOne({
+        where: {
+          uuid: id,
+          publicly: true,
+        },
+      })
+      res.status(post ? 200 : 400).json({
+        code: post ? 200 : 400,
+        data: post,
+        message: post ? 'ok' : '该帖子不存在或关闭了公开访问！',
+      })
+    } else if (!id && current && sortField) {
       const { rows } = await Post.findAndCountAll({
         limit,
         offset: Number(current) * limit - limit,
@@ -17,37 +27,6 @@ exports.main = async (req, res) => {
           publicly: true,
         },
       })
-
-      res.status(200).json({ code: 200, data: rows, message: 'ok' })
-      // 帖子概览页面请求
-    } else if (
-      current &&
-      sortField &&
-      sortOrder &&
-      (keywords || keywords === '')
-    ) {
-      const { rows } = await Post.findAndCountAll({
-        limit,
-        offset: Number(current) * limit - limit,
-        order: [[sortField, sortOrder.toUpperCase()]],
-        // 在标题或正文当中包含指定的关键字就返回该帖子
-        where: {
-          publicly: true,
-          [Op.or]: [
-            {
-              title: {
-                [Op.like]: ['', ...keywords.split(''), ''].join('%'),
-              },
-            },
-            {
-              content: {
-                [Op.like]: ['', ...keywords.split(''), ''].join('%'),
-              },
-            },
-          ],
-        },
-      })
-
       res.status(200).json({ code: 200, data: rows, message: 'ok' })
     } else {
       res.status(400).json({ code: 400, data: null, message: '参数无效！' })

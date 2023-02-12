@@ -30,7 +30,7 @@ const PostOverview: FC = () => {
   // 排序依据
   const [sortField, setSortField] = useState<keyof PostModelType>('updatedAt')
   // 排序方式
-  const [sortOrder, setSortOrder] = useState<OrderByModuleType>('desc')
+  const [sortOrder, setSortOrder] = useState<OrderByModuleType>('DESC')
   // 关键字
   const [keywords, setKeywords] = useState<string>('')
   const dispatch = useAppDispatch()
@@ -44,7 +44,7 @@ const PostOverview: FC = () => {
   const resetHandler = () => {
     setSize(1)
     setSortField('updatedAt')
-    setSortOrder('desc')
+    setSortOrder('DESC')
     setKeywords('')
   }
 
@@ -83,9 +83,6 @@ const PostOverview: FC = () => {
                         [
                           { value: 'updatedAt', label: '最近更新' },
                           { value: 'createdAt', label: '最近创建' },
-                          { value: 'authorId', label: '点赞数量' },
-                          { value: 'viewCount', label: '浏览数量' },
-                          { value: 'id', label: '收藏数量' },
                         ] as { value: keyof PostModelType; label: string }[]
                       }
                     />
@@ -101,8 +98,8 @@ const PostOverview: FC = () => {
                       onChange={radio => setSortOrder(radio.target.value)}
                       options={
                         [
-                          { value: 'asc', label: '升序' },
-                          { value: 'desc', label: '降序' },
+                          { value: 'ASC', label: '升序' },
+                          { value: 'DESC', label: '降序' },
                         ] as { value: OrderByModuleType; label: string }[]
                       }
                     />

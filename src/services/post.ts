@@ -4,7 +4,7 @@ import { PostModelType } from '../models/post'
 import { ResponseModelType } from '../models/response'
 
 /**
- * 根据类别获取帖子
+ * 获取主页所需帖子
  * @param current 当前帖子大小
  * @param sortField 根据依据
  */
@@ -18,7 +18,7 @@ export const fetchPostByCategories = async (
 }
 
 /**
- * 根据搜索关键词获取帖子
+ * 获取帖子概览页面所需帖子
  * @param current 当前帖子大小
  * @param sortField 根据依据
  * @param sortOrder 排序方式
@@ -30,7 +30,7 @@ export const fetchPostByConditions = async (
   sortOrder: OrderByModuleType,
   keywords: string
 ): Promise<ResponseModelType<PostModelType[] | null>> => {
-  return await api.get('/post/get', {
+  return await api.get('/post/search', {
     params: {
       current,
       sortField,
@@ -59,13 +59,13 @@ export const publishingPost = async (
 }
 
 /**
- * 获取指定ID的帖子
- * @param id 帖子的ID
+ * 获取帖子详情
+ * @param id 帖子ID
  */
 export const fetchPostById = async (
   id: string | number
 ): Promise<ResponseModelType<PostModelType>> => {
-  return await api.get('/post/detail', {
+  return await api.get('/post/get', {
     params: { id },
   })
 }
