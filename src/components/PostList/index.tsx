@@ -83,7 +83,7 @@ const PostList: FC<{
                 </Text>
               }
             />
-            <Link href={`/post/${post.uuid}`} target="_blank">
+            <Link href={`/post/detail/${post.uuid}`} target="_blank">
               <Title level={4}>{post.title}</Title>
               <Paragraph ellipsis={{ rows: 4 }}>
                 {`${post.content}${post.content}${post.content}`}
