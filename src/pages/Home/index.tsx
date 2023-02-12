@@ -1,4 +1,4 @@
-import { EyeOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons'
+import { LikeOutlined } from '@ant-design/icons'
 import { Card, Col, Row, Tabs } from 'antd'
 import { FC, ReactNode, useEffect, useState } from 'react'
 import HeadTitle from '../../components/HeadTitle'
@@ -15,7 +15,7 @@ const HomePage: FC = () => {
   // 页面大小
   const [size, setSize] = useState<number>(1)
   // 排序依据
-  const [sortField, setSortField] = useState<keyof PostModelType>('createdAt')
+  const [sortField, setSortField] = useState<keyof PostModelType>('updatedAt')
   const dispatch = useAppDispatch()
 
   // 这个副作用钩子解决路由切换没有清除原来的数据，导致再次进入该页面重复获取数据
@@ -50,27 +50,7 @@ const HomePage: FC = () => {
                       <span>推荐</span>
                     </>
                   ),
-                  key: 'createdAt',
-                  disabled: loading,
-                },
-                {
-                  label: (
-                    <>
-                      <StarOutlined />
-                      <span>最多收藏</span>
-                    </>
-                  ),
-                  key: 'authorId',
-                  disabled: loading,
-                },
-                {
-                  label: (
-                    <>
-                      <EyeOutlined />
-                      <span>最多浏览</span>
-                    </>
-                  ),
-                  key: 'viewCount',
+                  key: 'updatedAt',
                   disabled: loading,
                 },
               ] as {

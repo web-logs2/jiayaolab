@@ -12,7 +12,7 @@ export const fetchPostByCategories = async (
   current: string | number,
   sortField: keyof PostModelType
 ): Promise<ResponseModelType<PostModelType[] | null>> => {
-  return await api.get('/post/category', {
+  return await api.get('/post/get', {
     params: { current, sortField },
   })
 }
@@ -30,7 +30,7 @@ export const fetchPostByConditions = async (
   sortOrder: OrderByModuleType,
   keywords: string
 ): Promise<ResponseModelType<PostModelType[] | null>> => {
-  return await api.get('/post/condition', {
+  return await api.get('/post/get', {
     params: {
       current,
       sortField,
@@ -51,10 +51,10 @@ export const publishingPost = async (
   content: string,
   publicly: boolean
 ): Promise<ResponseModelType<string>> => {
-  return await api.post('/post', {
+  return await api.post('/post/add', {
     title,
     content,
-    published: publicly,
+    publicly,
   })
 }
 

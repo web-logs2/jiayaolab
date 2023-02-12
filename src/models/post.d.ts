@@ -11,7 +11,7 @@ export interface PostModelType {
   // 帖子ID
   id: number
   // 是否可见
-  published: boolean
+  publicly: boolean
   // 帖子标题
   title: string
   // 帖子更新时间
