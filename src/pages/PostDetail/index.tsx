@@ -4,7 +4,6 @@ import {
   FileOutlined,
   LikeOutlined,
   StarOutlined,
-  UserOutlined,
 } from '@ant-design/icons'
 import {
   Button,
@@ -84,7 +83,7 @@ const PostDetail: FC = () => {
                               />
                             </Tooltip>
                           }
-                          text={<Text>{postDetail?.viewCount}</Text>}
+                          text={<Text>{0}</Text>}
                         />
                       </Skeleton>
                     </Col>
@@ -107,7 +106,7 @@ const PostDetail: FC = () => {
                               />
                             </Tooltip>
                           }
-                          text={<Text>{postDetail?.viewCount}</Text>}
+                          text={<Text>{0}</Text>}
                         />
                       </Skeleton>
                     </Col>
@@ -129,14 +128,9 @@ const PostDetail: FC = () => {
                     <Row gutter={[0, 16]}>
                       {[
                         {
-                          label: '作者ID',
-                          icon: <UserOutlined />,
-                          value: postDetail?.authorId,
-                        },
-                        {
                           label: '帖子ID',
                           icon: <FileOutlined />,
-                          value: postDetail?.id,
+                          value: postDetail?.uuid,
                         },
                         {
                           label: '最后更新于',
@@ -165,7 +159,7 @@ const PostDetail: FC = () => {
                         {
                           label: '帖子浏览数',
                           icon: <EyeOutlined />,
-                          value: postDetail?.viewCount,
+                          value: 0,
                         },
                       ].map(({ value, label, icon }) => (
                         <Col key={label} span={24}>

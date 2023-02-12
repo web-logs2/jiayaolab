@@ -59,21 +59,9 @@ const PostList: FC<{
             className={classes.listItem}
             actions={[
               <div key="created-o">{formatDate(post.createdAt)}</div>,
-              <IconText
-                icon={<LikeOutlined />}
-                text={post.viewCount}
-                key="like-o"
-              />,
-              <IconText
-                icon={<StarOutlined />}
-                text={post.viewCount}
-                key="star-o"
-              />,
-              <IconText
-                icon={<EyeOutlined />}
-                text={post.viewCount}
-                key="view-o"
-              />,
+              <IconText icon={<LikeOutlined />} text={0} key="like-o" />,
+              <IconText icon={<StarOutlined />} text={0} key="star-o" />,
+              <IconText icon={<EyeOutlined />} text={0} key="view-o" />,
             ]}
           >
             <List.Item.Meta
@@ -95,7 +83,7 @@ const PostList: FC<{
                 </Text>
               }
             />
-            <Link href={`/post/${post.id}`} target="_blank">
+            <Link href={`/post/${post.uuid}`} target="_blank">
               <Title level={4}>{post.title}</Title>
               <Paragraph ellipsis={{ rows: 4 }}>
                 {`${post.content}${post.content}${post.content}`}
