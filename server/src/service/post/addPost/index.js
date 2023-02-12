@@ -4,7 +4,7 @@ exports.main = async (req, res) => {
 
   try {
     // 请求必要参数
-    if (!(title && content && publicly)) {
+    if (!(title && content && typeof publicly === 'boolean')) {
       res.status(400).json({ code: 400, data: null, message: '参数无效！' })
     } else {
       await Post.create({
