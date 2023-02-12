@@ -7,14 +7,19 @@ exports.main = async (req, res) => {
   const { current, sortField, sortOrder, keywords } = req.query
 
   try {
+    // 主页请求
     if (current && sortField && !sortOrder && !keywords) {
       const { rows } = await Post.findAndCountAll({
         limit,
         offset: Number(current) * limit - limit,
         order: [[sortField, 'DESC']],
+        where: {
+          publicly: true,
+        },
       })
 
       res.status(200).json({ code: 200, data: rows, message: 'ok' })
+      // 帖子概览页面请求
     } else if (
       current &&
       sortField &&
@@ -27,6 +32,7 @@ exports.main = async (req, res) => {
         order: [[sortField, sortOrder.toUpperCase()]],
         // 在标题或正文当中包含指定的关键字就返回该帖子
         where: {
+          publicly: true,
           [Op.or]: [
             {
               title: {
