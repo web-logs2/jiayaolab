@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "lib": ["esnext"],
-    "strict": true,
-    "esModuleInterop": true,
-    "noImplicitAny": true
-  }
-}

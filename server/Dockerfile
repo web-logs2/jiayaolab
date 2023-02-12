@@ -1,13 +1,20 @@
-FROM node:18
+FROM alpine:3.13
 
-WORKDIR /usr/src/app
+RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo Asia/Shanghai > /etc/timezone
 
-COPY ./ ./
+RUN apk add ca-certificates
 
-RUN npm install -g pnpm
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositories \
+&& apk add --update --no-cache nodejs npm
 
-RUN pnpm install
+WORKDIR /app
 
-RUN npm install pm2 -g
+COPY package*.json /app/
 
-CMD [ "pm2-runtime", "npm", "--", "start" ]
+RUN npm config set registry https://mirrors.cloud.tencent.com/npm/
+
+RUN npm install -g pnpm && pnpm install
+
+COPY . /app
+
+CMD ["npm", "start"]
