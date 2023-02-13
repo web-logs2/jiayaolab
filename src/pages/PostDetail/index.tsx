@@ -1,6 +1,5 @@
 import {
   CalendarOutlined,
-  EyeOutlined,
   FileOutlined,
   LikeOutlined,
   StarOutlined,
@@ -53,9 +52,7 @@ const PostDetail: FC = () => {
             <Card>
               <Skeleton active loading={loading}>
                 <Title level={2}>{postDetail?.title}</Title>
-                <Paragraph>
-                  {Array.from({ length: 10 }).map(() => postDetail?.content)}
-                </Paragraph>
+                <Paragraph>${postDetail?.content}</Paragraph>
               </Skeleton>
             </Card>
           </Col>
@@ -155,11 +152,6 @@ const PostDetail: FC = () => {
                               </Text>
                             </>
                           ),
-                        },
-                        {
-                          label: '帖子浏览数',
-                          icon: <EyeOutlined />,
-                          value: 0,
                         },
                       ].map(({ value, label, icon }) => (
                         <Col key={label} span={24}>

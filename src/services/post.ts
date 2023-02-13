@@ -52,7 +52,7 @@ export const publishingPost = async (
   publicly: boolean
 ): Promise<ResponseModelType<string>> => {
   return await api.post('/post/add', {
-    title,
+    title: title.trim(),
     content,
     publicly,
   })

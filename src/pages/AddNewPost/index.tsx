@@ -84,27 +84,47 @@ const AddNewPost: FC = () => {
         >
           <Form.Item
             name="title"
-            rules={[{ required: true, message: '* 标题不能为空！' }]}
+            rules={[
+              () => ({
+                // 禁止提交纯空白字符
+                validator(_, value) {
+                  if (value.trim().length) {
+                    return Promise.resolve()
+                  }
+                  return Promise.reject('请填写帖子标题')
+                },
+              }),
+            ]}
           >
             <Input
               value={title}
               onChange={e => addDraftHandler(e.target.value, content)}
-              placeholder="标题"
+              onPressEnter={e => e.preventDefault()}
+              placeholder="标题（必填）"
               showCount
-              maxLength={32}
+              maxLength={30}
             />
           </Form.Item>
           <Form.Item
             name="content"
-            rules={[{ required: true, message: '* 内容详情不能为空！' }]}
+            rules={[
+              () => ({
+                validator(_, value) {
+                  if (value.trim().length) {
+                    return Promise.resolve()
+                  }
+                  return Promise.reject('请填写内容')
+                },
+              }),
+            ]}
           >
             <TextArea
               value={content}
               onChange={e => addDraftHandler(title, e.target.value)}
-              placeholder="内容详情"
+              placeholder="内容（必填）"
               autoSize={{ minRows: 8 }}
               showCount
-              maxLength={256}
+              maxLength={30000}
             />
           </Form.Item>
           <Form.Item>
