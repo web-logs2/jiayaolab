@@ -13,16 +13,17 @@ const TextEditor: FC<{ onValidateHandler: () => void }> = ({
   const [editor, setEditor] = useState<IDomEditor | null>(null)
   // 验证锁，取消第一次载入执行验证函数
   const [locked, setLocked] = useState<boolean>(true)
-  const toolbarConfig: Partial<IToolbarConfig> = {}
-  toolbarConfig.excludeKeys = [
-    'fontFamily',
-    'fontSize',
-    'lineHeight',
-    'emotion',
-    'uploadImage',
-    'uploadVideo',
-    'fullScreen',
-  ]
+  const toolbarConfig: Partial<IToolbarConfig> = {
+    excludeKeys: [
+      'fontFamily',
+      'fontSize',
+      'lineHeight',
+      'emotion',
+      'uploadImage',
+      'uploadVideo',
+      'fullScreen',
+    ],
+  }
   const editorConfig: Partial<IEditorConfig> = {
     placeholder: '内容（必填）',
     maxLength: 30000,
