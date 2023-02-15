@@ -13,7 +13,6 @@ import {
 } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
 import { useNavigate } from 'react-router-dom'
 import HeadTitle from '../../components/HeadTitle'
 import { useAppDispatch, useTypedSelector } from '../../hook'
