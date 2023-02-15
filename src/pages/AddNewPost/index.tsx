@@ -11,35 +11,27 @@ import {
   Tooltip,
   Typography,
 } from 'antd'
-import { FC, useEffect, useState } from 'react'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
+import { FC, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import HeadTitle from '../../components/HeadTitle'
+import TextEditor from '../../components/TextEditor'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { publishingPost } from '../../services/post'
-import { addDraft, cleanDraft } from '../../store/features/draftSlice'
-import './index.less'
+import { addTitleDraft, removeDraft } from '../../store/features/draftSlice'
 
 const key = 'AddNewPost'
 const { Title, Text, Paragraph } = Typography
 const AddNewPost: FC = () => {
-  const navigate = useNavigate()
-  // 公开访问选项
-  const [publicly, setPublicly] = useState<boolean>(true)
-  // 是否正在发布中
-  const [publishing, setPublishing] = useState<boolean>(false)
   const dispatch = useAppDispatch()
-  // 撰写的内容（也可以称为草稿箱，在页面不刷新的前提下，切换页面不会导致撰写的内容消失）
-  // 成功发布&取消发布都会进行清空
-  const { title, content, contentHtml } = useTypedSelector(s => s.draftSlice)
   const [form] = Form.useForm()
   const { message } = AntdApp.useApp()
-  const addDraftHandler = (
-    title: string,
-    content: string,
-    contentHtml: string
-  ) => dispatch(addDraft({ title, content, contentHtml }))
+  const navigate = useNavigate()
+  // 是否正在发布中
+  const [publishing, setPublishing] = useState<boolean>(false)
+  // 公开访问选项，默认开启
+  const [publicly, setPublicly] = useState<boolean>(true)
+  // 撰写的内容（也可以称为草稿箱，在页面不刷新的前提下，切换页面不会导致撰写的内容消失）
+  const { title, text, html } = useTypedSelector(s => s.draftSlice)
   // 发布按钮的逻辑处理
   const onFinish = () => {
     // 开始发布
@@ -51,11 +43,11 @@ const AddNewPost: FC = () => {
       duration: 0,
     })
     // 发布帖子
-    publishingPost(title, contentHtml, publicly)
+    publishingPost(title, html, publicly)
       .then(({ data }) => {
+        dispatch(removeDraft())
         // 发布成功后返回主页
         navigate('/')
-        dispatch(cleanDraft())
         message.open({
           key,
           type: 'success',
@@ -72,9 +64,6 @@ const AddNewPost: FC = () => {
       .finally(() => setPublishing(false))
   }
 
-  useEffect(() => {
-    form.setFieldsValue({ title, contentHtml })
-  }, [title, contentHtml])
   return (
     <>
       <HeadTitle prefix="发布帖子" />
@@ -85,14 +74,7 @@ const AddNewPost: FC = () => {
         </Paragraph>
         <Form
           form={form}
-          initialValues={{ title, contentHtml }}
-          onValuesChange={e => {
-            addDraftHandler(
-              e.title || title,
-              content,
-              e.contentHtml || contentHtml
-            )
-          }}
+          initialValues={{ title }}
           onFinish={onFinish}
           disabled={publishing}
           scrollToFirstError
@@ -101,55 +83,33 @@ const AddNewPost: FC = () => {
           <Form.Item
             name="title"
             rules={[
-              () => ({
-                // 禁止提交纯空白字符
-                validator(_, value) {
-                  if (value.trim().length) {
-                    return Promise.resolve()
-                  }
-                  return Promise.reject('请填写帖子标题')
-                },
-              }),
+              { required: true, message: '请填写帖子标题' },
+              { whitespace: true, message: '请填写帖子标题' },
             ]}
           >
             <Input
-              onPressEnter={e => e.preventDefault()}
               placeholder="标题（必填）"
+              onPressEnter={e => e.preventDefault()}
+              onChange={e => dispatch(addTitleDraft({ title: e.target.value }))}
               showCount
               maxLength={30}
             />
           </Form.Item>
           <Form.Item
-            name="contentHtml"
+            name="html"
             rules={[
               () => ({
                 validator() {
-                  if (content.trim().length) {
+                  if (text.trim().length) {
                     return Promise.resolve()
                   }
-                  return Promise.reject('请填写内容')
+                  return Promise.reject('请填写帖子内容')
                 },
               }),
             ]}
           >
-            <ReactQuill
-              theme="snow"
-              placeholder="内容（必填）"
-              onChange={(value, _delta, _source, editor) =>
-                addDraftHandler(title, editor.getText(), value)
-              }
-              modules={{
-                toolbar: [
-                  [{ header: 1 }, { header: 2 }, { header: [1, 2, 3, false] }],
-                  ['bold', 'italic', 'underline', 'strike'],
-                  [{ align: [] }],
-                  ['link', 'blockquote', 'code-block'],
-                  [{ list: 'ordered' }, { list: 'bullet' }],
-                  [{ indent: '-1' }, { indent: '+1' }],
-                  [{ script: 'sub' }, { script: 'super' }],
-                  ['clean'],
-                ],
-              }}
+            <TextEditor
+              onValidateHandler={() => form.validateFields(['html'])}
             />
           </Form.Item>
           <Form.Item>
@@ -181,7 +141,7 @@ const AddNewPost: FC = () => {
                   </>
                 }
                 onConfirm={() => {
-                  dispatch(cleanDraft())
+                  dispatch(removeDraft())
                   navigate('/posts')
                   message.warning('帖子已取消发布！')
                 }}

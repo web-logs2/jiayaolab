@@ -3,32 +3,36 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 const DRAFT_FEATURE_KEY = 'draft'
 const initialState: {
   title: string
-  content: string
-  contentHtml: string
+  text: string
+  html: string
 } = {
-  // 标题草稿
   title: '',
-  // 内容草稿（原始）
-  content: '',
-  // 内容草稿（HTML格式）
-  contentHtml: '',
+  text: '',
+  html: '',
 }
 
 const draftSlice = createSlice({
   name: DRAFT_FEATURE_KEY,
   initialState,
   reducers: {
-    addDraft: (state, { payload }: PayloadAction<typeof initialState>) => {
+    // 添加标题草稿
+    addTitleDraft: (state, { payload }: PayloadAction<{ title: string }>) => {
       state.title = payload.title
-      state.content = payload.content
-      state.contentHtml = payload.contentHtml
     },
-    cleanDraft: state => {
-      state.title = ''
-      state.content = ''
-      state.contentHtml = ''
+    // 添加内容草稿
+    addContentDraft: (
+      state,
+      { payload }: PayloadAction<{ text: string; html: string }>
+    ) => {
+      state.text = payload.text
+      state.html = payload.html
+    },
+    // 移除所有草稿
+    removeDraft: state => {
+      state.title = state.text = state.html = ''
     },
   },
 })
-export const { addDraft, cleanDraft } = draftSlice.actions
+export const { addTitleDraft, addContentDraft, removeDraft } =
+  draftSlice.actions
 export default draftSlice.reducer

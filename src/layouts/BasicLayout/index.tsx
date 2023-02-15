@@ -11,7 +11,6 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import avatar from '../../assets/avatar.png'
 import HeadTitle from '../../components/HeadTitle'
 import IconText from '../../components/IconText'
-import './index.less'
 import classes from './index.module.less'
 
 const { Text, Title, Link: AntdLink } = Typography

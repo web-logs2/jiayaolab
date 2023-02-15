@@ -45,7 +45,7 @@ const Post = app.define('post', {
     allowNull: false,
   },
   content: {
-    type: DataTypes.TEXT,
+    type: DataTypes.TEXT('medium'),
     allowNull: false,
   },
   publicly: {
