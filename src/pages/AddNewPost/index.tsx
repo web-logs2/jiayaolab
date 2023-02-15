@@ -34,7 +34,6 @@ const AddNewPost: FC = () => {
   // 成功发布&取消发布都会进行清空
   const { title, content, contentHtml } = useTypedSelector(s => s.draftSlice)
   const { message } = AntdApp.useApp()
-  const [form] = Form.useForm()
   const addDraftHandler = (
     title: string,
     content: string,
@@ -81,13 +80,8 @@ const AddNewPost: FC = () => {
           注：切换页面后当前撰写的内容将会保存在草稿箱，帖子发布成功或点击取消发布帖子后将清空草稿箱。
         </Paragraph>
         <Form
-          form={form}
           initialValues={{ title, contentHtml }}
           onValuesChange={e => {
-            form.setFieldsValue({
-              title: e.title || title,
-              contentHtml: e.contentHtml || contentHtml,
-            })
             addDraftHandler(
               e.title || title,
               content,
