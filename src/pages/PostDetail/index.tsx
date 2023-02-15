@@ -52,7 +52,13 @@ const PostDetail: FC = () => {
             <Card>
               <Skeleton active loading={loading}>
                 <Title level={2}>{postDetail?.title}</Title>
-                <Paragraph>{postDetail?.content}</Paragraph>
+                <Paragraph>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: postDetail?.content || '',
+                    }}
+                  />
+                </Paragraph>
               </Skeleton>
             </Card>
           </Col>

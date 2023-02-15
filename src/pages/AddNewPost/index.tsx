@@ -12,28 +12,34 @@ import {
   Typography,
 } from 'antd'
 import { FC, useState } from 'react'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 import { useNavigate } from 'react-router-dom'
 import HeadTitle from '../../components/HeadTitle'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { publishingPost } from '../../services/post'
-import { addDraft } from '../../store/features/draftSlice'
+import { addDraft, cleanDraft } from '../../store/features/draftSlice'
+import './index.less'
 
+const key = 'AddNewPost'
 const { Title, Text, Paragraph } = Typography
-const { TextArea } = Input
 const AddNewPost: FC = () => {
   const navigate = useNavigate()
   // 公开访问选项
   const [publicly, setPublicly] = useState<boolean>(true)
   // 是否正在发布中
   const [publishing, setPublishing] = useState<boolean>(false)
+  const dispatch = useAppDispatch()
   // 撰写的内容（也可以称为草稿箱，在页面不刷新的前提下，切换页面不会导致撰写的内容消失）
   // 成功发布&取消发布都会进行清空
-  const { title, content } = useTypedSelector(s => s.draftSlice)
-  const dispatch = useAppDispatch()
-  const addDraftHandler = (title: string, content: string) =>
-    dispatch(addDraft({ title, content }))
+  const { title, content, contentHtml } = useTypedSelector(s => s.draftSlice)
   const { message } = AntdApp.useApp()
-  const key = 'AddNewPost'
+  const [form] = Form.useForm()
+  const addDraftHandler = (
+    title: string,
+    content: string,
+    contentHtml: string
+  ) => dispatch(addDraft({ title, content, contentHtml }))
   // 发布按钮的逻辑处理
   const onFinish = () => {
     // 开始发布
@@ -45,12 +51,11 @@ const AddNewPost: FC = () => {
       duration: 0,
     })
     // 发布帖子
-    publishingPost(title, content, publicly)
+    publishingPost(title, contentHtml, publicly)
       .then(({ data }) => {
         // 发布成功后返回主页
         navigate('/')
-        // 清空草稿
-        addDraftHandler('', '')
+        dispatch(cleanDraft())
         message.open({
           key,
           type: 'success',
@@ -76,11 +81,23 @@ const AddNewPost: FC = () => {
           注：切换页面后当前撰写的内容将会保存在草稿箱，帖子发布成功或点击取消发布帖子后将清空草稿箱。
         </Paragraph>
         <Form
-          scrollToFirstError
+          form={form}
+          initialValues={{ title, contentHtml }}
+          onValuesChange={e => {
+            form.setFieldsValue({
+              title: e.title || title,
+              contentHtml: e.contentHtml || contentHtml,
+            })
+            addDraftHandler(
+              e.title || title,
+              content,
+              e.contentHtml || contentHtml
+            )
+          }}
           onFinish={onFinish}
           disabled={publishing}
+          scrollToFirstError
           autoComplete="off"
-          initialValues={{ title, content }}
         >
           <Form.Item
             name="title"
@@ -97,8 +114,6 @@ const AddNewPost: FC = () => {
             ]}
           >
             <Input
-              value={title}
-              onChange={e => addDraftHandler(e.target.value, content)}
               onPressEnter={e => e.preventDefault()}
               placeholder="标题（必填）"
               showCount
@@ -106,11 +121,11 @@ const AddNewPost: FC = () => {
             />
           </Form.Item>
           <Form.Item
-            name="content"
+            name="contentHtml"
             rules={[
               () => ({
-                validator(_, value) {
-                  if (value.trim().length) {
+                validator() {
+                  if (content.trim().length) {
                     return Promise.resolve()
                   }
                   return Promise.reject('请填写内容')
@@ -118,13 +133,25 @@ const AddNewPost: FC = () => {
               }),
             ]}
           >
-            <TextArea
-              value={content}
-              onChange={e => addDraftHandler(title, e.target.value)}
+            <ReactQuill
+              theme="snow"
               placeholder="内容（必填）"
-              autoSize={{ minRows: 8 }}
-              showCount
-              maxLength={30000}
+              onChange={(value, _delta, _source, editor) =>
+                addDraftHandler(title, editor.getText(), value)
+              }
+              modules={{
+                toolbar: [
+                  [{ header: 1 }, { header: 2 }, { header: [1, 2, 3, false] }],
+                  ['bold', 'italic', 'underline', 'strike'],
+                  [{ align: [] }],
+                  ['link'],
+                  ['blockquote', 'code-block'],
+                  [{ list: 'ordered' }, { list: 'bullet' }],
+                  [{ indent: '-1' }, { indent: '+1' }],
+                  [{ script: 'sub' }, { script: 'super' }],
+                  ['clean'],
+                ],
+              }}
             />
           </Form.Item>
           <Form.Item>
@@ -156,8 +183,7 @@ const AddNewPost: FC = () => {
                   </>
                 }
                 onConfirm={() => {
-                  // 清空草稿
-                  addDraftHandler('', '')
+                  dispatch(cleanDraft())
                   navigate('/posts')
                   message.warning('帖子已取消发布！')
                 }}
