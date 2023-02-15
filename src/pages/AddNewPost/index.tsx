@@ -11,7 +11,7 @@ import {
   Tooltip,
   Typography,
 } from 'antd'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { useNavigate } from 'react-router-dom'
@@ -33,6 +33,7 @@ const AddNewPost: FC = () => {
   // 撰写的内容（也可以称为草稿箱，在页面不刷新的前提下，切换页面不会导致撰写的内容消失）
   // 成功发布&取消发布都会进行清空
   const { title, content, contentHtml } = useTypedSelector(s => s.draftSlice)
+  const [form] = Form.useForm()
   const { message } = AntdApp.useApp()
   const addDraftHandler = (
     title: string,
@@ -71,6 +72,9 @@ const AddNewPost: FC = () => {
       .finally(() => setPublishing(false))
   }
 
+  useEffect(() => {
+    form.setFieldsValue({ title, contentHtml })
+  }, [title, contentHtml])
   return (
     <>
       <HeadTitle prefix="发布帖子" />
@@ -80,6 +84,7 @@ const AddNewPost: FC = () => {
           注：切换页面后当前撰写的内容将会保存在草稿箱，帖子发布成功或点击取消发布帖子后将清空草稿箱。
         </Paragraph>
         <Form
+          form={form}
           initialValues={{ title, contentHtml }}
           onValuesChange={e => {
             addDraftHandler(
