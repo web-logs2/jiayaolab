@@ -43,7 +43,7 @@ const AddNewPost: FC = () => {
       duration: 0,
     })
     // 发布帖子
-    publishingPost(title, html, publicly)
+    publishingPost(title, text, html, publicly)
       .then(({ data }) => {
         dispatch(removeDraft())
         // 发布成功后返回主页

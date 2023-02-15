@@ -55,7 +55,7 @@ const PostDetail: FC = () => {
                 <Paragraph>
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: postDetail?.content || '',
+                      __html: postDetail?.html || '',
                     }}
                   />
                 </Paragraph>

@@ -22,7 +22,7 @@ exports.main = async (req, res) => {
               },
             },
             {
-              content: {
+              text: {
                 [Op.like]: ['', ...keywords.split(''), ''].join('%'),
               },
             },

@@ -44,7 +44,11 @@ const Post = app.define('post', {
     type: DataTypes.STRING(32),
     allowNull: false,
   },
-  content: {
+  text: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+  html: {
     type: DataTypes.TEXT('medium'),
     allowNull: false,
   },

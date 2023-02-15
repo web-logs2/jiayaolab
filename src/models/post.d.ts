@@ -6,8 +6,10 @@ export interface PostModelType {
   uuid: string
   // 帖子标题
   title: string
-  // 帖子内容
-  content: string
+  // 帖子原始内容
+  text: string
+  // 帖子HTML内容
+  html: string
   // 帖子创建时间
   createdAt: string
   // 帖子更新时间

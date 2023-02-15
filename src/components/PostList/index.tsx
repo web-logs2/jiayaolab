@@ -86,7 +86,7 @@ const PostList: FC<{
             <Link href={`/post/detail/${post.uuid}`} target="_blank">
               <Title level={4}>{post.title}</Title>
               <Paragraph ellipsis={{ rows: 4 }}>
-                <div dangerouslySetInnerHTML={{ __html: post.content }} />
+                <div dangerouslySetInnerHTML={{ __html: post.html }} />
               </Paragraph>
             </Link>
           </List.Item>
