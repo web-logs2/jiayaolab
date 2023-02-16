@@ -60,24 +60,22 @@ const PostList: FC<{
             className={classes.listItem}
             actions={[
               <Tooltip
-                key="date-o"
+                key="date"
                 placement="bottom"
                 title={`最后一次更新在 ${fromNowDate(post.updatedAt)}`}
               >
                 <div>{formatDate(post.createdAt)}</div>
               </Tooltip>,
-              <IconText icon={<LikeOutlined />} text={0} key="like-o" />,
-              <IconText icon={<StarOutlined />} text={0} key="star-o" />,
-              <IconText icon={<EyeOutlined />} text={0} key="view-o" />,
+              <IconText icon={<LikeOutlined />} text={0} key="like" />,
+              <IconText icon={<StarOutlined />} text={0} key="star" />,
+              <IconText icon={<EyeOutlined />} text={0} key="view" />,
             ]}
           >
             <List.Item.Meta
-              avatar={
-                <Avatar size="large" src={avatar} className={classes.avatar} />
-              }
+              avatar={<Avatar size="large" draggable={false} src={avatar} />}
               title={
                 <Space size="large" align="center">
-                  <Text className={classes.username}>千秋花hana</Text>
+                  <Title level={5}>Jia-Yao Zhao</Title>
                   <div>
                     <Tag color="red">管理员</Tag>
                     <Tag color="orange">VIP</Tag>

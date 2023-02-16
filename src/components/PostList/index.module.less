@@ -6,16 +6,15 @@
   user-select: none;
   .list-item {
     padding: 0;
-    ul[class='ant-list-item-action'] {
+    [class='ant-list-item-action'] {
       text-align: right;
     }
-  }
-  .avatar {
-    border: none;
-  }
-  .username {
-    font-size: 16px;
-    line-height: 1.5;
+    [class='ant-list-item-meta-avatar'] [class*='ant-avatar'] {
+      border: none;
+    }
+    [class='ant-list-item-meta-title'] [class*='ant-typography'] {
+      margin-block-end: 0;
+    }
   }
 }
 .load-more {

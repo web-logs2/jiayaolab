@@ -52,14 +52,14 @@ const TextEditor: FC<{ onValidateHandler: () => void }> = ({
     locked && setLocked(false)
   }, [text])
   return (
-    <div className={classes.wrapper}>
+    <div className={classes.textEditor}>
       <Toolbar
-        className={classes.toolbarWrapper}
+        className={classes.toolbar}
         editor={editor}
         defaultConfig={toolbarConfig}
       />
       <Editor
-        className={classes.editorWrapper}
+        className={classes.editor}
         defaultConfig={editorConfig}
         value={html}
         onCreated={setEditor}
