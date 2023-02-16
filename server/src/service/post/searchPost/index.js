@@ -10,6 +10,9 @@ exports.main = async (req, res) => {
     if (current && sortField && sortOrder && (keywords || keywords === '')) {
       const { rows } = await Post.findAndCountAll({
         limit,
+        attributes: {
+          exclude: ['html'],
+        },
         offset: Number(current) * limit - limit,
         order: [[sortField, sortOrder.toUpperCase()]],
         // 在标题或正文当中包含指定的关键字就返回该帖子

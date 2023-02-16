@@ -3,11 +3,15 @@ const { Post } = require('../../../app')
 exports.main = async (req, res) => {
   // 单次查询最大数量
   const limit = 5
-  const { id, current, sortField } = req.query
+  const { id, type, current, sortField } = req.query
 
   try {
-    if (id && !current && !sortField) {
+    // 帖子详情页面
+    if (id && type === 'detail' && !current && !sortField) {
       const post = await Post.findOne({
+        attributes: {
+          exclude: ['text'],
+        },
         where: {
           uuid: id,
           publicly: true,
@@ -18,9 +22,13 @@ exports.main = async (req, res) => {
         data: post,
         message: post ? 'ok' : '该帖子不存在或关闭了公开访问！',
       })
-    } else if (!id && current && sortField) {
+      // 主页推荐页面
+    } else if (!id && type === 'main' && current && sortField) {
       const { rows } = await Post.findAndCountAll({
         limit,
+        attributes: {
+          exclude: ['html'],
+        },
         offset: Number(current) * limit - limit,
         order: [[sortField, 'DESC']],
         where: {
