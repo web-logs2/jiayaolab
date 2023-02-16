@@ -8,6 +8,7 @@ import {
   Button,
   Card,
   Col,
+  Divider,
   Row,
   Skeleton,
   Space,
@@ -22,6 +23,7 @@ import IconText from '../../components/IconText'
 import { PostModelType } from '../../models/post'
 import { fetchPostById } from '../../services/post'
 import { formatDate, fromNowDate } from '../../utils/format'
+import classes from './index.module.less'
 
 const { Title, Text, Paragraph } = Typography
 const PostDetail: FC = () => {
@@ -51,7 +53,10 @@ const PostDetail: FC = () => {
           <Col span={18}>
             <Card>
               <Skeleton active loading={loading}>
-                <Title level={2}>{postDetail?.title}</Title>
+                <Title className={classes.title} level={3}>
+                  {postDetail?.title}
+                </Title>
+                <Divider />
                 <Paragraph>
                   <div
                     dangerouslySetInnerHTML={{

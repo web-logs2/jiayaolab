@@ -88,6 +88,7 @@ const AddNewPost: FC = () => {
             ]}
           >
             <Input
+              autoFocus
               placeholder="标题（必填）"
               onPressEnter={e => e.preventDefault()}
               onChange={e => dispatch(addTitleDraft({ title: e.target.value }))}

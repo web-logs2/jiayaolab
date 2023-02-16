@@ -8,12 +8,13 @@ import {
   Skeleton,
   Space,
   Tag,
+  Tooltip,
   Typography,
 } from 'antd'
 import { FC } from 'react'
 import avatar from '../../assets/avatar.png'
 import { PostModelType } from '../../models/post'
-import { formatDate } from '../../utils/format'
+import { formatDate, fromNowDate } from '../../utils/format'
 import FetchFailed from '../FetchFailed'
 import IconText from '../IconText'
 import classes from './index.module.less'
@@ -58,7 +59,13 @@ const PostList: FC<{
           <List.Item
             className={classes.listItem}
             actions={[
-              <div key="created-o">{formatDate(post.createdAt)}</div>,
+              <Tooltip
+                key="date-o"
+                placement="bottom"
+                title={`最后一次更新在 ${fromNowDate(post.updatedAt)}`}
+              >
+                <div>{formatDate(post.createdAt)}</div>
+              </Tooltip>,
               <IconText icon={<LikeOutlined />} text={0} key="like-o" />,
               <IconText icon={<StarOutlined />} text={0} key="star-o" />,
               <IconText icon={<EyeOutlined />} text={0} key="view-o" />,
@@ -84,9 +91,11 @@ const PostList: FC<{
               }
             />
             <Link href={`/post/detail/${post.uuid}`} target="_blank">
-              <Title level={4}>{post.title}</Title>
-              <Paragraph ellipsis={{ rows: 4 }}>
-                <div dangerouslySetInnerHTML={{ __html: post.html }} />
+              <Title level={3} ellipsis>
+                {post.title}
+              </Title>
+              <Paragraph ellipsis={{ rows: 2 }} type="secondary">
+                {post.text}
               </Paragraph>
             </Link>
           </List.Item>

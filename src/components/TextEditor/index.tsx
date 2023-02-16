@@ -6,6 +6,10 @@ import { useAppDispatch, useTypedSelector } from '../../hook'
 import { addContentDraft } from '../../store/features/draftSlice'
 import classes from './index.module.less'
 
+/**
+ * 富文本编辑器
+ * @param onValidateHandler 验证处理程序
+ */
 const TextEditor: FC<{ onValidateHandler: () => void }> = ({
   onValidateHandler,
 }) => {
@@ -25,8 +29,9 @@ const TextEditor: FC<{ onValidateHandler: () => void }> = ({
     ],
   }
   const editorConfig: Partial<IEditorConfig> = {
-    placeholder: '内容（必填）',
     maxLength: 30000,
+    autoFocus: false,
+    placeholder: '内容（必填）',
   }
   const { text, html } = useTypedSelector(s => s.draftSlice)
 
