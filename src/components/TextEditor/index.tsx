@@ -8,11 +8,13 @@ import classes from './index.module.less'
 
 /**
  * 富文本编辑器
+ * @param publishing 是否正在发布中
  * @param onValidateHandler 验证处理程序
  */
-const TextEditor: FC<{ onValidateHandler: () => void }> = ({
-  onValidateHandler,
-}) => {
+const TextEditor: FC<{
+  publishing: boolean
+  onValidateHandler: () => void
+}> = ({ publishing, onValidateHandler }) => {
   const dispatch = useAppDispatch()
   const [editor, setEditor] = useState<IDomEditor | null>(null)
   // 验证锁，取消第一次载入执行验证函数
@@ -51,6 +53,11 @@ const TextEditor: FC<{ onValidateHandler: () => void }> = ({
     }
     locked && setLocked(false)
   }, [text])
+  useEffect(() => {
+    if (publishing) {
+      editor?.disable()
+    }
+  }, [publishing])
   return (
     <div className={classes.textEditor}>
       <Toolbar

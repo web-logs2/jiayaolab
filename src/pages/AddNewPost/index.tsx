@@ -110,6 +110,7 @@ const AddNewPost: FC = () => {
             ]}
           >
             <TextEditor
+              publishing={publishing}
               onValidateHandler={() => form.validateFields(['html'])}
             />
           </Form.Item>
