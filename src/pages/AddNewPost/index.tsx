@@ -84,7 +84,7 @@ const AddNewPost: FC = () => {
         </Paragraph>
         <Form
           form={form}
-          initialValues={{ title }}
+          initialValues={{ title, publicly }}
           onFinish={onFinish}
           disabled={pushing}
           scrollToFirstError
@@ -95,6 +95,7 @@ const AddNewPost: FC = () => {
             rules={[
               { required: true, message: '请填写帖子标题' },
               { whitespace: true, message: '请填写帖子标题' },
+              { max: 30, message: '帖子标题不能大于30个字符' },
             ]}
           >
             <Input
@@ -117,6 +118,14 @@ const AddNewPost: FC = () => {
                   return Promise.reject('请填写帖子内容')
                 },
               }),
+              () => ({
+                validator() {
+                  if (text.trim().length < 30000) {
+                    return Promise.resolve()
+                  }
+                  return Promise.reject('帖子内容不能大于30000个字符')
+                },
+              }),
             ]}
           >
             <TextEditor
@@ -124,13 +133,12 @@ const AddNewPost: FC = () => {
               onValidateHandler={() => form.validateFields(['html'])}
             />
           </Form.Item>
-          <Form.Item>
+          <Form.Item name="publicly" label="公开访问">
             <Space>
               <Checkbox
                 checked={publicly}
                 onChange={e => setPublicly(e.target.checked)}
               />
-              <Text>公开访问</Text>
               <Tooltip title="所有用户都能阅读这篇帖子">
                 <Text type="secondary">
                   <QuestionCircleOutlined />
