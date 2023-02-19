@@ -45,9 +45,9 @@ export const fetchPostByConditions = async (
  * @param title 帖子标题
  * @param text 帖子原始内容
  * @param html 帖子HTML内容
- * @param publicly 是否公开
+ * @param publicly 是否公开访问
  */
-export const publishingPost = async (
+export const pushPost = async (
   title: string,
   text: string,
   html: string,

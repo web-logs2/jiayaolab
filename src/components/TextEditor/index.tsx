@@ -3,18 +3,18 @@ import { Editor, Toolbar } from '@wangeditor/editor-for-react'
 import '@wangeditor/editor/dist/css/style.css'
 import { FC, useEffect, useState } from 'react'
 import { useAppDispatch, useTypedSelector } from '../../hook'
-import { addContentDraft } from '../../store/features/draftSlice'
+import { addContentDraft } from '../../store/features/articleSlice'
 import classes from './index.module.less'
 
 /**
  * 富文本编辑器
- * @param publishing 是否正在发布中
+ * @param pushing 是否正在发布中
  * @param onValidateHandler 验证处理程序
  */
 const TextEditor: FC<{
-  publishing: boolean
+  pushing: boolean
   onValidateHandler: () => void
-}> = ({ publishing, onValidateHandler }) => {
+}> = ({ pushing, onValidateHandler }) => {
   const dispatch = useAppDispatch()
   const [editor, setEditor] = useState<IDomEditor | null>(null)
   // 验证锁，取消第一次载入执行验证函数
@@ -35,7 +35,7 @@ const TextEditor: FC<{
     autoFocus: false,
     placeholder: '内容（必填）',
   }
-  const { text, html } = useTypedSelector(s => s.draftSlice)
+  const { text, html } = useTypedSelector(s => s.articleSlice)
 
   // 切换页面后销毁编辑器
   useEffect(
@@ -54,10 +54,8 @@ const TextEditor: FC<{
     locked && setLocked(false)
   }, [text])
   useEffect(() => {
-    if (publishing) {
-      editor?.disable()
-    }
-  }, [publishing])
+    pushing ? editor?.disable() : editor?.enable()
+  }, [pushing])
   return (
     <div className={classes.textEditor}>
       <Toolbar

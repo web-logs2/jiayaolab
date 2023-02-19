@@ -1,18 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-const DRAFT_FEATURE_KEY = 'draft'
 const initialState: {
+  pushing: boolean
   title: string
   text: string
   html: string
 } = {
+  pushing: false,
   title: '',
   text: '',
   html: '',
 }
 
-const draftSlice = createSlice({
-  name: DRAFT_FEATURE_KEY,
+const articleSlice = createSlice({
+  name: 'article',
   initialState,
   reducers: {
     // 添加标题草稿
@@ -31,8 +32,12 @@ const draftSlice = createSlice({
     removeDraft: state => {
       state.title = state.text = state.html = ''
     },
+    // 设置发布状态
+    setPush: (state, { payload }: PayloadAction<{ value: boolean }>) => {
+      state.pushing = payload.value
+    },
   },
 })
-export const { addTitleDraft, addContentDraft, removeDraft } =
-  draftSlice.actions
-export default draftSlice.reducer
+export const { addTitleDraft, addContentDraft, removeDraft, setPush } =
+  articleSlice.actions
+export default articleSlice.reducer

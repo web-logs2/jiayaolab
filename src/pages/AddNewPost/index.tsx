@@ -16,8 +16,12 @@ import { useNavigate } from 'react-router-dom'
 import HeadTitle from '../../components/HeadTitle'
 import TextEditor from '../../components/TextEditor'
 import { useAppDispatch, useTypedSelector } from '../../hook'
-import { publishingPost } from '../../services/post'
-import { addTitleDraft, removeDraft } from '../../store/features/draftSlice'
+import { pushPost } from '../../services/post'
+import {
+  addTitleDraft,
+  removeDraft,
+  setPush,
+} from '../../store/features/articleSlice'
 
 const key = 'AddNewPost'
 const { Title, Text, Paragraph } = Typography
@@ -26,16 +30,23 @@ const AddNewPost: FC = () => {
   const [form] = Form.useForm()
   const { message } = AntdApp.useApp()
   const navigate = useNavigate()
-  // 是否正在发布中
-  const [publishing, setPublishing] = useState<boolean>(false)
   // 公开访问选项，默认开启
   const [publicly, setPublicly] = useState<boolean>(true)
   // 撰写的内容（也可以称为草稿箱，在页面不刷新的前提下，切换页面不会导致撰写的内容消失）
-  const { title, text, html } = useTypedSelector(s => s.draftSlice)
+  const { title, text, html, pushing } = useTypedSelector(s => s.articleSlice)
+  const navigateHandler = () => {
+    // 发布成功后如果还在发布帖子页面则返回主页
+    // 这里需要用到window的location对象，使用useLocation的钩子会有问题
+    if (window.location.pathname === '/post/new') {
+      navigate('/posts')
+    }
+  }
+  const setPushHandler = (value: boolean) => dispatch(setPush({ value }))
+  const removeDraftHandler = () => dispatch(removeDraft())
   // 发布按钮的逻辑处理
   const onFinish = () => {
     // 开始发布
-    setPublishing(true)
+    setPushHandler(true)
     message.open({
       key,
       type: 'loading',
@@ -43,11 +54,10 @@ const AddNewPost: FC = () => {
       duration: 0,
     })
     // 发布帖子
-    publishingPost(title, text, html, publicly)
+    pushPost(title, text, html, publicly)
       .then(({ data }) => {
-        dispatch(removeDraft())
-        // 发布成功后返回主页
-        navigate('/')
+        removeDraftHandler()
+        navigateHandler()
         message.open({
           key,
           type: 'success',
@@ -61,7 +71,7 @@ const AddNewPost: FC = () => {
           content: `帖子发布失败，${reason}`,
         })
       })
-      .finally(() => setPublishing(false))
+      .finally(() => setPushHandler(false))
   }
 
   return (
@@ -76,7 +86,7 @@ const AddNewPost: FC = () => {
           form={form}
           initialValues={{ title }}
           onFinish={onFinish}
-          disabled={publishing}
+          disabled={pushing}
           scrollToFirstError
           autoComplete="off"
         >
@@ -110,7 +120,7 @@ const AddNewPost: FC = () => {
             ]}
           >
             <TextEditor
-              publishing={publishing}
+              pushing={pushing}
               onValidateHandler={() => form.validateFields(['html'])}
             />
           </Form.Item>
@@ -130,8 +140,8 @@ const AddNewPost: FC = () => {
           </Form.Item>
           <Form.Item>
             <Space>
-              <Button type="primary" htmlType="submit" loading={publishing}>
-                {publishing ? '发布中…' : '发布'}
+              <Button type="primary" htmlType="submit" loading={pushing}>
+                {pushing ? '发布中…' : '发布'}
               </Button>
               <Popconfirm
                 title="取消发布"
@@ -143,9 +153,9 @@ const AddNewPost: FC = () => {
                   </>
                 }
                 onConfirm={() => {
-                  dispatch(removeDraft())
+                  removeDraftHandler()
                   navigate('/posts')
-                  message.warning('帖子已取消发布！')
+                  message.warning('已取消！')
                 }}
                 okText="是"
                 cancelText="否"
