@@ -37,7 +37,7 @@ const TextEditor: FC<{
   }
   const { text, html } = useTypedSelector(s => s.articleSlice)
 
-  // 切换页面后销毁编辑器
+  // 页面切换后销毁编辑器
   useEffect(
     () => () => {
       if (editor) {
@@ -54,8 +54,12 @@ const TextEditor: FC<{
     locked && setLocked(false)
   }, [text])
   useEffect(() => {
-    pushing ? editor?.disable() : editor?.enable()
-  }, [pushing])
+    if (pushing) {
+      editor?.disable()
+    } else {
+      editor?.enable()
+    }
+  }, [editor, pushing])
   return (
     <div className={classes.textEditor}>
       <Toolbar
