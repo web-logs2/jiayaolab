@@ -71,7 +71,9 @@ const HomePage: FC = () => {
               <Card title="Announcements">
                 <Text type="warning">
                   用户注册限时无需邮箱验证码进行验证，只需遵循邮箱的格式即可任意注册！
-                  <Link to={USER_REGISTER}>点我去注册</Link>
+                  <Link to={USER_REGISTER} replace>
+                    点我去注册
+                  </Link>
                 </Text>
               </Card>
             </Col>

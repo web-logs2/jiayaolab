@@ -15,7 +15,9 @@ const PageNotFound: FC = () => {
       subTitle="抱歉，找不到你需要的页面"
       extra={
         <Button type="primary">
-          <Link to="/">返回主页</Link>
+          <Link to="/" replace>
+            返回主页
+          </Link>
         </Button>
       }
     />
