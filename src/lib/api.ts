@@ -5,6 +5,13 @@ const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 })
 
+api.interceptors.request.use(config => {
+  const getToken = window.localStorage.getItem('jwt_token')
+  if (getToken) {
+    config.headers.Authorization = `Bearer ${getToken}`
+  }
+  return config
+})
 api.interceptors.response.use(
   response => {
     return Promise.resolve(response.data)

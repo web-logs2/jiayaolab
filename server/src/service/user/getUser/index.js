@@ -1,5 +1,5 @@
 const { User } = require('../../../app')
-const jsonwebtoken = require('jsonwebtoken')
+const jwt = require('../../../util/jwt')
 
 exports.main = async (req, res) => {
   const { email, password, type } = req.body
@@ -17,22 +17,10 @@ exports.main = async (req, res) => {
         },
       })
       if (user) {
-        const token = jsonwebtoken.sign(
-          {
-            email,
-            password,
-          },
-          process.env.JWT_SECRET,
-          {
-            algorithm: 'HS256',
-            expiresIn: '7d',
-          }
-        )
-
         res.status(200).json({
           code: 200,
           data: {
-            token,
+            token: jwt.getToken(email, password),
           },
           message: '登录成功！',
         })
