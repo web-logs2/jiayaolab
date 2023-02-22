@@ -82,7 +82,7 @@ const PostOverview: FC = () => {
                       options={
                         [
                           { value: 'updatedAt', label: '最近更新' },
-                          { value: 'createdAt', label: '最近创建' },
+                          { value: 'createdAt', label: '最近发布' },
                         ] as { value: keyof PostModelType; label: string }[]
                       }
                     />
