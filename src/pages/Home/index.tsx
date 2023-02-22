@@ -1,4 +1,4 @@
-import { LikeOutlined } from '@ant-design/icons'
+import { EyeOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons'
 import { Card, Col, Row, Tabs, Typography } from 'antd'
 import { FC, ReactNode, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -54,6 +54,26 @@ const HomePage: FC = () => {
                     </>
                   ),
                   key: 'updatedAt',
+                  disabled: loading,
+                },
+                {
+                  label: (
+                    <>
+                      <StarOutlined />
+                      <span>最多收藏</span>
+                    </>
+                  ),
+                  key: 'disabled1',
+                  disabled: loading,
+                },
+                {
+                  label: (
+                    <>
+                      <EyeOutlined />
+                      <span>最多浏览</span>
+                    </>
+                  ),
+                  key: 'disabled2',
                   disabled: loading,
                 },
               ] as {
