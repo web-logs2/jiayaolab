@@ -13,7 +13,7 @@ const tokenOnlySlice = createSlice({
   reducers: {
     setToken: (state, { payload }: PayloadAction<string>) => {
       state.token = payload
-      storage.getToken()
+      storage.setToken(payload)
     },
     removeToken: state => {
       state.token = null
