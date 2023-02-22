@@ -52,6 +52,7 @@ const SignUp: FC = () => {
   useEffect(() => {
     if (token) {
       navigate('/')
+      message.warning('当前用户已登录，请注销后再访问！')
     }
   }, [token])
   return (

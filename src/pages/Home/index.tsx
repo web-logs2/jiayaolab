@@ -1,8 +1,10 @@
 import { LikeOutlined } from '@ant-design/icons'
-import { Card, Col, Row, Tabs } from 'antd'
+import { Card, Col, Row, Tabs, Typography } from 'antd'
 import { FC, ReactNode, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import HeadTitle from '../../components/HeadTitle'
 import PostList from '../../components/PostList'
+import { USER_REGISTER } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { PostModelType } from '../../models/post'
 import {
@@ -10,6 +12,7 @@ import {
   postCleared,
 } from '../../store/features/postSlice'
 
+const { Text } = Typography
 const HomePage: FC = () => {
   const { loading, posts } = useTypedSelector(s => s.postSlice)
   // 页面大小
@@ -64,6 +67,14 @@ const HomePage: FC = () => {
         </Col>
         <Col span={7}>
           <Row gutter={[0, 16]}>
+            <Col span={24}>
+              <Card title="Announcements">
+                <Text type="warning">
+                  用户注册限时无需邮箱验证码进行验证，只需遵循邮箱的格式即可任意注册！
+                  <Link to={USER_REGISTER}>点我去注册</Link>
+                </Text>
+              </Card>
+            </Col>
             <Col span={24}>
               <Card title="Badges">
                 <Row gutter={[16, 16]}>
