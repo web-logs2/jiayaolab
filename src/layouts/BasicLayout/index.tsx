@@ -47,7 +47,7 @@ const BasicLayout: FC = () => {
   // 接受注册/登录前的页面，在注册/登录完成后自动跳转之前的页面
   const doRedirect = (path: string) => {
     const redirect = location.pathname.includes(USER) ? '' : location.pathname
-    navigate(`${path}?redirect=${redirect}`)
+    navigate(`${path}?redirect=${redirect}`, { replace: true })
   }
 
   return (
@@ -102,8 +102,8 @@ const BasicLayout: FC = () => {
                     icon: <LogoutOutlined />,
                     onClick: () => {
                       dispatch(removeToken())
-                      // 注销后返回主页
-                      if (location.pathname.includes(USER_PROFILE)) {
+                      // 注销后如果在用户相关页面，则需要返回主页
+                      if (location.pathname.includes(USER)) {
                         navigate('/')
                       }
                       message.warning('已注销！')

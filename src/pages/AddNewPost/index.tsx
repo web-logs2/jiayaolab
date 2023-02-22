@@ -11,7 +11,7 @@ import {
   Tooltip,
   Typography,
 } from 'antd'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import HeadTitle from '../../components/HeadTitle'
 import TextEditor from '../../components/TextEditor'
@@ -35,6 +35,7 @@ const AddNewPost: FC = () => {
   const [publicly, setPublicly] = useState<boolean>(true)
   // 撰写的内容（也可以称为草稿箱，在页面不刷新的前提下，切换页面不会导致撰写的内容消失）
   const { title, text, html, pushing } = useTypedSelector(s => s.articleSlice)
+  const { token } = useTypedSelector(s => s.tokenOnlySlice)
   const navigateHandler = () => {
     // 发布成功后如果还在发布帖子页面则返回主页
     // 这里需要用到window的location对象，使用useLocation的钩子会有问题
@@ -75,6 +76,12 @@ const AddNewPost: FC = () => {
       .finally(() => setPushHandler(false))
   }
 
+  useEffect(() => {
+    if (!token) {
+      message.error('登录后才能发布帖子！')
+      navigate('/', { replace: true })
+    }
+  }, [token])
   return (
     <>
       <HeadTitle prefix="发布帖子" />

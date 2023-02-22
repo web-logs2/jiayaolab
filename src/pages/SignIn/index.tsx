@@ -1,9 +1,9 @@
 import { App as AntdApp, Button, Card, Form, Input, Typography } from 'antd'
 import { SHA256 } from 'crypto-js'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import HeadTitle from '../../components/HeadTitle'
-import { useAppDispatch } from '../../hook'
+import { useAppDispatch, useTypedSelector } from '../../hook'
 import { loginUser } from '../../services/user'
 import { setToken } from '../../store/features/tokenOnlySlice'
 import classes from './index.module.less'
@@ -18,6 +18,7 @@ const SignUp: FC = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [logging, setLogging] = useState<boolean>(false)
+  const { token } = useTypedSelector(s => s.tokenOnlySlice)
 
   const onFinish = () => {
     setLogging(true)
@@ -34,7 +35,7 @@ const SignUp: FC = () => {
           type: 'success',
           content: res.message,
         })
-        navigate(params.get('redirect') || '/')
+        navigate(params.get('redirect') || '/', { replace: true })
         // 添加token
         dispatch(setToken(res.data.token))
       })
@@ -48,6 +49,11 @@ const SignUp: FC = () => {
       .finally(() => setLogging(false))
   }
 
+  useEffect(() => {
+    if (token) {
+      navigate('/')
+    }
+  }, [token])
   return (
     <>
       <HeadTitle prefix="用户登录" />
