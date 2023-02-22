@@ -13,7 +13,7 @@ import {
 } from 'antd'
 import { FC } from 'react'
 import avatar from '../../assets/avatar.png'
-import { PostModelType } from '../../models/post'
+import { useTypedSelector } from '../../hook'
 import { formatDate, fromNowDate } from '../../utils/format'
 import ErrorBoundaryOnFetch from '../ErrorBoundaryOnFetch'
 import IconText from '../IconText'
@@ -23,18 +23,14 @@ const { Text, Title, Paragraph, Link } = Typography
 /**
  * 帖子卡片的列表
  * @param size 当前页面大小
- * @param loading 是否正在加载
  * @param loadMoreHandler 点击加载更多按钮的逻辑处理
- * @param posts 帖子
- * @param errorMsg 错误信息
  */
 const PostList: FC<{
   size: number
-  loading: boolean
   loadMoreHandler: () => void
-  posts: PostModelType[] | null
-  errorMsg: string | null
-}> = ({ size, loading, loadMoreHandler, posts, errorMsg }) => {
+}> = ({ size, loadMoreHandler }) => {
+  const { loading, posts, errorMsg } = useTypedSelector(s => s.postSlice)
+
   return loading ? (
     <>
       {Array.from({ length: posts?.length ? posts.length : 5 }).map(

@@ -24,7 +24,7 @@ import classes from './index.module.less'
 
 const { Text } = Typography
 const PostOverview: FC = () => {
-  const { loading, posts, errorMsg } = useTypedSelector(s => s.postSlice)
+  const { loading, posts } = useTypedSelector(s => s.postSlice)
   // 页面大小
   const [size, setSize] = useState<number>(1)
   // 排序依据
@@ -139,13 +139,7 @@ const PostOverview: FC = () => {
             </Card>
           </Col>
           <Col span={24}>
-            <PostList
-              size={size}
-              loading={loading}
-              loadMoreHandler={() => setSize(size + 1)}
-              posts={posts}
-              errorMsg={errorMsg}
-            />
+            <PostList size={size} loadMoreHandler={() => setSize(size + 1)} />
           </Col>
         </Row>
       </div>
