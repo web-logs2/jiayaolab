@@ -1,4 +1,5 @@
 import axios from 'axios'
+import storage from '../utils/storage'
 
 // 基础配置
 const api = axios.create({
@@ -6,9 +7,9 @@ const api = axios.create({
 })
 
 api.interceptors.request.use(config => {
-  const getToken = window.localStorage.getItem('jwt_token')
-  if (getToken) {
-    config.headers.Authorization = `Bearer ${getToken}`
+  const token = storage.getToken()
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
   }
   return config
 })

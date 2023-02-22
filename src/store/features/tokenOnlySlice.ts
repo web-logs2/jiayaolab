@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import storage from '../../utils/storage'
 
 const initialState: {
   token: string | null
 } = {
-  token: window.localStorage.getItem('jwt_token') || null,
+  token: storage.getToken() || null,
 }
 
 const tokenOnlySlice = createSlice({
@@ -12,11 +13,11 @@ const tokenOnlySlice = createSlice({
   reducers: {
     setToken: (state, { payload }: PayloadAction<string>) => {
       state.token = payload
-      window.localStorage.setItem('jwt_token', payload)
+      storage.getToken()
     },
     removeToken: state => {
       state.token = null
-      window.localStorage.removeItem('jwt_token')
+      storage.removeToken()
     },
   },
 })
