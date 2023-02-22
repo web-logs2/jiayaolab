@@ -25,6 +25,13 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import avatar from '../../assets/avatar.png'
 import HeadTitle from '../../components/HeadTitle'
 import IconText from '../../components/IconText'
+import {
+  POSTS,
+  USER,
+  USER_LOGIN,
+  USER_PROFILE,
+  USER_REGISTER,
+} from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { removeToken } from '../../store/features/tokenOnlySlice'
 import classes from './index.module.less'
@@ -39,9 +46,7 @@ const BasicLayout: FC = () => {
   const { token } = useTypedSelector(s => s.tokenOnlySlice)
   // 接受注册/登录前的页面，在注册/登录完成后自动跳转之前的页面
   const doRedirect = (path: string) => {
-    const redirect = location.pathname.includes('/user/')
-      ? ''
-      : location.pathname
+    const redirect = location.pathname.includes(USER) ? '' : location.pathname
     navigate(`${path}?redirect=${redirect}`)
   }
 
@@ -64,8 +69,8 @@ const BasicLayout: FC = () => {
           onSelect={e => navigate(e.key)}
           items={[
             { key: '/', label: '主页' },
-            { key: '/posts', label: '帖子' },
-            { key: '/profile', label: '我的', disabled: true },
+            { key: POSTS, label: '帖子' },
+            { key: USER_PROFILE, label: '我的', disabled: !token },
           ]}
         />
         <div className={classes.flexGrow} />
@@ -88,7 +93,7 @@ const BasicLayout: FC = () => {
                     key: 'profile',
                     label: '个人中心',
                     icon: <UserOutlined />,
-                    onClick: () => navigate('/user/profile'),
+                    onClick: () => navigate(USER_PROFILE),
                   },
                   { type: 'divider' },
                   {
@@ -97,6 +102,10 @@ const BasicLayout: FC = () => {
                     icon: <LogoutOutlined />,
                     onClick: () => {
                       dispatch(removeToken())
+                      // 注销后返回主页
+                      if (location.pathname.includes(USER_PROFILE)) {
+                        navigate('/')
+                      }
                       message.warning('已注销！')
                     },
                     danger: true,
@@ -113,10 +122,10 @@ const BasicLayout: FC = () => {
           </>
         ) : (
           <Space>
-            <Button type="primary" onClick={() => doRedirect('/user/register')}>
+            <Button type="primary" onClick={() => doRedirect(USER_REGISTER)}>
               注册
             </Button>
-            <Button type="default" onClick={() => doRedirect('/user/login')}>
+            <Button type="default" onClick={() => doRedirect(USER_LOGIN)}>
               登录
             </Button>
           </Space>

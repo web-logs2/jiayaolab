@@ -13,6 +13,7 @@ import {
 } from 'antd'
 import { FC } from 'react'
 import avatar from '../../assets/avatar.png'
+import { POST_DETAIL } from '../../constant/paths'
 import { useTypedSelector } from '../../hook'
 import { formatDate, fromNowDate } from '../../utils/format'
 import ErrorBoundaryOnFetch from '../ErrorBoundaryOnFetch'
@@ -84,7 +85,7 @@ const PostList: FC<{
                 </Text>
               }
             />
-            <Link href={`/post/detail/${post.uuid}`} target="_blank">
+            <Link href={`${POST_DETAIL}/${post.uuid}`} target="_blank">
               <Title level={3} ellipsis>
                 {post.title}
               </Title>

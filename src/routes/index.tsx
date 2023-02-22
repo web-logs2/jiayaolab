@@ -1,6 +1,7 @@
 import { lazy } from 'react'
 import { RouteObject } from 'react-router-dom'
 import PageNotFound from '../components/PageNotFound'
+import { POST, POSTS, USER } from '../constant/paths'
 
 // 页面布局
 const BasicLayout = lazy(() => import('../layouts/BasicLayout'))
@@ -18,9 +19,9 @@ export default [
     children: [
       // 主页
       { path: '/', element: <HomePage /> },
-      // 帖子详情页面
+      // 帖子相关页面
       {
-        path: '/post',
+        path: POST,
         children: [
           { index: true, element: <PageNotFound /> },
           { path: 'new', element: <AddNewPost /> },
@@ -37,10 +38,10 @@ export default [
         ],
       },
       // 帖子概览
-      { path: '/posts', element: <PostOverview /> },
+      { path: POSTS, element: <PostOverview /> },
       // 用户
       {
-        path: '/user',
+        path: USER,
         children: [
           { index: true, element: <PageNotFound /> },
           // 用户注册
