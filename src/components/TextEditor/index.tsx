@@ -3,7 +3,7 @@ import { Editor, Toolbar } from '@wangeditor/editor-for-react'
 import '@wangeditor/editor/dist/css/style.css'
 import { FC, useEffect, useState } from 'react'
 import { useAppDispatch, useTypedSelector } from '../../hook'
-import { addContentDraft } from '../../store/features/articleSlice'
+import { setContentDraft } from '../../store/features/articleSlice'
 import classes from './index.module.less'
 
 /**
@@ -73,7 +73,7 @@ const TextEditor: FC<{
         value={html}
         onCreated={setEditor}
         onChange={e =>
-          dispatch(addContentDraft({ text: e.getText(), html: e.getHtml() }))
+          dispatch(setContentDraft({ text: e.getText(), html: e.getHtml() }))
         }
       />
     </div>

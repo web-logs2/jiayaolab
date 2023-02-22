@@ -18,9 +18,9 @@ import TextEditor from '../../components/TextEditor'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { pushPost } from '../../services/post'
 import {
-  addTitleDraft,
   removeDraft,
-  setPush,
+  setPushing,
+  setTitleDraft,
 } from '../../store/features/articleSlice'
 
 const key = 'AddNewPost'
@@ -41,7 +41,7 @@ const AddNewPost: FC = () => {
       navigate('/posts')
     }
   }
-  const setPushHandler = (value: boolean) => dispatch(setPush({ value }))
+  const setPushHandler = (value: boolean) => dispatch(setPushing(value))
   const removeDraftHandler = () => dispatch(removeDraft())
   // 发布按钮的逻辑处理
   const onFinish = () => {
@@ -102,7 +102,9 @@ const AddNewPost: FC = () => {
               autoFocus
               placeholder="标题（必填）"
               onPressEnter={e => e.preventDefault()}
-              onChange={e => dispatch(addTitleDraft({ title: e.target.value }))}
+              onChange={({ target: { value } }) =>
+                dispatch(setTitleDraft(value))
+              }
               showCount
               maxLength={30}
             />

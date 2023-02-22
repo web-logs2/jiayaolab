@@ -6,15 +6,15 @@ import classes from './index.module.less'
  * 资源获取失败
  * @param errorMsg 错误信息
  */
-const FetchFailed: FC<{
+const ErrorBoundaryOnFetch: FC<{
   errorMsg: string | null
 }> = ({ errorMsg }) => (
   <Result
     status="error"
-    title="FAILED"
+    title="发生错误！"
     subTitle={errorMsg}
-    className={classes.failedResult}
+    className={classes.result}
   />
 )
 
-export default FetchFailed
+export default ErrorBoundaryOnFetch

@@ -17,27 +17,27 @@ const articleSlice = createSlice({
   initialState,
   reducers: {
     // 添加标题草稿
-    addTitleDraft: (state, { payload }: PayloadAction<{ title: string }>) => {
-      state.title = payload.title
+    setTitleDraft: (state, { payload }: PayloadAction<string>) => {
+      state.title = payload
     },
     // 添加内容草稿
-    addContentDraft: (
+    setContentDraft: (
       state,
       { payload }: PayloadAction<{ text: string; html: string }>
     ) => {
       state.text = payload.text
       state.html = payload.html
     },
+    // 设置发布状态
+    setPushing: (state, { payload }: PayloadAction<boolean>) => {
+      state.pushing = payload
+    },
     // 移除所有草稿
     removeDraft: state => {
       state.title = state.text = state.html = ''
     },
-    // 设置发布状态
-    setPush: (state, { payload }: PayloadAction<{ value: boolean }>) => {
-      state.pushing = payload.value
-    },
   },
 })
-export const { addTitleDraft, addContentDraft, removeDraft, setPush } =
+export const { setTitleDraft, setContentDraft, setPushing, removeDraft } =
   articleSlice.actions
 export default articleSlice.reducer

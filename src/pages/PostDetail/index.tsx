@@ -17,7 +17,7 @@ import {
 } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import FetchFailed from '../../components/FetchFailed'
+import ErrorBoundaryOnFetch from '../../components/ErrorBoundaryOnFetch'
 import HeadTitle from '../../components/HeadTitle'
 import IconText from '../../components/IconText'
 import { PostModelType } from '../../models/post'
@@ -187,7 +187,7 @@ const PostDetail: FC = () => {
           </Col>
         </Row>
       ) : (
-        <FetchFailed errorMsg={errorMsg} />
+        <ErrorBoundaryOnFetch errorMsg={errorMsg} />
       )}
     </>
   )

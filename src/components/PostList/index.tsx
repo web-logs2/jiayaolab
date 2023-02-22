@@ -15,7 +15,7 @@ import { FC } from 'react'
 import avatar from '../../assets/avatar.png'
 import { PostModelType } from '../../models/post'
 import { formatDate, fromNowDate } from '../../utils/format'
-import FetchFailed from '../FetchFailed'
+import ErrorBoundaryOnFetch from '../ErrorBoundaryOnFetch'
 import IconText from '../IconText'
 import classes from './index.module.less'
 
@@ -48,7 +48,7 @@ const PostList: FC<{
       )}
     </>
   ) : errorMsg || !posts ? (
-    <FetchFailed errorMsg={errorMsg} />
+    <ErrorBoundaryOnFetch errorMsg={errorMsg} />
   ) : posts.length ? (
     <List
       itemLayout="vertical"

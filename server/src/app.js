@@ -20,11 +20,11 @@ const User = app.define(
       allowNull: false,
     },
     email: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(50),
       allowNull: false,
     },
     password: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(64),
       allowNull: false,
     },
   },

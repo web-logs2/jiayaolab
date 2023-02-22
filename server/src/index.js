@@ -9,6 +9,10 @@ server.get('/post/get', require('./service/post/getPost').main)
 server.get('/post/search', require('./service/post/searchPost').main)
 server.post('/post/add', require('./service/post/addPost').main)
 
+// 用户
+server.post('/user/add', require('./service/user/addUser').main)
+server.post('/user/get', require('./service/user/getUser').main)
+
 async function main() {
   await initDB()
   server.listen(port, () =>

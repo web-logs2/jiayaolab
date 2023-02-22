@@ -13,7 +13,7 @@ export const fetchPostByCategories = async (
   sortField: keyof PostModelType
 ): Promise<ResponseModelType<PostModelType[] | null>> => {
   return await api.get('/post/get', {
-    params: { type: 'main', current, sortField },
+    params: { type: 'category', current, sortField },
   })
 }
 
@@ -69,6 +69,6 @@ export const fetchPostById = async (
   id: string | number
 ): Promise<ResponseModelType<PostModelType>> => {
   return await api.get('/post/get', {
-    params: { id, type: 'detail' },
+    params: { type: 'detail', id },
   })
 }

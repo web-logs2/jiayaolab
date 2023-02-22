@@ -23,7 +23,7 @@ exports.main = async (req, res) => {
         message: post ? 'ok' : '该帖子不存在或关闭了公开访问！',
       })
       // 主页推荐页面
-    } else if (!id && type === 'main' && current && sortField) {
+    } else if (!id && type === 'category' && current && sortField) {
       const { rows } = await Post.findAndCountAll({
         limit,
         attributes: {
