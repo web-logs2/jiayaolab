@@ -11,7 +11,7 @@ server.post('/post/add', require('./service/post/addPost').main)
 
 // 用户
 server.post('/user/add', require('./service/user/addUser').main)
-server.get('/user/get', require('./service/user/getUser').main)
+server.post('/user/session', require('./service/user/sessionUser').main)
 
 async function main() {
   await initDB()

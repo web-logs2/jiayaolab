@@ -2,11 +2,11 @@ const { User } = require('../../../app')
 const jwt = require('../../../util/jwt')
 
 exports.main = async (req, res) => {
-  const { email, password, type } = req.body
+  const { email, password } = req.body
 
   try {
     // 请求必要参数
-    if (email && password && type === 'login') {
+    if (email && password) {
       const user = await User.findOne({
         attributes: {
           exclude: ['password', 'id', 'createdAt'],

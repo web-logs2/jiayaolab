@@ -1,4 +1,9 @@
-import { EyeOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons'
+import {
+  EyeOutlined,
+  LikeOutlined,
+  StarOutlined,
+  UserOutlined,
+} from '@ant-design/icons'
 import {
   Avatar,
   Button,
@@ -12,7 +17,6 @@ import {
   Typography,
 } from 'antd'
 import { FC } from 'react'
-import avatar from '../../assets/avatar.png'
 import { POST_DETAIL } from '../../constant/paths'
 import { useTypedSelector } from '../../hook'
 import { formatDate, fromNowDate } from '../../utils/format'
@@ -69,7 +73,13 @@ const PostList: FC<{
             ]}
           >
             <List.Item.Meta
-              avatar={<Avatar size="large" draggable={false} src={avatar} />}
+              avatar={
+                <Avatar
+                  size="large"
+                  draggable={false}
+                  icon={<UserOutlined />}
+                />
+              }
               title={
                 <Space size="large" align="center">
                   <Title level={5}>Jia-Yao Zhao</Title>

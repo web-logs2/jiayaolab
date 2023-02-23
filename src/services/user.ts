@@ -10,10 +10,7 @@ export const registerUser = async (
   email: string,
   password: string
 ): Promise<ResponseModelType<{ token: string }>> => {
-  return await api.post('/user/add', {
-    email,
-    password,
-  })
+  return await api.post('/user/add', { email, password })
 }
 
 /**
@@ -25,9 +22,5 @@ export const loginUser = async (
   email: string,
   password: string
 ): Promise<ResponseModelType<{ token: string }>> => {
-  return await api.post('/user/get', {
-    type: 'login',
-    email,
-    password,
-  })
+  return await api.post('/user/session', { email, password })
 }
