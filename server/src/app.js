@@ -28,6 +28,10 @@ const User = app.define(
       type: DataTypes.STRING(64),
       allowNull: false,
     },
+    username: {
+      type: DataTypes.STRING(16),
+      allowNull: false,
+    },
   },
   {
     timestamps: true,

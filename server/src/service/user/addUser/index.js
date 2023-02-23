@@ -21,6 +21,8 @@ exports.main = async (req, res) => {
         await User.create({
           email,
           password,
+          // 默认用户名为邮箱的前缀
+          username: email.split('@')[0].slice(0, 16),
         })
         res.status(201).json({
           code: 201,
