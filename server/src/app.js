@@ -11,6 +11,7 @@ const app = new Sequelize({
   dialect: 'mysql',
 })
 
+// 用户信息
 const User = app.define(
   'user',
   {
@@ -34,6 +35,7 @@ const User = app.define(
     updatedAt: false,
   }
 )
+// 帖子信息
 const Post = app.define('post', {
   uuid: {
     type: DataTypes.UUID,
