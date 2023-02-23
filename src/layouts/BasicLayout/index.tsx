@@ -27,6 +27,7 @@ import HeadTitle from '../../components/HeadTitle'
 import IconText from '../../components/IconText'
 import {
   POSTS,
+  POST_NEW,
   USER,
   USER_LOGIN,
   USER_PROFILE,
@@ -78,7 +79,7 @@ const BasicLayout: FC = () => {
           <>
             <Button
               type="primary"
-              onClick={() => navigate('/post/new')}
+              onClick={() => navigate(POST_NEW)}
               icon={<UploadOutlined />}
             >
               发帖
