@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   cors: ^2.8.5
   express: ^4.18.2
+  express-jwt: ^8.4.1
   jsonwebtoken: ^9.0.0
   morgan: ^1.10.0
   mysql2: ^3.1.2
@@ -11,6 +12,7 @@ specifiers:
 dependencies:
   cors: 2.8.5
   express: 4.18.2
+  express-jwt: 8.4.1
   jsonwebtoken: 9.0.0
   morgan: 1.10.0
   mysql2: 3.1.2
@@ -22,6 +24,12 @@ packages:
     resolution: {integrity: sha512-9AonUzyTjXXhEOa0DnqpzZi6VHlqKMswga9EXjpXnnqxwLtdvPPtlO8evrI5D9S6asFRCQ6v+wpiUKbw+vKqyg==}
     dependencies:
       '@types/ms': 0.7.31
+    dev: false
+
+  /@types/jsonwebtoken/9.0.1:
+    resolution: {integrity: sha512-c5ltxazpWabia/4UzhIoaDcIza4KViOQhdbjRlfcIGVnsE3c3brkz9Z+F/EeJIECOQP7W7US2hNE930cWWkPiw==}
+    dependencies:
+      '@types/node': 18.13.0
     dev: false
 
   /@types/ms/0.7.31:
@@ -184,6 +192,19 @@ packages:
   /etag/1.8.1:
     resolution: {integrity: sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==}
     engines: {node: '>= 0.6'}
+    dev: false
+
+  /express-jwt/8.4.1:
+    resolution: {integrity: sha512-IZoZiDv2yZJAb3QrbaSATVtTCYT11OcqgFGoTN4iKVyN6NBkBkhtVIixww5fmakF0Upt5HfOxJuS6ZmJVeOtTQ==}
+    engines: {node: '>= 8.0.0'}
+    dependencies:
+      '@types/jsonwebtoken': 9.0.1
+      express-unless: 2.1.3
+      jsonwebtoken: 9.0.0
+    dev: false
+
+  /express-unless/2.1.3:
+    resolution: {integrity: sha512-wj4tLMyCVYuIIKHGt0FhCtIViBcwzWejX0EjNxveAa6dG+0XBCQhMbx+PnkLkFCxLC69qoFrxds4pIyL88inaQ==}
     dev: false
 
   /express/4.18.2:

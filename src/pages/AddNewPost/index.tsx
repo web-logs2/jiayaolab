@@ -15,7 +15,7 @@ import { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import HeadTitle from '../../components/HeadTitle'
 import TextEditor from '../../components/TextEditor'
-import { POSTS, POST_NEW } from '../../constant/paths'
+import { POSTS, POST_NEW, USER_LOGIN } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { pushPost } from '../../services/post'
 import {
@@ -23,6 +23,7 @@ import {
   setPushing,
   setTitleDraft,
 } from '../../store/features/articleSlice'
+import { removeToken } from '../../store/features/tokenOnlySlice'
 
 const key = 'AddNewPost'
 const { Title, Text, Paragraph } = Typography
@@ -66,12 +67,17 @@ const AddNewPost: FC = () => {
           content: data,
         })
       })
-      .catch(reason => {
+      .catch(err => {
         message.open({
           key,
           type: 'error',
-          content: `帖子发布失败，${reason}`,
+          content: `帖子发布失败，${err.message}`,
         })
+        // 用户失效后重定向到登录页面
+        if (err.code === 401) {
+          dispatch(removeToken())
+          navigate(USER_LOGIN, { replace: true })
+        }
       })
       .finally(() => setPushHandler(false))
   }

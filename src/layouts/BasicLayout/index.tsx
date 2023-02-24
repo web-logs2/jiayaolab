@@ -20,7 +20,7 @@ import {
   Spin,
   Typography,
 } from 'antd'
-import { FC, Suspense } from 'react'
+import { FC, Suspense, useEffect } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import avatar from '../../assets/avatar.png'
 import HeadTitle from '../../components/HeadTitle'
@@ -34,6 +34,7 @@ import {
   USER_REGISTER,
 } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
+import { verityToken } from '../../services/user'
 import { removeToken } from '../../store/features/tokenOnlySlice'
 import classes from './index.module.less'
 
@@ -51,6 +52,15 @@ const BasicLayout: FC = () => {
     navigate(`${path}?redirect=${redirect}`, { replace: true })
   }
 
+  // 检测token是否正确
+  useEffect(() => {
+    if (token) {
+      verityToken().catch(err => {
+        dispatch(removeToken())
+        message.error(err.message)
+      })
+    }
+  }, [token])
   return (
     <Layout>
       <HeadTitle />

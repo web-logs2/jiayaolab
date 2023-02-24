@@ -39,11 +39,11 @@ const SignUp: FC = () => {
         // 添加token
         dispatch(setToken(res.data.token))
       })
-      .catch(reason => {
+      .catch(err => {
         message.open({
           key,
           type: 'error',
-          content: `登录失败，${reason}`,
+          content: `登录失败，${err.message}`,
         })
       })
       .finally(() => setLogging(false))

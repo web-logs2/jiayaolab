@@ -19,9 +19,10 @@ api.interceptors.response.use(
   },
   error => {
     // 使用从服务器返回的错误消息，如果服务器没有响应则返回指定的错误（无法连接服务器）
-    return Promise.reject(
-      error?.response?.data ? error.response.data.message : '无法连接到服务器！'
-    )
+    return Promise.reject({
+      code: error?.response?.data?.code || 500,
+      message: error?.response?.data?.message || '无法连接到服务器！',
+    })
   }
 )
 

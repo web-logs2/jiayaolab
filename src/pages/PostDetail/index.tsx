@@ -40,7 +40,7 @@ const PostDetail: FC = () => {
     if (id) {
       fetchPostById(id)
         .then(({ data }) => setPostDetail(data))
-        .catch(reason => setErrorMsg(reason))
+        .catch(err => setErrorMsg(err.message))
         .finally(() => setLoading(false))
     }
   }, [id])

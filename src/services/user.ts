@@ -24,3 +24,10 @@ export const loginUser = async (
 ): Promise<ResponseModelType<{ token: string }>> => {
   return await api.post('/user/session', { email, password })
 }
+
+/**
+ * 用户验证
+ */
+export const verityToken = async (): Promise<ResponseModelType<null>> => {
+  return await api.post('/user/session/verity')
+}
