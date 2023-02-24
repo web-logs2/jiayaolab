@@ -110,7 +110,7 @@ const PostList: FC<{
         <div className={classes.loadMore} hidden={posts.length < size * 5}>
           <Button
             type="primary"
-            disabled={loading || posts.length < size * 5}
+            disabled={posts.length < size * 5}
             onClick={loadMoreHandler}
           >
             点击查看更多
