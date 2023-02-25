@@ -1,4 +1,5 @@
 import api from '../lib/api'
+import { ProfileType } from '../models/profile'
 import { ResponseModelType } from '../models/response'
 
 /**
@@ -30,4 +31,13 @@ export const loginUser = async (
  */
 export const verityToken = async (): Promise<ResponseModelType<null>> => {
   return await api.post('/user/session/verity')
+}
+
+/**
+ * 获取我的信息
+ */
+export const fetchMyProfile = async (): Promise<
+  ResponseModelType<ProfileType>
+> => {
+  return await api.get('/profile/get')
 }

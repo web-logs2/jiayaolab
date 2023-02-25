@@ -32,6 +32,10 @@ const User = app.define(
       type: DataTypes.STRING(16),
       allowNull: false,
     },
+    bio: {
+      type: DataTypes.STRING(60),
+      allowNull: true,
+    },
   },
   {
     timestamps: true,

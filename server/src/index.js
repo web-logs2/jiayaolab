@@ -29,6 +29,16 @@ server.post(
   require('./service/user/verityUser').main
 )
 
+// 用户资料
+server.get(
+  '/profile/get',
+  jwt({
+    secret: process.env.JWT_SECRET,
+    algorithms: ['HS256'],
+  }),
+  require('./service/profile/getProfile').main
+)
+
 async function main() {
   await initDB()
   // 用户验证

@@ -11,6 +11,7 @@ const PostOverview = lazy(() => import('../pages/PostOverview'))
 const AddNewPost = lazy(() => import('../pages/AddNewPost'))
 const SignUp = lazy(() => import('../pages/SignUp'))
 const SignIn = lazy(() => import('../pages/SignIn'))
+const MyProfile = lazy(() => import('../pages/MyProfile'))
 
 export default [
   {
@@ -49,7 +50,7 @@ export default [
           // 用户登录
           { path: 'login', element: <SignIn /> },
           // 用户中心
-          { path: 'profile', element: <>Profile</> },
+          { path: 'profile', element: <MyProfile /> },
           { path: '*', element: <PageNotFound /> },
         ],
       },

@@ -1,4 +1,12 @@
-import { App as AntdApp, Button, Card, Form, Input, Typography } from 'antd'
+import {
+  App as AntdApp,
+  Button,
+  Card,
+  Divider,
+  Form,
+  Input,
+  Typography,
+} from 'antd'
 import { SHA256 } from 'crypto-js'
 import { FC, useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -61,6 +69,7 @@ const SignUp: FC = () => {
       <div className={classes.register}>
         <Card>
           <Title level={3}>用户登录</Title>
+          <Divider />
           <Paragraph type="warning">使用你的邮箱和密码登录</Paragraph>
           <Form
             onFinish={onFinish}

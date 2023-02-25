@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   Checkbox,
+  Divider,
   Form,
   Input,
   Popconfirm,
@@ -17,7 +18,7 @@ import HeadTitle from '../../components/HeadTitle'
 import TextEditor from '../../components/TextEditor'
 import { POSTS, POST_NEW, USER_LOGIN } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
-import { pushPost } from '../../services/post'
+import { addPost } from '../../services/post'
 import {
   removeDraft,
   setPushing,
@@ -57,7 +58,7 @@ const AddNewPost: FC = () => {
       duration: 0,
     })
     // 发布帖子
-    pushPost(title, text, html, publicly)
+    addPost(title, text, html, publicly)
       .then(({ data }) => {
         removeDraftHandler()
         navigateHandler()
@@ -93,6 +94,7 @@ const AddNewPost: FC = () => {
       <HeadTitle prefix="发布帖子" />
       <Card>
         <Title level={3}>发布帖子</Title>
+        <Divider />
         <Paragraph type="warning">
           注：切换页面后当前撰写的内容将会保存在草稿箱，帖子发布成功或点击取消发布帖子后将清空草稿箱。
         </Paragraph>
