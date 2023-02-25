@@ -10,10 +10,7 @@ server.get('/post/get', require('./service/post/getPost').main)
 server.get('/post/search', require('./service/post/searchPost').main)
 server.post(
   '/post/add',
-  jwt({
-    secret: process.env.JWT_SECRET,
-    algorithms: ['HS256'],
-  }),
+  jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] }),
   require('./service/post/addPost').main
 )
 
@@ -22,21 +19,20 @@ server.post('/user/add', require('./service/user/addUser').main)
 server.post('/user/session', require('./service/user/sessionUser').main)
 server.post(
   '/user/session/verity',
-  jwt({
-    secret: process.env.JWT_SECRET,
-    algorithms: ['HS256'],
-  }),
+  jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] }),
   require('./service/user/verityUser').main
 )
 
 // 用户资料
 server.get(
   '/profile/get',
-  jwt({
-    secret: process.env.JWT_SECRET,
-    algorithms: ['HS256'],
-  }),
+  jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] }),
   require('./service/profile/getProfile').main
+)
+server.post(
+  '/profile/update',
+  jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] }),
+  require('./service/profile/updateProfile').main
 )
 
 async function main() {

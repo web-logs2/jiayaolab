@@ -59,13 +59,13 @@ const AddNewPost: FC = () => {
     })
     // 发布帖子
     addPost(title, text, html, publicly)
-      .then(({ data }) => {
+      .then(res => {
         removeDraftHandler()
         navigateHandler()
         message.open({
           key,
           type: 'success',
-          content: data,
+          content: res.message,
         })
       })
       .catch(err => {
@@ -119,9 +119,7 @@ const AddNewPost: FC = () => {
               autoFocus
               placeholder="标题（必填）"
               onPressEnter={e => e.preventDefault()}
-              onChange={({ target: { value } }) =>
-                dispatch(setTitleDraft(value))
-              }
+              onChange={e => dispatch(setTitleDraft(e.target.value))}
               showCount
               maxLength={30}
             />

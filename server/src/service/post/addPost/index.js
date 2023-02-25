@@ -13,7 +13,7 @@ exports.main = async (req, res) => {
         html,
         publicly,
       })
-      res.status(201).json({ code: 201, data: '帖子发布成功！', message: 'ok' })
+      res.status(201).json({ code: 201, data: null, message: '帖子发布成功！' })
     }
   } catch (e) {
     res.status(400).json({ code: 400, data: null, message: '服务器错误！' })

@@ -34,10 +34,20 @@ export const verityToken = async (): Promise<ResponseModelType<null>> => {
 }
 
 /**
- * 获取我的信息
+ * 获取个人资料
  */
 export const fetchMyProfile = async (): Promise<
   ResponseModelType<ProfileType>
 > => {
   return await api.get('/profile/get')
+}
+
+/**
+ * 更新个人资料
+ */
+export const updateMyProfile = async (
+  username: string,
+  bio: string | null
+): Promise<ResponseModelType<ProfileType>> => {
+  return await api.post('/profile/update', { username, bio })
 }
