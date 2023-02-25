@@ -105,6 +105,7 @@ const AddNewPost: FC = () => {
           autoComplete="off"
         >
           <Form.Item
+            label="标题"
             name="title"
             rules={[
               { required: true, message: '请填写帖子标题' },
@@ -124,7 +125,9 @@ const AddNewPost: FC = () => {
             />
           </Form.Item>
           <Form.Item
+            label="内容"
             name="html"
+            required
             rules={[
               () => ({
                 validator() {
