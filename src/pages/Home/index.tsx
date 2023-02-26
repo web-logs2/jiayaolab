@@ -12,7 +12,7 @@ import {
   postCleared,
 } from '../../store/features/postSlice'
 
-const { Text } = Typography
+const { Paragraph } = Typography
 const HomePage: FC = () => {
   const { loading, posts } = useTypedSelector(s => s.postSlice)
   // 页面大小
@@ -36,7 +36,7 @@ const HomePage: FC = () => {
     <>
       <HeadTitle prefix="主页" />
       <Row gutter={[16, 0]}>
-        <Col span={17}>
+        <Col span={18}>
           <Tabs
             onChange={key => {
               setSize(1)
@@ -85,20 +85,38 @@ const HomePage: FC = () => {
           />
           <PostList size={size} loadMoreHandler={() => setSize(size + 1)} />
         </Col>
-        <Col span={7}>
+        <Col span={6}>
           <Row gutter={[0, 16]}>
             <Col span={24}>
-              <Card title="Announcements">
-                <Text type="warning">
-                  用户注册限时无需邮箱验证码进行验证，只需遵循邮箱的格式即可任意注册！
-                  <Link to={USER_REGISTER} replace>
-                    点我去注册
-                  </Link>
-                </Text>
+              <Card title="公告">
+                <Paragraph>
+                  用户注册无需邮箱验证码验证，任意邮箱均可注册！
+                  <Link to={USER_REGISTER}>点我去注册</Link>
+                </Paragraph>
               </Card>
             </Col>
             <Col span={24}>
-              <Card title="Badges">
+              <Card title="部署状态">
+                <Row gutter={[16, 16]}>
+                  {[
+                    {
+                      key: 'workflow-status',
+                      url: 'https://img.shields.io/github/actions/workflow/status/zjy040525/blog/wechat-cloudrun.yml?style=for-the-badge',
+                    },
+                    {
+                      key: 'production',
+                      url: 'https://img.shields.io/github/deployments/zjy040525/blog/production?label=Production&style=for-the-badge',
+                    },
+                  ].map(({ url, key }) => (
+                    <Col key={key}>
+                      <img draggable={false} src={url} alt={key} />
+                    </Col>
+                  ))}
+                </Row>
+              </Card>
+            </Col>
+            <Col span={24}>
+              <Card title="项目信息">
                 <Row gutter={[16, 16]}>
                   {[
                     {
@@ -124,26 +142,6 @@ const HomePage: FC = () => {
                     {
                       key: 'languages',
                       url: 'https://img.shields.io/github/languages/top/zjy040525/blog?style=for-the-badge',
-                    },
-                  ].map(({ url, key }) => (
-                    <Col key={key}>
-                      <img draggable={false} src={url} alt={key} />
-                    </Col>
-                  ))}
-                </Row>
-              </Card>
-            </Col>
-            <Col span={24}>
-              <Card title="Deployments">
-                <Row gutter={[16, 16]}>
-                  {[
-                    {
-                      key: 'workflow-status',
-                      url: 'https://img.shields.io/github/actions/workflow/status/zjy040525/blog/wechat-cloudrun.yml?style=for-the-badge',
-                    },
-                    {
-                      key: 'production',
-                      url: 'https://img.shields.io/github/deployments/zjy040525/blog/production?label=Production&style=for-the-badge',
                     },
                   ].map(({ url, key }) => (
                     <Col key={key}>

@@ -96,7 +96,7 @@ const AddNewPost: FC = () => {
         <Title level={3}>发布帖子</Title>
         <Divider />
         <Paragraph type="warning">
-          注：切换页面后当前撰写的内容将会保存在草稿箱，帖子发布成功或点击取消发布帖子后将清空草稿箱。
+          未发布的帖子将会自动保存为草稿，帖子发布成功或取消发布帖子后清空草稿。
         </Paragraph>
         <Form
           form={form}

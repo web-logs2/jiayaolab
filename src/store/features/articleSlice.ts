@@ -1,5 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+const titleKey = 'article_title'
+const textKey = 'article_text'
+const htmlKey = 'article_html'
 const initialState: {
   pushing: boolean
   title: string
@@ -7,9 +10,9 @@ const initialState: {
   html: string
 } = {
   pushing: false,
-  title: '',
-  text: '',
-  html: '',
+  title: window.localStorage.getItem(titleKey) || '',
+  text: window.localStorage.getItem(textKey) || '',
+  html: window.localStorage.getItem(htmlKey) || '',
 }
 
 const articleSlice = createSlice({
@@ -19,6 +22,7 @@ const articleSlice = createSlice({
     // 添加标题草稿
     setTitleDraft: (state, { payload }: PayloadAction<string>) => {
       state.title = payload
+      window.localStorage.setItem(titleKey, payload)
     },
     // 添加内容草稿
     setContentDraft: (
@@ -27,6 +31,8 @@ const articleSlice = createSlice({
     ) => {
       state.text = payload.text
       state.html = payload.html
+      window.localStorage.setItem(textKey, payload.text)
+      window.localStorage.setItem(htmlKey, payload.html)
     },
     // 设置发布状态
     setPushing: (state, { payload }: PayloadAction<boolean>) => {
@@ -35,6 +41,9 @@ const articleSlice = createSlice({
     // 移除所有草稿
     removeDraft: state => {
       state.title = state.text = state.html = ''
+      window.localStorage.removeItem(titleKey)
+      window.localStorage.removeItem(textKey)
+      window.localStorage.removeItem(htmlKey)
     },
   },
 })

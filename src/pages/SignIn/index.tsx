@@ -66,7 +66,7 @@ const SignUp: FC = () => {
   return (
     <>
       <HeadTitle prefix="用户登录" />
-      <div className={classes.register}>
+      <div className={classes.login}>
         <Card>
           <Title level={3}>用户登录</Title>
           <Divider />

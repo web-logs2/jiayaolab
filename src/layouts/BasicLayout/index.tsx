@@ -52,7 +52,7 @@ const BasicLayout: FC = () => {
     navigate(`${path}?redirect=${redirect}`, { replace: true })
   }
 
-  // 检测token是否正确
+  // 检测token是否正常
   useEffect(() => {
     if (token) {
       verityToken().catch(err => {
