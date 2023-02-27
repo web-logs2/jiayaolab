@@ -82,18 +82,14 @@ const PostList: FC<{
               }
               title={
                 <Space size="large" align="center">
-                  <Title level={5}>Jia-Yao Zhao</Title>
-                  <div>
+                  <Title level={5}>{post.user.username}</Title>
+                  <div hidden>
                     <Tag color="red">管理员</Tag>
                     <Tag color="orange">VIP</Tag>
                   </div>
                 </Space>
               }
-              description={
-                <Text type="secondary">
-                  用代码表达言语的魅力，用代码书写山河的壮丽
-                </Text>
-              }
+              description={<Text type="secondary">{post.user.bio}</Text>}
             />
             <Link href={`${POST_DETAIL}/${post.uuid}`} target="_blank">
               <Title level={3} ellipsis>

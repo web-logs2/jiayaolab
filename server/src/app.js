@@ -68,6 +68,8 @@ const Post = app.define('post', {
   },
 })
 
+Post.belongsTo(User)
+
 const initDB = async () => {
   try {
     await app.authenticate()

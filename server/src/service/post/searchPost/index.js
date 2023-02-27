@@ -1,4 +1,4 @@
-const { Post } = require('../../../app')
+const { Post, User } = require('../../../app')
 const { Op } = require('sequelize')
 
 exports.main = async (req, res) => {
@@ -10,8 +10,10 @@ exports.main = async (req, res) => {
     if (current && sortField && sortOrder && (keywords || keywords === '')) {
       const { rows } = await Post.findAndCountAll({
         limit,
-        attributes: {
-          exclude: ['html'],
+        attributes: ['uuid', 'createdAt', 'updatedAt', 'title', 'text'],
+        include: {
+          model: User,
+          attributes: ['uuid', 'username', 'bio'],
         },
         offset: Number(current) * limit - limit,
         order: [[sortField, sortOrder.toUpperCase()]],
