@@ -3,7 +3,7 @@ const { Sequelize, DataTypes } = require('sequelize')
 const [host, port] = process.env.MYSQL_ADDRESS.split(':')
 
 const app = new Sequelize({
-  database: 'blog_data',
+  database: 'forum_data',
   username: process.env.MYSQL_USERNAME,
   password: process.env.MYSQL_PASSWORD,
   host,
