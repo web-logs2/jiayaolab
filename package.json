@@ -1,8 +1,8 @@
 {
-  "name": "blog",
+  "name": "forum",
   "version": "0.1.0",
   "private": true,
-  "description": "blog",
+  "description": "forum",
   "author": "Jia-Yao Zhao",
   "scripts": {
     "build": "tsc && vite build",

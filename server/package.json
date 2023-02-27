@@ -1,8 +1,8 @@
 {
-  "name": "blog-server",
+  "name": "forum-server",
   "version": "0.1.0",
   "private": true,
-  "description": "blog-server",
+  "description": "forum-server",
   "author": "Jia-Yao Zhao",
   "scripts": {
     "start": "node src/index.js"

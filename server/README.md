@@ -1,1 +1,1 @@
-# Blog server
+# Forum server

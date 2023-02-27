@@ -10,7 +10,7 @@ const getToken = (email, password) =>
     {
       algorithm: 'HS256',
       expiresIn: '7d',
-      audience: 'blog-app',
+      audience: 'forum-app',
       issuer: 'expressjs',
     }
   )
