@@ -25,7 +25,7 @@ jobs:
     runs-on: ${{ fromJSON('["ubuntu-latest", "self-hosted"]')[github.repository == 'github/docs-internal'] }}
     environment:
       name: Production
-      url: https://forum-9gvp3buuc10ce8ff-1313195483.tcloudbaseapp.com
+      url: https://forum-9ghde44c145fd0f5-1317032764.tcloudbaseapp.com
     steps:
       - name: Checkout
         uses: actions/checkout@v3
