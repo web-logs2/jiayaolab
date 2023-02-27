@@ -1,6 +1,6 @@
-# 佳垚的博客
+# 佳垚的论坛
 
-基于 Vite+React18+Redux+TypeScript+Antd 的博客前端
+基于 Vite+React18+Redux+TypeScript+Antd 的论坛前端
 
 ## Getting Started
 

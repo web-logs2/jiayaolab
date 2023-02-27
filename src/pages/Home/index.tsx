@@ -101,11 +101,11 @@ const HomePage: FC = () => {
                   {[
                     {
                       key: 'workflow-status',
-                      url: 'https://img.shields.io/github/actions/workflow/status/zjy040525/blog/wechat-cloudrun.yml?style=for-the-badge',
+                      url: 'https://img.shields.io/github/actions/workflow/status/zjy040525/forum/wechat-cloudrun.yml?style=for-the-badge',
                     },
                     {
                       key: 'production',
-                      url: 'https://img.shields.io/github/deployments/zjy040525/blog/production?label=Production&style=for-the-badge',
+                      url: 'https://img.shields.io/github/deployments/zjy040525/forum/production?label=Production&style=for-the-badge',
                     },
                   ].map(({ url, key }) => (
                     <Col key={key}>
@@ -121,27 +121,27 @@ const HomePage: FC = () => {
                   {[
                     {
                       key: 'license',
-                      url: 'https://img.shields.io/github/license/zjy040525/blog?style=for-the-badge',
+                      url: 'https://img.shields.io/github/license/zjy040525/forum?style=for-the-badge',
                     },
                     {
                       key: 'commit-activity',
-                      url: 'https://img.shields.io/github/commit-activity/w/zjy040525/blog?style=for-the-badge',
+                      url: 'https://img.shields.io/github/commit-activity/w/zjy040525/forum?style=for-the-badge',
                     },
                     {
                       key: 'last-commit',
-                      url: 'https://img.shields.io/github/last-commit/zjy040525/blog?style=for-the-badge',
+                      url: 'https://img.shields.io/github/last-commit/zjy040525/forum?style=for-the-badge',
                     },
                     {
                       key: 'repo-size',
-                      url: 'https://img.shields.io/github/repo-size/zjy040525/blog?style=for-the-badge',
+                      url: 'https://img.shields.io/github/repo-size/zjy040525/forum?style=for-the-badge',
                     },
                     {
                       key: 'stars',
-                      url: 'https://img.shields.io/github/stars/zjy040525/blog?style=for-the-badge',
+                      url: 'https://img.shields.io/github/stars/zjy040525/forum?style=for-the-badge',
                     },
                     {
                       key: 'languages',
-                      url: 'https://img.shields.io/github/languages/top/zjy040525/blog?style=for-the-badge',
+                      url: 'https://img.shields.io/github/languages/top/zjy040525/forum?style=for-the-badge',
                     },
                   ].map(({ url, key }) => (
                     <Col key={key}>

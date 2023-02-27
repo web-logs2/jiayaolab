@@ -69,7 +69,7 @@ const BasicLayout: FC = () => {
           <Link to="/" className={classes.navigate}>
             <img src={avatar} alt="" draggable={false} width={32} height={32} />
             <Title className={classes.title} level={5}>
-              佳垚的博客
+              佳垚的论坛
             </Title>
           </Link>
         </div>
@@ -159,17 +159,17 @@ const BasicLayout: FC = () => {
             <Row gutter={[32, 0]} justify="center">
               {[
                 {
-                  link: 'https://github.com/zjy040525/blog',
+                  link: 'https://github.com/zjy040525/forum',
                   icon: <GithubOutlined />,
                   text: '项目源码',
                 },
                 {
-                  link: 'https://github.com/zjy040525/blog/issues',
+                  link: 'https://github.com/zjy040525/forum/issues',
                   icon: <BugOutlined />,
                   text: '问题反馈',
                 },
                 {
-                  link: 'https://github.com/zjy040525/blog/issues',
+                  link: 'https://github.com/zjy040525/forum/issues',
                   icon: <MailOutlined />,
                   text: '联系我们',
                 },
