@@ -41,9 +41,11 @@ const articleSlice = createSlice({
     // 移除所有草稿
     removeDraft: state => {
       state.title = state.text = state.html = ''
-      window.localStorage.removeItem(titleKey)
-      window.localStorage.removeItem(textKey)
-      window.localStorage.removeItem(htmlKey)
+      ;((...rest) => {
+        for (const key of rest) {
+          window.localStorage.removeItem(key)
+        }
+      })(titleKey, textKey, htmlKey)
     },
   },
 })
