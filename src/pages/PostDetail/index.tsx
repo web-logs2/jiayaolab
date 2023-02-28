@@ -3,8 +3,10 @@ import {
   FileOutlined,
   LikeOutlined,
   StarOutlined,
+  UserOutlined,
 } from '@ant-design/icons'
 import {
+  Avatar,
   Button,
   Card,
   Col,
@@ -23,6 +25,7 @@ import IconText from '../../components/IconText'
 import { PostModelType } from '../../models/post'
 import { fetchPostById } from '../../services/post'
 import { formatDate, fromNowDate } from '../../utils/format'
+import classes from './index.module.less'
 
 const { Title, Text, Paragraph } = Typography
 const PostDetail: FC = () => {
@@ -66,6 +69,41 @@ const PostDetail: FC = () => {
           </Col>
           <Col span={6}>
             <Row gutter={[0, 16]}>
+              <Col span={24}>
+                <Card>
+                  <Row>
+                    <Col span={4}>
+                      <Skeleton
+                        avatar={{ size: 'default' }}
+                        title={false}
+                        paragraph={false}
+                        active
+                        loading={loading}
+                      >
+                        <Avatar icon={<UserOutlined />} draggable={false} />
+                      </Skeleton>
+                    </Col>
+                    <Col span={20}>
+                      <Skeleton
+                        active
+                        paragraph={{ rows: 2 }}
+                        loading={loading}
+                      >
+                        <Title level={5} ellipsis={{ rows: 1 }}>
+                          {postDetail?.user.username}
+                        </Title>
+                        <Paragraph
+                          ellipsis={{ rows: 3 }}
+                          type="secondary"
+                          className={classes.userBio}
+                        >
+                          {postDetail?.user.bio}
+                        </Paragraph>
+                      </Skeleton>
+                    </Col>
+                  </Row>
+                </Card>
+              </Col>
               <Col span={24}>
                 <Card>
                   <Row gutter={[32, 0]} align="middle">

@@ -67,15 +67,15 @@ export const addPost = async (
 
 /**
  * 获取帖子详情
- * @param id 帖子ID
+ * @param uuid 帖子ID
  */
 export const fetchPostById = async (
-  id: string | number
+  uuid: string | number
 ): Promise<ResponseModelType<PostModelType>> => {
   return await api.get('/post/get', {
     params: {
       type: 'detail',
-      id,
+      uuid,
     },
   })
 }

@@ -2,12 +2,11 @@ const { Post, User } = require('../../../app')
 const { Op } = require('sequelize')
 
 exports.main = async (req, res) => {
-  // 单次查询最大数量
-  const limit = 5
   const { current, sortField, sortOrder, keywords } = req.query
 
   try {
     if (current && sortField && sortOrder && (keywords || keywords === '')) {
+      const limit = 5
       const { rows } = await Post.findAndCountAll({
         limit,
         attributes: ['uuid', 'createdAt', 'updatedAt', 'title', 'text'],
@@ -19,7 +18,6 @@ exports.main = async (req, res) => {
         order: [[sortField, sortOrder.toUpperCase()]],
         // 在标题或正文当中包含指定的关键字就返回该帖子
         where: {
-          publicly: true,
           [Op.or]: [
             {
               title: {
@@ -32,6 +30,7 @@ exports.main = async (req, res) => {
               },
             },
           ],
+          publicly: true,
         },
       })
       res.status(200).json({ code: 200, data: rows, message: 'ok' })

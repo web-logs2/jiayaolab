@@ -5,16 +5,10 @@ exports.main = async (req, res) => {
   const { email, password } = req.body
 
   try {
-    // 请求必要参数
     if (email && password) {
+      // 判断邮箱密码是否与数据库中的字段匹配
       const user = await User.findOne({
-        attributes: {
-          exclude: ['password', 'id', 'createdAt'],
-        },
-        where: {
-          email,
-          password,
-        },
+        where: { email, password },
       })
       if (user) {
         res.status(200).json({

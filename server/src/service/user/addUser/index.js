@@ -5,12 +5,9 @@ exports.main = async (req, res) => {
   const { email, password } = req.body
 
   try {
-    // 请求必要参数
     if (email && password) {
-      const hasRegistered = await User.findOne({
-        where: { email },
-      })
-
+      const hasRegistered = await User.findOne({ where: { email } })
+      // 判断邮箱是否已经被注册
       if (hasRegistered) {
         res.status(400).json({
           code: 400,
@@ -18,6 +15,7 @@ exports.main = async (req, res) => {
           message: '该邮箱已存在！请更换邮箱并重试。',
         })
       } else {
+        // 用户注册
         await User.create({
           email,
           password,

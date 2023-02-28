@@ -3,40 +3,30 @@ const { User } = require('../../../app')
 exports.main = async (req, res) => {
   const { email, password } = req.auth
   const { username, bio } = req.body
+
   try {
-    // 更新资料
-    await User.update(
-      {
-        username,
-        bio,
-      },
-      {
-        where: {
-          email,
-          password,
-        },
-      }
-    )
-    // 更新完成后返回更新后的资料
-    const profile = await User.findOne({
-      attributes: {
-        exclude: ['id', 'createdAt', 'password'],
-      },
-      where: {
-        email,
-        password,
-      },
-    })
-    res.status(200).json({
-      code: 200,
-      data: profile,
-      message: '用户资料已更新！',
-    })
+    if (username) {
+      // 更新资料
+      await User.update(
+        { username, bio },
+        {
+          where: { email, password },
+        }
+      )
+      // 更新完成后返回最新的资料
+      const updated = await User.findOne({
+        attributes: ['uuid', 'email', 'username', 'bio'],
+        where: { email, password },
+      })
+      res.status(200).json({
+        code: 200,
+        data: updated,
+        message: '用户资料已更新！',
+      })
+    } else {
+      res.status(400).json({ code: 400, data: null, message: '参数无效！' })
+    }
   } catch (e) {
-    res.status(400).json({
-      code: 400,
-      data: null,
-      message: '处理时发生错误！',
-    })
+    res.status(400).json({ code: 400, data: null, message: '服务器错误！' })
   }
 }
