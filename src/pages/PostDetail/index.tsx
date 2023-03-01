@@ -126,11 +126,7 @@ const PostDetail: FC = () => {
               <Col span={24}>
                 <Affix offsetTop={16}>
                   <Card>
-                    <Row
-                      justify="space-between"
-                      align="middle"
-                      gutter={[0, 16]}
-                    >
+                    <Row gutter={[0, 16]}>
                       <Col span={24}>
                         <Space className={classes.user}>
                           {loading ? (
