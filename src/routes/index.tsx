@@ -27,7 +27,7 @@ export default [
           // 不携带参数显示页面不存在
           { index: true, element: <PageNotFound /> },
           // 携带ID访问，服务器根据ID返回相应内容
-          { path: ':id', element: <PostDetail /> },
+          { path: ':uuid', element: <PostDetail /> },
           // 发布帖子
           { path: 'new', element: <AddNewPost /> },
           // 捕获其他任意参数，显示页面不存在
@@ -46,7 +46,7 @@ export default [
           // 用户登录
           { path: 'login', element: <SignIn /> },
           // 用户中心
-          { path: 'profile', element: <MyProfile /> },
+          { path: ':uuid', element: <MyProfile /> },
           { path: '*', element: <PageNotFound /> },
         ],
       },
