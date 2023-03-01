@@ -39,7 +39,7 @@ const HomePage: FC = () => {
       <HeadTitle prefix="主页" />
       <Row gutter={[16, 0]}>
         <Col span={18}>
-          <Space size="large" className={classes.tabBar}>
+          <Space size="middle" className={classes.tabBar}>
             <Tabs
               onChange={key => {
                 setSize(1)
