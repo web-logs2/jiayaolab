@@ -1,11 +1,6 @@
+import { LikeFilled, StarOutlined, UserOutlined } from '@ant-design/icons'
 import {
-  CalendarOutlined,
-  FileOutlined,
-  LikeOutlined,
-  StarOutlined,
-  UserOutlined,
-} from '@ant-design/icons'
-import {
+  Affix,
   Avatar,
   Button,
   Card,
@@ -14,17 +9,15 @@ import {
   Row,
   Skeleton,
   Space,
-  Tooltip,
   Typography,
 } from 'antd'
-import { FC, useEffect, useState } from 'react'
+import { FC, PropsWithChildren, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import ErrorBoundaryOnFetch from '../../components/ErrorBoundaryOnFetch'
 import HeadTitle from '../../components/HeadTitle'
 import IconText from '../../components/IconText'
 import { PostModelType } from '../../models/post'
 import { fetchPostById } from '../../services/post'
-import { formatDate, fromNowDate } from '../../utils/format'
 import classes from './index.module.less'
 
 const { Title, Text, Paragraph } = Typography
@@ -37,6 +30,23 @@ const PostDetail: FC = () => {
   const [loading, setLoading] = useState<boolean>(true)
   // 获取帖子详情时出现的错误
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
+  // 按钮加载中
+  const LoadingButton: FC<PropsWithChildren> = ({ children }) => {
+    return (
+      <Skeleton
+        active
+        loading={loading}
+        avatar={{
+          size: 'large',
+          style: { marginInlineEnd: -16 },
+        }}
+        title={false}
+        paragraph={false}
+      >
+        {children}
+      </Skeleton>
+    )
+  }
 
   // 匹配到路由，当有id参数时执行钩子
   useEffect(() => {
@@ -54,9 +64,16 @@ const PostDetail: FC = () => {
         <Row gutter={[16, 16]}>
           <Col span={18}>
             <Card>
-              <Skeleton active loading={loading}>
+              <Skeleton
+                active
+                loading={loading}
+                title={{ className: classes.titleLoading }}
+                paragraph={false}
+              >
                 <Title level={3}>{postDetail?.title}</Title>
-                <Divider />
+              </Skeleton>
+              <Divider />
+              <Skeleton active loading={loading} paragraph={{ rows: 8 }}>
                 <Paragraph>
                   <div
                     dangerouslySetInnerHTML={{
@@ -65,160 +82,106 @@ const PostDetail: FC = () => {
                   />
                 </Paragraph>
               </Skeleton>
+              <Divider />
+              <div className={classes.action}>
+                <Space size="large">
+                  <LoadingButton>
+                    <IconText
+                      icon={
+                        <Button
+                          shape="circle"
+                          size="large"
+                          type="primary"
+                          icon={<LikeFilled />}
+                        />
+                      }
+                      text={<Text type="secondary">25368</Text>}
+                    />
+                  </LoadingButton>
+                  <LoadingButton>
+                    <IconText
+                      icon={
+                        <Button
+                          shape="circle"
+                          size="large"
+                          icon={<StarOutlined />}
+                        />
+                      }
+                      text={<Text type="secondary">441</Text>}
+                    />
+                  </LoadingButton>
+                </Space>
+                {loading ? (
+                  <Skeleton.Button />
+                ) : (
+                  <Button type="link" danger>
+                    举报
+                  </Button>
+                )}
+              </div>
             </Card>
           </Col>
           <Col span={6}>
             <Row gutter={[0, 16]}>
               <Col span={24}>
-                <Card>
-                  <Row>
-                    <Col span={4}>
-                      <Skeleton
-                        avatar={{ size: 'default' }}
-                        title={false}
-                        paragraph={false}
-                        active
-                        loading={loading}
-                      >
-                        <Avatar icon={<UserOutlined />} draggable={false} />
-                      </Skeleton>
-                    </Col>
-                    <Col span={20}>
-                      <Skeleton
-                        active
-                        paragraph={{ rows: 2 }}
-                        loading={loading}
-                      >
-                        <Title level={5} ellipsis={{ rows: 1 }}>
-                          {postDetail?.user.username}
-                        </Title>
-                        <Paragraph
-                          ellipsis={{ rows: 3 }}
-                          type="secondary"
-                          className={classes.userBio}
+                <Affix offsetTop={16}>
+                  <Card>
+                    <Row
+                      justify="space-between"
+                      align="middle"
+                      gutter={[0, 16]}
+                    >
+                      <Col span={24}>
+                        <Space className={classes.user}>
+                          {loading ? (
+                            <Skeleton.Avatar active size="large" />
+                          ) : (
+                            <Avatar
+                              size="large"
+                              icon={<UserOutlined />}
+                              draggable={false}
+                            />
+                          )}
+                          <Skeleton
+                            active
+                            loading={loading}
+                            paragraph={false}
+                            title={{ className: classes.usernameLoading }}
+                          >
+                            <Paragraph
+                              title={postDetail?.user.username}
+                              style={{ marginBottom: 0 }}
+                              ellipsis={{ rows: 1 }}
+                            >
+                              {postDetail?.user.username}
+                            </Paragraph>
+                          </Skeleton>
+                        </Space>
+                      </Col>
+                      <Col span={24}>
+                        <Skeleton
+                          active
+                          loading={loading}
+                          title={false}
+                          paragraph={{ rows: 3, style: { marginBottom: 0 } }}
                         >
-                          {postDetail?.user.bio}
-                        </Paragraph>
-                      </Skeleton>
-                    </Col>
-                  </Row>
-                </Card>
-              </Col>
-              <Col span={24}>
-                <Card>
-                  <Row gutter={[32, 0]} align="middle">
-                    <Col span={8}>
-                      <Skeleton
-                        avatar={{ shape: 'circle' }}
-                        title={false}
-                        paragraph={false}
-                        active
-                        loading={loading}
-                      >
-                        <IconText
-                          icon={
-                            <Tooltip title="点赞">
-                              <Button
-                                shape="circle"
-                                type="default"
-                                icon={<LikeOutlined />}
-                                size="large"
-                              />
-                            </Tooltip>
-                          }
-                          text={<Text>{0}</Text>}
-                        />
-                      </Skeleton>
-                    </Col>
-                    <Col span={8}>
-                      <Skeleton
-                        avatar={{ shape: 'circle' }}
-                        title={false}
-                        paragraph={false}
-                        active
-                        loading={loading}
-                      >
-                        <IconText
-                          icon={
-                            <Tooltip title="收藏">
-                              <Button
-                                shape="circle"
-                                type="default"
-                                icon={<StarOutlined />}
-                                size="large"
-                              />
-                            </Tooltip>
-                          }
-                          text={<Text>{0}</Text>}
-                        />
-                      </Skeleton>
-                    </Col>
-                    <Col span={8}>
-                      {loading ? (
-                        <Skeleton.Button active />
-                      ) : (
-                        <Button type="primary" danger>
-                          举报
-                        </Button>
-                      )}
-                    </Col>
-                  </Row>
-                </Card>
-              </Col>
-              <Col span={24}>
-                <Card title="帖子信息">
-                  <Skeleton active loading={loading}>
-                    <Row gutter={[0, 16]}>
-                      {[
-                        {
-                          label: '帖子ID',
-                          icon: <FileOutlined />,
-                          value: postDetail?.uuid,
-                        },
-                        {
-                          label: '最后更新于',
-                          icon: <CalendarOutlined />,
-                          value: (
-                            <>
-                              {formatDate(postDetail?.updatedAt)}
-                              <Text type="secondary">
-                                （{fromNowDate(postDetail?.updatedAt)}）
-                              </Text>
-                            </>
-                          ),
-                        },
-                        {
-                          label: '帖子发布于',
-                          icon: <CalendarOutlined />,
-                          value: (
-                            <>
-                              {formatDate(postDetail?.createdAt)}
-                              <Text type="secondary">
-                                （{fromNowDate(postDetail?.createdAt)}）
-                              </Text>
-                            </>
-                          ),
-                        },
-                      ].map(({ value, label, icon }) => (
-                        <Col key={label} span={24}>
-                          <IconText
-                            icon={icon}
-                            text={
-                              <Space size="middle">
-                                <Text>{label}</Text>
-                                <Text>{value}</Text>
-                              </Space>
-                            }
-                          />
-                        </Col>
-                      ))}
+                          <Paragraph
+                            type="secondary"
+                            title={postDetail?.user.bio}
+                            style={{ marginBottom: 0 }}
+                            ellipsis={{ rows: 3 }}
+                          >
+                            {postDetail?.user.bio}
+                          </Paragraph>
+                        </Skeleton>
+                      </Col>
                     </Row>
-                  </Skeleton>
-                </Card>
+                  </Card>
+                </Affix>
               </Col>
             </Row>
           </Col>
-          <Col span={24}>
+          <Col span={18}>
             <Card title="评论">
               <Skeleton active></Skeleton>
             </Card>
