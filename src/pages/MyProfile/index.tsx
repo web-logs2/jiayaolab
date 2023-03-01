@@ -14,8 +14,8 @@ import { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import HeadTitle from '../../components/HeadTitle'
 import { useTypedSelector } from '../../hook'
-import { ProfileType } from '../../models/profile'
-import { fetchMyProfile, updateMyProfile } from '../../services/user'
+import { UserType } from '../../models/user'
+import { fetchUserProfile, updateUserProfile } from '../../services/user'
 
 const key = 'UpdateProfile'
 const { Title } = Typography
@@ -23,17 +23,17 @@ const MyProfile: FC = () => {
   const { message } = AntdApp.useApp()
   const navigate = useNavigate()
   const { token } = useTypedSelector(s => s.tokenOnlySlice)
-  // 是否正在获取数据库中的资料
+  // 是否正在获取数据库中的用户资料
   const [loading, setLoading] = useState<boolean>(true)
-  // 从服务器获得的个人资料
-  const [profile, setProfile] = useState<ProfileType | null>(null)
-  // 是否正在更新
+  // 从服务器获得的用户资料
+  const [profile, setProfile] = useState<UserType | null>(null)
+  // 是否正在更新用户资料
   const [updating, setUpdating] = useState<boolean>(false)
   // 新修改的用户名
   const [newUserName, setNewUserName] = useState<string>('')
   // 新修改的简介
   const [newBio, setNewBio] = useState<string | null>(null)
-  // 更新个人资料处理函数
+  // 更新用户资料处理函数
   const onFinish = () => {
     setUpdating(true)
     message.open({
@@ -42,7 +42,7 @@ const MyProfile: FC = () => {
       content: '用户资料更新中…',
       duration: 0,
     })
-    updateMyProfile(newUserName, newBio)
+    updateUserProfile(newUserName, newBio)
       .then(res => {
         message.open({
           key,
@@ -61,7 +61,7 @@ const MyProfile: FC = () => {
       .finally(() => setUpdating(false))
   }
   // 设置个人资料处理函数
-  const setProfileHandler = (data: ProfileType) => {
+  const setProfileHandler = (data: UserType) => {
     setProfile({
       email: data.email,
       username: data.username,
@@ -82,7 +82,7 @@ const MyProfile: FC = () => {
   // 获取用户资料
   // 因为能获取到资料必须是已经登录的用户，所以这里不需要处理异常
   useEffect(() => {
-    fetchMyProfile()
+    fetchUserProfile()
       .then(({ data }) => setProfileHandler(data))
       .finally(() => setLoading(false))
   }, [])
@@ -97,7 +97,7 @@ const MyProfile: FC = () => {
           items={[
             {
               label: '我的资料',
-              key: 'myProfile',
+              key: '我的资料',
               children: (
                 <>
                   <Title level={3}>我的资料</Title>
@@ -175,7 +175,7 @@ const MyProfile: FC = () => {
             },
             {
               label: '我的帖子',
-              key: 'myPosts',
+              key: '我的帖子',
               children: (
                 <>
                   <Title level={3}>我的帖子</Title>

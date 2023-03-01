@@ -1,6 +1,6 @@
 import api from '../lib/api'
-import { ProfileType } from '../models/profile'
 import { ResponseModelType } from '../models/response'
+import { UserType } from '../models/user'
 
 /**
  * 用户注册
@@ -34,20 +34,20 @@ export const verityToken = async (): Promise<ResponseModelType<null>> => {
 }
 
 /**
- * 获取个人资料
+ * 获取用户资料
  */
-export const fetchMyProfile = async (): Promise<
-  ResponseModelType<ProfileType>
+export const fetchUserProfile = async (): Promise<
+  ResponseModelType<UserType>
 > => {
   return await api.get('/profile/get')
 }
 
 /**
- * 更新个人资料
+ * 更新用户资料
  */
-export const updateMyProfile = async (
+export const updateUserProfile = async (
   username: string,
   bio: string | null
-): Promise<ResponseModelType<ProfileType>> => {
+): Promise<ResponseModelType<UserType>> => {
   return await api.post('/profile/update', { username, bio })
 }
