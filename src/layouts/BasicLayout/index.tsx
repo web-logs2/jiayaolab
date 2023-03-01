@@ -4,7 +4,6 @@ import {
   GithubOutlined,
   LogoutOutlined,
   MailOutlined,
-  UploadOutlined,
   UserOutlined,
 } from '@ant-design/icons'
 import {
@@ -27,7 +26,6 @@ import HeadTitle from '../../components/HeadTitle'
 import IconText from '../../components/IconText'
 import {
   POSTS,
-  POST_NEW,
   USER,
   USER_LOGIN,
   USER_PROFILE,
@@ -86,51 +84,42 @@ const BasicLayout: FC = () => {
         />
         <div className={classes.flexGrow} />
         {token ? (
-          <>
-            <Button
-              type="primary"
-              onClick={() => navigate(POST_NEW)}
-              icon={<UploadOutlined />}
-            >
-              发帖
-            </Button>
-            <Dropdown
-              destroyPopupOnHide
-              trigger={['click', 'hover']}
-              placement="bottom"
-              menu={{
-                items: [
-                  {
-                    key: 'profile',
-                    label: '个人中心',
-                    icon: <UserOutlined />,
-                    onClick: () => navigate(USER_PROFILE),
+          <Dropdown
+            destroyPopupOnHide
+            trigger={['click', 'hover']}
+            placement="bottom"
+            menu={{
+              items: [
+                {
+                  key: 'profile',
+                  label: '个人中心',
+                  icon: <UserOutlined />,
+                  onClick: () => navigate(USER_PROFILE),
+                },
+                { type: 'divider' },
+                {
+                  key: 'logout',
+                  label: '注销',
+                  icon: <LogoutOutlined />,
+                  onClick: () => {
+                    dispatch(removeToken())
+                    // 注销后如果在用户相关页面，则需要返回主页
+                    if (location.pathname.includes(USER)) {
+                      navigate('/')
+                    }
+                    message.warning('已注销！')
                   },
-                  { type: 'divider' },
-                  {
-                    key: 'logout',
-                    label: '注销',
-                    icon: <LogoutOutlined />,
-                    onClick: () => {
-                      dispatch(removeToken())
-                      // 注销后如果在用户相关页面，则需要返回主页
-                      if (location.pathname.includes(USER)) {
-                        navigate('/')
-                      }
-                      message.warning('已注销！')
-                    },
-                    danger: true,
-                  },
-                ],
-              }}
-            >
-              <Avatar
-                className={classes.avatar}
-                icon={<UserOutlined />}
-                draggable={false}
-              />
-            </Dropdown>
-          </>
+                  danger: true,
+                },
+              ],
+            }}
+          >
+            <Avatar
+              className={classes.avatar}
+              icon={<UserOutlined />}
+              draggable={false}
+            />
+          </Dropdown>
         ) : (
           <Space>
             <Button type="primary" onClick={() => doRedirect(USER_REGISTER)}>
