@@ -23,6 +23,7 @@ import { POST_DETAIL } from '../../constant/paths'
 import { useTypedSelector } from '../../hook'
 import { fromNowDate } from '../../utils/format'
 import ErrorBoundaryOnFetch from '../ErrorBoundaryOnFetch'
+import FlexGrow from '../FlexGrow'
 import IconText from '../IconText'
 import classes from './index.module.less'
 
@@ -89,7 +90,7 @@ const PostList: FC<{
                   <Tag>标签</Tag>
                   <Tag>标签</Tag>
                 </div>
-                <div style={{ flexGrow: 1 }}></div>
+                <FlexGrow />
                 <Text type="secondary">
                   <Space>
                     <IconText icon={<EyeOutlined />} text={3487} />

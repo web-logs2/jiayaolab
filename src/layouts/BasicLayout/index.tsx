@@ -22,6 +22,7 @@ import {
 import { FC, Suspense, useEffect } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import avatar from '../../assets/avatar.png'
+import FlexGrow from '../../components/FlexGrow'
 import HeadTitle from '../../components/HeadTitle'
 import IconText from '../../components/IconText'
 import {
@@ -82,7 +83,7 @@ const BasicLayout: FC = () => {
             { key: USER_PROFILE, label: '我的', disabled: !token },
           ]}
         />
-        <div style={{ flexGrow: 1 }} />
+        <FlexGrow />
         {token ? (
           <Dropdown
             destroyPopupOnHide
