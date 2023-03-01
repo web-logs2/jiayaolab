@@ -1,30 +1,32 @@
 import {
   EyeOutlined,
   LikeOutlined,
-  StarOutlined,
+  MessageOutlined,
   UserOutlined,
 } from '@ant-design/icons'
 import {
   Avatar,
   Button,
   Card,
+  Col,
+  Divider,
   Empty,
   List,
+  Row,
   Skeleton,
   Space,
   Tag,
-  Tooltip,
   Typography,
 } from 'antd'
 import { FC } from 'react'
 import { POST_DETAIL } from '../../constant/paths'
 import { useTypedSelector } from '../../hook'
-import { formatDate, fromNowDate } from '../../utils/format'
+import { fromNowDate } from '../../utils/format'
 import ErrorBoundaryOnFetch from '../ErrorBoundaryOnFetch'
 import IconText from '../IconText'
 import classes from './index.module.less'
 
-const { Text, Title, Paragraph, Link } = Typography
+const { Text, Paragraph, Link, Title } = Typography
 /**
  * 帖子卡片的列表
  * @param size 当前页面大小
@@ -41,8 +43,8 @@ const PostList: FC<{
       {Array.from({ length: posts?.length ? posts.length : 5 }).map(
         (_, index) => (
           <div className={classes.loadingItem} key={index}>
-            <Card>
-              <Skeleton avatar paragraph={{ rows: 3 }} active />
+            <Card className={classes.cardItem}>
+              <Skeleton active />
             </Card>
           </div>
         )
@@ -54,52 +56,48 @@ const PostList: FC<{
     <List
       itemLayout="vertical"
       dataSource={posts}
-      split={false}
       renderItem={post => (
-        <Card className={classes.listCard}>
-          <List.Item
-            className={classes.listItem}
-            actions={[
-              <Tooltip
-                key="date"
-                placement="bottom"
-                title={`最后一次更新在 ${fromNowDate(post.updatedAt)}`}
-              >
-                <div>{formatDate(post.createdAt)}</div>
-              </Tooltip>,
-              <IconText icon={<LikeOutlined />} text={0} key="like" />,
-              <IconText icon={<StarOutlined />} text={0} key="star" />,
-              <IconText icon={<EyeOutlined />} text={0} key="view" />,
-            ]}
-          >
-            <List.Item.Meta
-              avatar={
-                <Avatar
-                  size="large"
-                  draggable={false}
-                  icon={<UserOutlined />}
-                />
-              }
-              title={
-                <Space size="large" align="center">
-                  <Title level={5}>{post.user.username}</Title>
-                  <div hidden>
-                    <Tag color="red">管理员</Tag>
-                    <Tag color="orange">VIP</Tag>
-                  </div>
-                </Space>
-              }
-              description={<Text type="secondary">{post.user.bio}</Text>}
-            />
-            <Link href={`${POST_DETAIL}/${post.uuid}`} target="_blank">
-              <Title level={3} ellipsis>
-                {post.title}
-              </Title>
-              <Paragraph ellipsis={{ rows: 2 }} type="secondary">
-                {post.text}
-              </Paragraph>
-            </Link>
-          </List.Item>
+        <Card className={classes.cardItem}>
+          <Row gutter={[0, 12]}>
+            <Col span={24} className={classes.userinfo}>
+              <Space>
+                <Avatar icon={<UserOutlined />} />
+                <Text>{post.user.username}</Text>
+              </Space>
+              <Divider type="vertical" />
+              <Text type="secondary">{fromNowDate(post.updatedAt)}</Text>
+            </Col>
+            <Col span={24}>
+              <Link href={`${POST_DETAIL}/${post.uuid}`} target="_blank">
+                <Title level={5}>{post.title}</Title>
+                <Paragraph type="secondary" ellipsis={{ rows: 2 }}>
+                  {post.text}
+                </Paragraph>
+              </Link>
+              <div className={classes.cardActions}>
+                <div>
+                  <Tag>标签</Tag>
+                  <Tag>标签</Tag>
+                  <Tag>标签</Tag>
+                  <Tag>标签</Tag>
+                  <Tag>标签</Tag>
+                  <Tag>标签</Tag>
+                  <Tag>标签</Tag>
+                  <Tag>标签</Tag>
+                </div>
+                <div className={classes.flexGrow}></div>
+                <Text type="secondary">
+                  <Space>
+                    <IconText icon={<EyeOutlined />} text={3487} />
+                    <Divider type="vertical" />
+                    <IconText icon={<MessageOutlined />} text={1598} />
+                    <Divider type="vertical" />
+                    <IconText icon={<LikeOutlined />} text={12417} />
+                  </Space>
+                </Text>
+              </div>
+            </Col>
+          </Row>
         </Card>
       )}
       loadMore={
@@ -109,13 +107,13 @@ const PostList: FC<{
             disabled={posts.length < size * 5}
             onClick={loadMoreHandler}
           >
-            点击查看更多
+            点击加载更多
           </Button>
         </div>
       }
     />
   ) : (
-    <Empty description={false} className={classes.emptyPostList} />
+    <Empty description={false} className={classes.empty} />
   )
 }
 

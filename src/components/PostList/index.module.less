@@ -1,26 +1,25 @@
-.loading-item,
-.list-card {
+.card-item {
   margin-block-end: 12px;
-}
-.list-card {
-  user-select: none;
-  .list-item {
-    padding: 0;
-    [class='ant-list-item-action'] {
-      text-align: right;
+  .userinfo {
+    display: flex;
+    align-items: center;
+  }
+  a[class*='ant-typography']:hover {
+    h5[class*='ant-typography'] {
+      color: inherit !important;
     }
-    [class='ant-list-item-meta-avatar'] [class*='ant-avatar'] {
-      border: none;
-    }
-    [class='ant-list-item-meta-title'] [class*='ant-typography'] {
-      margin-block-end: 0;
-    }
+  }
+  .card-actions {
+    display: flex;
+  }
+  .flex-grow {
+    flex-grow: 1;
   }
 }
 .load-more {
   margin-block-start: 32px;
   text-align: center;
 }
-.empty-post-list {
+.empty {
   padding-block-start: 50px;
 }
