@@ -25,13 +25,7 @@ import avatar from '../../assets/avatar.png'
 import FlexGrow from '../../components/FlexGrow'
 import HeadTitle from '../../components/HeadTitle'
 import IconText from '../../components/IconText'
-import {
-  POSTS,
-  USER,
-  USER_LOGIN,
-  USER_PROFILE,
-  USER_REGISTER,
-} from '../../constant/paths'
+import { POSTS, USER, USER_LOGIN, USER_REGISTER } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { verityToken } from '../../services/user'
 import { removeToken } from '../../store/features/tokenOnlySlice'
@@ -80,7 +74,7 @@ const BasicLayout: FC = () => {
           items={[
             { key: '/', label: '主页' },
             { key: POSTS, label: '帖子' },
-            { key: USER_PROFILE, label: '我的', disabled: !token },
+            { key: USER, label: '我的', disabled: !token },
           ]}
         />
         <FlexGrow />
@@ -92,14 +86,7 @@ const BasicLayout: FC = () => {
             menu={{
               items: [
                 {
-                  key: 'profile',
-                  label: '个人中心',
-                  icon: <UserOutlined />,
-                  onClick: () => navigate(USER_PROFILE),
-                },
-                { type: 'divider' },
-                {
-                  key: 'logout',
+                  key: '注销',
                   label: '注销',
                   icon: <LogoutOutlined />,
                   onClick: () => {

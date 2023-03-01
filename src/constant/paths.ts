@@ -10,5 +10,3 @@ export const USER = '/user'
 export const USER_REGISTER = '/user/register'
 // 用户登录
 export const USER_LOGIN = '/user/login'
-// 用户中心
-export const USER_PROFILE = '/user/profile'
