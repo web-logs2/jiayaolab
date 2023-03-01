@@ -14,6 +14,7 @@ import {
 import { FC, PropsWithChildren, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import ErrorBoundaryOnFetch from '../../components/ErrorBoundaryOnFetch'
+import GlobalAnnouncement from '../../components/GlobalAnnouncement'
 import HeadTitle from '../../components/HeadTitle'
 import IconText from '../../components/IconText'
 import { PostModelType } from '../../models/post'
@@ -123,6 +124,9 @@ const PostDetail: FC = () => {
           </Col>
           <Col span={6}>
             <Row gutter={[0, 16]}>
+              <Col span={24}>
+                <GlobalAnnouncement />
+              </Col>
               <Col span={24}>
                 <Affix offsetTop={16}>
                   <Card>

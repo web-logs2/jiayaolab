@@ -11,4 +11,5 @@ export const formatDate = (date?: number | string) =>
  * 获得与指定日期的相对时间
  * @param date 日期字符串或时间戳
  */
-export const fromNowDate = (date?: number | string) => dayjs(date).fromNow()
+export const fromNowDate = (date?: number | string) =>
+  dayjs(date).fromNow().replaceAll(' ', '')

@@ -1,10 +1,11 @@
 import { EditOutlined } from '@ant-design/icons'
-import { Button, Card, Col, Row, Space, Tabs, Typography } from 'antd'
+import { Button, Col, Row, Space, Tabs } from 'antd'
 import { FC, useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import GlobalAnnouncement from '../../components/GlobalAnnouncement'
 import HeadTitle from '../../components/HeadTitle'
 import PostList from '../../components/PostList'
-import { POST_NEW, USER_REGISTER } from '../../constant/paths'
+import { POST_NEW } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { PostModelType } from '../../models/post'
 import {
@@ -13,7 +14,6 @@ import {
 } from '../../store/features/postSlice'
 import classes from './index.module.less'
 
-const { Paragraph } = Typography
 const HomePage: FC = () => {
   const { loading, posts } = useTypedSelector(s => s.postSlice)
   // 页面大小
@@ -73,12 +73,7 @@ const HomePage: FC = () => {
         <Col span={6}>
           <Row gutter={[0, 16]}>
             <Col span={24}>
-              <Card title="公告">
-                <Paragraph style={{ marginBlockEnd: 0 }}>
-                  用户注册无需邮箱验证码验证，任意邮箱均可注册！
-                  <Link to={USER_REGISTER}>点我去注册</Link>
-                </Paragraph>
-              </Card>
+              <GlobalAnnouncement />
             </Col>
           </Row>
         </Col>
