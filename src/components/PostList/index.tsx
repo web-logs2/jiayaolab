@@ -66,8 +66,14 @@ const PostList: FC<{
               <Text type="secondary">{fromNowDate(post.updatedAt)}</Text>
             </Col>
             <Col span={24}>
-              <Link href={`${POST_DETAIL}/${post.uuid}`} target="_blank">
-                <Title level={5}>{post.title}</Title>
+              <Link
+                href={`${POST_DETAIL}/${post.uuid}`}
+                target="_blank"
+                className={classes.detailLink}
+              >
+                <Title level={5} className={classes.postTitle}>
+                  {post.title}
+                </Title>
                 <Paragraph type="secondary" ellipsis={{ rows: 2 }}>
                   {post.text}
                 </Paragraph>
