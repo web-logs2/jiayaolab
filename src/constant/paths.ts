@@ -2,8 +2,6 @@
 export const POST = '/post'
 // 发帖
 export const POST_NEW = '/post/new'
-// 帖子详情
-export const POST_DETAIL = '/post/detail'
 // 帖子概览
 export const POSTS = '/posts'
 // 用户相关

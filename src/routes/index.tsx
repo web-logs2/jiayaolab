@@ -24,18 +24,14 @@ export default [
       {
         path: POST,
         children: [
+          // 不携带参数显示页面不存在
           { index: true, element: <PageNotFound /> },
+          // 携带ID访问，服务器根据ID返回相应内容
+          { path: ':id', element: <PostDetail /> },
+          // 发布帖子
           { path: 'new', element: <AddNewPost /> },
+          // 捕获其他任意参数，显示页面不存在
           { path: '*', element: <PageNotFound /> },
-          {
-            path: 'detail',
-            children: [
-              { index: true, element: <PageNotFound /> },
-              // 携带ID访问，服务器根据ID返回相应内容
-              { path: ':id', element: <PostDetail /> },
-              { path: '*', element: <PageNotFound /> },
-            ],
-          },
         ],
       },
       // 帖子概览

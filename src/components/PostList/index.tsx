@@ -20,7 +20,7 @@ import {
   Typography,
 } from 'antd'
 import { FC } from 'react'
-import { POST_DETAIL } from '../../constant/paths'
+import { POST } from '../../constant/paths'
 import { useTypedSelector } from '../../hook'
 import { formatDate, fromNowDate } from '../../utils/format'
 import ErrorBoundaryOnFetch from '../ErrorBoundaryOnFetch'
@@ -71,7 +71,7 @@ const PostList: FC<{
             </Col>
             <Col span={24}>
               <Link
-                href={`${POST_DETAIL}/${post.uuid}`}
+                href={`${POST}/${post.uuid}`}
                 target="_blank"
                 className={classes.detailLink}
               >
