@@ -87,7 +87,7 @@ const BasicLayout: FC = () => {
         {token ? (
           <Dropdown
             destroyPopupOnHide
-            trigger={['click', 'hover']}
+            trigger={['click']}
             placement="bottom"
             menu={{
               items: [
