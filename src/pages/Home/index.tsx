@@ -13,7 +13,7 @@ import {
 } from '../../store/features/postSlice'
 import classes from './index.module.less'
 
-const { Text } = Typography
+const { Paragraph } = Typography
 const HomePage: FC = () => {
   const { loading, posts } = useTypedSelector(s => s.postSlice)
   // 页面大小
@@ -74,10 +74,10 @@ const HomePage: FC = () => {
           <Row gutter={[0, 16]}>
             <Col span={24}>
               <Card title="公告">
-                <Text>
+                <Paragraph style={{ marginBlockEnd: 0 }}>
                   用户注册无需邮箱验证码验证，任意邮箱均可注册！
                   <Link to={USER_REGISTER}>点我去注册</Link>
-                </Text>
+                </Paragraph>
               </Card>
             </Col>
           </Row>

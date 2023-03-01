@@ -20,7 +20,6 @@ import {
   getPostByConditions,
   postCleared,
 } from '../../store/features/postSlice'
-import classes from './index.module.less'
 
 const { Text } = Typography
 const PostOverview: FC = () => {
@@ -67,7 +66,7 @@ const PostOverview: FC = () => {
   return (
     <>
       <HeadTitle prefix="帖子" />
-      <div className={classes.overview}>
+      <div>
         <Row gutter={[0, 16]}>
           <Col span={24}>
             <Card>

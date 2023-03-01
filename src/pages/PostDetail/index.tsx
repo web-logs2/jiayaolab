@@ -150,7 +150,7 @@ const PostDetail: FC = () => {
                           >
                             <Paragraph
                               title={postDetail?.user.username}
-                              style={{ marginBottom: 0 }}
+                              style={{ marginBlockEnd: 0 }}
                               ellipsis={{ rows: 1 }}
                             >
                               {postDetail?.user.username}
@@ -163,12 +163,12 @@ const PostDetail: FC = () => {
                           active
                           loading={loading}
                           title={false}
-                          paragraph={{ rows: 3, style: { marginBottom: 0 } }}
+                          paragraph={{ rows: 3, style: { marginBlockEnd: 0 } }}
                         >
                           <Paragraph
                             type="secondary"
                             title={postDetail?.user.bio}
-                            style={{ marginBottom: 0 }}
+                            style={{ marginBlockEnd: 0 }}
                             ellipsis={{ rows: 3 }}
                           >
                             {postDetail?.user.bio}

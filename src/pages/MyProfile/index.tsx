@@ -16,7 +16,6 @@ import HeadTitle from '../../components/HeadTitle'
 import { useTypedSelector } from '../../hook'
 import { ProfileType } from '../../models/profile'
 import { fetchMyProfile, updateMyProfile } from '../../services/user'
-import classes from './index.module.less'
 
 const key = 'UpdateProfile'
 const { Title } = Typography
@@ -90,7 +89,7 @@ const MyProfile: FC = () => {
   return (
     <>
       <HeadTitle prefix="个人中心" />
-      <Card className={classes.myProfile}>
+      <Card>
         <Tabs
           tabPosition="left"
           type="card"

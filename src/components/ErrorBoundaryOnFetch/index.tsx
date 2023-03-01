@@ -1,6 +1,5 @@
 import { Result } from 'antd'
 import { FC } from 'react'
-import classes from './index.module.less'
 
 /**
  * 资源获取失败
@@ -13,7 +12,7 @@ const ErrorBoundaryOnFetch: FC<{
     status="error"
     title="发生错误！"
     subTitle={errorMsg}
-    className={classes.result}
+    style={{ paddingBlockStart: 50 }}
   />
 )
 

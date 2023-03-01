@@ -1,7 +1,6 @@
 import { Button, Result } from 'antd'
 import { FC } from 'react'
 import { Link } from 'react-router-dom'
-import classes from './index.module.less'
 
 /**
  * 页面不存在
@@ -9,7 +8,7 @@ import classes from './index.module.less'
 const PageNotFound: FC = () => {
   return (
     <Result
-      className={classes.pageNotFound}
+      style={{ paddingBlockStart: 40 }}
       status={404}
       title="走丢了"
       subTitle="抱歉，找不到你需要的页面"

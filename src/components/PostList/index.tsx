@@ -42,11 +42,9 @@ const PostList: FC<{
     <>
       {Array.from({ length: posts?.length ? posts.length : 5 }).map(
         (_, index) => (
-          <div className={classes.loadingItem} key={index}>
-            <Card className={classes.cardItem}>
-              <Skeleton active />
-            </Card>
-          </div>
+          <Card className={classes.cardItem} key={index}>
+            <Skeleton active />
+          </Card>
         )
       )}
     </>
@@ -74,7 +72,7 @@ const PostList: FC<{
                   {post.text}
                 </Paragraph>
               </Link>
-              <div className={classes.cardActions}>
+              <div style={{ display: 'flex' }}>
                 <div>
                   <Tag>标签</Tag>
                   <Tag>标签</Tag>
@@ -85,7 +83,7 @@ const PostList: FC<{
                   <Tag>标签</Tag>
                   <Tag>标签</Tag>
                 </div>
-                <div className={classes.flexGrow}></div>
+                <div style={{ flexGrow: 1 }}></div>
                 <Text type="secondary">
                   <Space>
                     <IconText icon={<EyeOutlined />} text={3487} />
@@ -113,7 +111,7 @@ const PostList: FC<{
       }
     />
   ) : (
-    <Empty description={false} className={classes.empty} />
+    <Empty description={false} style={{ paddingBlockStart: 50 }} />
   )
 }
 

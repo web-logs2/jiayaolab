@@ -63,7 +63,7 @@ const BasicLayout: FC = () => {
     <Layout>
       <HeadTitle />
       <Header className={classes.header}>
-        <div className={classes.index}>
+        <div style={{ marginInlineEnd: 50 }}>
           <Link to="/" className={classes.navigate}>
             <img src={avatar} alt="" draggable={false} width={32} height={32} />
             <Title className={classes.title} level={5}>
@@ -82,7 +82,7 @@ const BasicLayout: FC = () => {
             { key: USER_PROFILE, label: '我的', disabled: !token },
           ]}
         />
-        <div className={classes.flexGrow} />
+        <div style={{ flexGrow: 1 }} />
         {token ? (
           <Dropdown
             destroyPopupOnHide
