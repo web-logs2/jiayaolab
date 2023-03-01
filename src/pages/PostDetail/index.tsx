@@ -24,7 +24,7 @@ import classes from './index.module.less'
 const { Title, Text, Paragraph } = Typography
 const PostDetail: FC = () => {
   // 帖子ID
-  const { id } = useParams<{ id: string }>()
+  const { uuid } = useParams<{ uuid: string }>()
   // 帖子详情
   const [postDetail, setPostDetail] = useState<PostModelType | null>(null)
   // 获取帖子详情中
@@ -51,13 +51,13 @@ const PostDetail: FC = () => {
 
   // 匹配到路由，当有id参数时执行钩子
   useEffect(() => {
-    if (id) {
-      fetchPostById(id)
+    if (uuid) {
+      fetchPostById(uuid)
         .then(({ data }) => setPostDetail(data))
         .catch(err => setErrorMsg(err.message))
         .finally(() => setLoading(false))
     }
-  }, [id])
+  }, [uuid])
   return (
     <>
       <HeadTitle prefix={postDetail?.title ? postDetail.title : '帖子详情'} />
