@@ -16,12 +16,13 @@ import {
   Skeleton,
   Space,
   Tag,
+  Tooltip,
   Typography,
 } from 'antd'
 import { FC } from 'react'
 import { POST_DETAIL } from '../../constant/paths'
 import { useTypedSelector } from '../../hook'
-import { fromNowDate } from '../../utils/format'
+import { formatDate, fromNowDate } from '../../utils/format'
 import ErrorBoundaryOnFetch from '../ErrorBoundaryOnFetch'
 import FlexGrow from '../FlexGrow'
 import IconText from '../IconText'
@@ -64,7 +65,9 @@ const PostList: FC<{
                 <Text>{post.user.username}</Text>
               </Space>
               <Divider type="vertical" />
-              <Text type="secondary">{fromNowDate(post.updatedAt)}</Text>
+              <Tooltip title={formatDate(post.createdAt)} placement="right">
+                <Text type="secondary">{fromNowDate(post.createdAt)}</Text>
+              </Tooltip>
             </Col>
             <Col span={24}>
               <Link
