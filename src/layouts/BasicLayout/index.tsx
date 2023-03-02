@@ -28,7 +28,7 @@ import IconText from '../../components/IconText'
 import { POSTS, USER, USER_LOGIN, USER_REGISTER } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { verityToken } from '../../services/user'
-import { removeToken } from '../../store/features/tokenOnlySlice'
+import { logout } from '../../store/features/accountSlice'
 import classes from './index.module.less'
 
 const { Header, Content, Footer } = Layout
@@ -38,20 +38,26 @@ const BasicLayout: FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useAppDispatch()
-  const { token } = useTypedSelector(s => s.tokenOnlySlice)
+  const { token, loginUserId } = useTypedSelector(s => s.accountSlice)
   // 接受注册/登录前的页面，在注册/登录完成后自动跳转之前的页面
   const doRedirect = (path: string) => {
     const redirect = location.pathname.includes(USER) ? '' : location.pathname
     navigate(`${path}?redirect=${redirect}`, { replace: true })
   }
 
-  // 检测token是否正常
+  // 验证token
   useEffect(() => {
     if (token) {
-      verityToken().catch(err => {
-        dispatch(removeToken())
-        message.error(err.message)
-      })
+      verityToken()
+        .then(({ data }) => {
+          if (data.userId !== loginUserId) {
+            dispatch(logout())
+          }
+        })
+        .catch(err => {
+          dispatch(logout())
+          message.error(err.message)
+        })
     }
   }, [token])
   return (
@@ -74,7 +80,11 @@ const BasicLayout: FC = () => {
           items={[
             { key: '/', label: '主页' },
             { key: POSTS, label: '帖子' },
-            { key: USER, label: '我的', disabled: !token },
+            {
+              key: `${USER}${loginUserId ? `/${loginUserId}` : ''}`,
+              label: '我的',
+              disabled: !token,
+            },
           ]}
         />
         <FlexGrow />
@@ -90,7 +100,7 @@ const BasicLayout: FC = () => {
                   label: '注销',
                   icon: <LogoutOutlined />,
                   onClick: () => {
-                    dispatch(removeToken())
+                    dispatch(logout())
                     // 注销后如果在用户相关页面，则需要返回主页
                     if (location.pathname.includes(USER)) {
                       navigate('/')

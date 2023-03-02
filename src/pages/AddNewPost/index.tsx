@@ -16,7 +16,7 @@ import { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import HeadTitle from '../../components/HeadTitle'
 import TextEditor from '../../components/TextEditor'
-import { POSTS, POST_NEW, USER_LOGIN } from '../../constant/paths'
+import { POSTS, POST_NEW } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { addPost } from '../../services/post'
 import {
@@ -24,7 +24,6 @@ import {
   setPushing,
   setTitleDraft,
 } from '../../store/features/articleSlice'
-import { removeToken } from '../../store/features/tokenOnlySlice'
 
 const key = 'AddNewPost'
 const { Title, Text, Paragraph } = Typography
@@ -37,7 +36,7 @@ const AddNewPost: FC = () => {
   const [publicly, setPublicly] = useState<boolean>(true)
   // 撰写的内容（也可以称为草稿箱，在页面不刷新的前提下，切换页面不会导致撰写的内容消失）
   const { title, text, html, pushing } = useTypedSelector(s => s.articleSlice)
-  const { token } = useTypedSelector(s => s.tokenOnlySlice)
+  const { token } = useTypedSelector(s => s.accountSlice)
   const navigateHandler = () => {
     // 发布成功后如果还在发布帖子页面则返回主页
     // 这里需要用到window的location对象，使用useLocation的钩子会有问题
@@ -74,11 +73,6 @@ const AddNewPost: FC = () => {
           type: 'error',
           content: `帖子发布失败，${err.message}`,
         })
-        // 用户失效后重定向到登录页面
-        if (err.code === 401) {
-          dispatch(removeToken())
-          navigate(USER_LOGIN, { replace: true })
-        }
       })
       .finally(() => setPushHandler(false))
   }

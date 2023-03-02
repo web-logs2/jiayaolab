@@ -15,6 +15,7 @@ exports.main = async (req, res) => {
           code: 200,
           data: {
             token: jwt.getToken(email, password),
+            userId: user.uuid,
           },
           message: '登录成功！',
         })

@@ -22,10 +22,12 @@ exports.main = async (req, res) => {
           // 默认用户名为邮箱的前缀
           username: email.split('@')[0].slice(0, 16),
         })
+        const { uuid } = await User.findOne({ where: { email, password } })
         res.status(201).json({
           code: 201,
           data: {
             token: jwt.getToken(email, password),
+            userId: uuid,
           },
           message: '注册成功！',
         })

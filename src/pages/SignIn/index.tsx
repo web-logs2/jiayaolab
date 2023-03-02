@@ -13,7 +13,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import HeadTitle from '../../components/HeadTitle'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { loginUser } from '../../services/user'
-import { setToken } from '../../store/features/tokenOnlySlice'
+import { setLoginUserId, setToken } from '../../store/features/accountSlice'
 import classes from './index.module.less'
 
 const key = 'SignIn'
@@ -26,7 +26,7 @@ const SignUp: FC = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [logging, setLogging] = useState<boolean>(false)
-  const { token } = useTypedSelector(s => s.tokenOnlySlice)
+  const { token } = useTypedSelector(s => s.accountSlice)
 
   const onFinish = () => {
     setLogging(true)
@@ -46,6 +46,8 @@ const SignUp: FC = () => {
         navigate(params.get('redirect') || '/', { replace: true })
         // 添加token
         dispatch(setToken(res.data.token))
+        // 添加当前登录用户
+        dispatch(setLoginUserId(res.data.userId))
       })
       .catch(err => {
         message.open({

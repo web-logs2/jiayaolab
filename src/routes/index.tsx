@@ -1,5 +1,5 @@
 import { lazy } from 'react'
-import { RouteObject } from 'react-router-dom'
+import { Navigate, RouteObject } from 'react-router-dom'
 import PageNotFound from '../components/PageNotFound'
 import { POST, POSTS, USER } from '../constant/paths'
 
@@ -11,7 +11,7 @@ const PostOverview = lazy(() => import('../pages/PostOverview'))
 const AddNewPost = lazy(() => import('../pages/AddNewPost'))
 const SignUp = lazy(() => import('../pages/SignUp'))
 const SignIn = lazy(() => import('../pages/SignIn'))
-const MyProfile = lazy(() => import('../pages/MyProfile'))
+const User = lazy(() => import('../pages/User'))
 
 export default [
   {
@@ -27,7 +27,7 @@ export default [
           // 不携带参数显示页面不存在
           { index: true, element: <PageNotFound /> },
           // 携带ID访问，服务器根据ID返回相应内容
-          { path: ':uuid', element: <PostDetail /> },
+          { path: ':postId', element: <PostDetail /> },
           // 发布帖子
           { path: 'new', element: <AddNewPost /> },
           // 捕获其他任意参数，显示页面不存在
@@ -40,16 +40,17 @@ export default [
       {
         path: USER,
         children: [
-          { index: true, element: <PageNotFound /> },
+          { index: true, element: <User /> },
+          { path: ':userId', element: <User /> },
           // 用户注册
           { path: 'register', element: <SignUp /> },
           // 用户登录
           { path: 'login', element: <SignIn /> },
           // 用户中心
-          { path: ':uuid', element: <MyProfile /> },
           { path: '*', element: <PageNotFound /> },
         ],
       },
     ],
   },
+  { path: '*', element: <Navigate to="/" replace /> },
 ] as RouteObject[]

@@ -10,7 +10,7 @@ import { UserType } from '../models/user'
 export const registerUser = async (
   email: string,
   password: string
-): Promise<ResponseModelType<{ token: string }>> => {
+): Promise<ResponseModelType<{ token: string; userId: string }>> => {
   return await api.post('/user/add', { email, password })
 }
 
@@ -22,14 +22,18 @@ export const registerUser = async (
 export const loginUser = async (
   email: string,
   password: string
-): Promise<ResponseModelType<{ token: string }>> => {
+): Promise<ResponseModelType<{ token: string; userId: string }>> => {
   return await api.post('/user/session', { email, password })
 }
 
 /**
  * 用户验证
  */
-export const verityToken = async (): Promise<ResponseModelType<null>> => {
+export const verityToken = async (): Promise<
+  ResponseModelType<{
+    userId: string
+  }>
+> => {
   return await api.post('/user/session/verity')
 }
 
