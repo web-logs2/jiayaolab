@@ -1,11 +1,5 @@
+import { EyeOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons'
 import {
-  EyeOutlined,
-  LikeOutlined,
-  MessageOutlined,
-  UserOutlined,
-} from '@ant-design/icons'
-import {
-  Avatar,
   Button,
   Card,
   Col,
@@ -23,8 +17,8 @@ import { FC } from 'react'
 import { POST } from '../../constant/paths'
 import { useTypedSelector } from '../../hook'
 import { formatDate, fromNowDate } from '../../utils/format'
+import AccountTag from '../AccountTag'
 import ErrorBoundaryOnFetch from '../ErrorBoundaryOnFetch'
-import FlexGrow from '../FlexGrow'
 import IconText from '../IconText'
 import classes from './index.module.less'
 
@@ -45,7 +39,7 @@ const PostList: FC<{
       {Array.from({ length: posts?.length ? posts.length : 5 }).map(
         (_, index) => (
           <Card className={classes.cardItem} key={index}>
-            <Skeleton active />
+            <Skeleton active paragraph={{ style: { marginBlockEnd: 0 } }} />
           </Card>
         )
       )}
@@ -59,30 +53,39 @@ const PostList: FC<{
       renderItem={post => (
         <Card className={classes.cardItem}>
           <Row gutter={[0, 12]}>
-            <Col span={24} className={classes.userinfo}>
-              <Space>
-                <Avatar icon={<UserOutlined />} />
-                <Text>{post.user.username}</Text>
-              </Space>
-              <Divider type="vertical" />
-              <Tooltip title={formatDate(post.createdAt)} placement="right">
-                <Text type="secondary">{fromNowDate(post.createdAt)}</Text>
-              </Tooltip>
+            <Col span={24}>
+              <div className={classes.cardHeader}>
+                <AccountTag
+                  size="default"
+                  loading={loading}
+                  userId={post.user.uuid}
+                  name={post.user.username}
+                  paragraph={{ maxWidth: 230 }}
+                />
+                <Divider type="vertical" />
+                <Tooltip title={formatDate(post.createdAt)} placement="right">
+                  <Text type="secondary">{fromNowDate(post.createdAt)}</Text>
+                </Tooltip>
+              </div>
             </Col>
             <Col span={24}>
               <Link
                 href={`${POST}/${post.uuid}`}
                 target="_blank"
-                className={classes.detailLink}
+                className={classes.cardLink}
               >
-                <Title level={5} className={classes.postTitle}>
-                  {post.title}
-                </Title>
-                <Paragraph type="secondary" ellipsis={{ rows: 2 }}>
+                <Title level={5}>{post.title}</Title>
+                <Paragraph
+                  type="secondary"
+                  ellipsis={{ rows: 2 }}
+                  style={{ marginBlockEnd: 0 }}
+                >
                   {post.text}
                 </Paragraph>
               </Link>
-              <div style={{ display: 'flex' }}>
+            </Col>
+            <Col span={24}>
+              <div className={classes.cardFooter}>
                 <div>
                   <Tag>标签</Tag>
                   <Tag>标签</Tag>
@@ -93,7 +96,6 @@ const PostList: FC<{
                   <Tag>标签</Tag>
                   <Tag>标签</Tag>
                 </div>
-                <FlexGrow />
                 <Text type="secondary">
                   <Space>
                     <IconText icon={<EyeOutlined />} text={3487} />
@@ -109,7 +111,10 @@ const PostList: FC<{
         </Card>
       )}
       loadMore={
-        <div className={classes.loadMore} hidden={posts.length < size * 5}>
+        <div
+          className={classes.loadMoreButton}
+          hidden={posts.length < size * 5}
+        >
           <Button
             type="primary"
             disabled={posts.length < size * 5}

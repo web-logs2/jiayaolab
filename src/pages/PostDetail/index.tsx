@@ -1,7 +1,6 @@
-import { LikeFilled, StarOutlined, UserOutlined } from '@ant-design/icons'
+import { LikeFilled, StarOutlined } from '@ant-design/icons'
 import {
   Affix,
-  Avatar,
   Button,
   Card,
   Col,
@@ -13,6 +12,7 @@ import {
 } from 'antd'
 import { FC, PropsWithChildren, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import AccountTag from '../../components/AccountTag'
 import ErrorBoundaryOnFetch from '../../components/ErrorBoundaryOnFetch'
 import GlobalAnnouncement from '../../components/GlobalAnnouncement'
 import HeadTitle from '../../components/HeadTitle'
@@ -84,7 +84,7 @@ const PostDetail: FC = () => {
                 </Paragraph>
               </Skeleton>
               <Divider />
-              <div className={classes.action}>
+              <div className={classes.actions}>
                 <Space size="large">
                   <LoadingButton>
                     <IconText
@@ -132,31 +132,12 @@ const PostDetail: FC = () => {
                   <Card>
                     <Row gutter={[0, 16]}>
                       <Col span={24}>
-                        <Space className={classes.user}>
-                          {loading ? (
-                            <Skeleton.Avatar active size="large" />
-                          ) : (
-                            <Avatar
-                              size="large"
-                              icon={<UserOutlined />}
-                              draggable={false}
-                            />
-                          )}
-                          <Skeleton
-                            active
-                            loading={loading}
-                            paragraph={false}
-                            title={{ className: classes.usernameLoading }}
-                          >
-                            <Paragraph
-                              title={postDetail?.user.username}
-                              style={{ marginBlockEnd: 0 }}
-                              ellipsis={{ rows: 1 }}
-                            >
-                              {postDetail?.user.username}
-                            </Paragraph>
-                          </Skeleton>
-                        </Space>
+                        <AccountTag
+                          size="large"
+                          loading={loading}
+                          userId={postDetail?.user.uuid || ''}
+                          name={postDetail?.user.username || ''}
+                        />
                       </Col>
                       <Col span={24}>
                         <Skeleton

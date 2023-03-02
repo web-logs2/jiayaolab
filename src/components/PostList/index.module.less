@@ -1,16 +1,21 @@
 .card-item {
   margin-block-end: 12px;
-  .userinfo {
+  .card-header {
     display: flex;
     align-items: center;
   }
-  .detail-link:hover {
-    .post-title {
-      color: inherit !important;
+  .card-link {
+    color: inherit;
+    h5[class*='ant-typography'] {
+      color: inherit;
     }
   }
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+  }
 }
-.load-more {
+.load-more-button {
   margin-block-start: 32px;
   text-align: center;
 }
