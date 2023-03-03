@@ -43,6 +43,7 @@ const SignUp: FC = () => {
           type: 'success',
           content: res.message,
         })
+        // 重定向到之前到页面
         navigate(params.get('redirect') || '/', { replace: true })
         // 添加token
         dispatch(setToken(res.data.token))

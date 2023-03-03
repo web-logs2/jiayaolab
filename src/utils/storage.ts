@@ -1,20 +1,22 @@
+const tokenKey = '__jy_jwt__'
+const loginUserIdKey = '__jy_user__'
 const setToken = (token: string) => {
-  window.localStorage.setItem('jwt_token', token)
+  window.localStorage.setItem(tokenKey, token)
 }
 const getToken = () => {
-  return window.localStorage.getItem('jwt_token')
+  return window.localStorage.getItem(tokenKey)
 }
 const removeToken = () => {
-  window.localStorage.removeItem('jwt_token')
+  window.localStorage.removeItem(tokenKey)
 }
 const setLoginUserId = (userId: string) => {
-  window.localStorage.setItem('login_user_id', userId)
+  window.localStorage.setItem(loginUserIdKey, userId)
 }
 const getLoginUserId = () => {
-  return window.localStorage.getItem('login_user_id')
+  return window.localStorage.getItem(loginUserIdKey)
 }
 const removeLoginUserId = () => {
-  window.localStorage.removeItem('login_user_id')
+  window.localStorage.removeItem(loginUserIdKey)
 }
 
 export default {

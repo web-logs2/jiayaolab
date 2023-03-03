@@ -4,9 +4,9 @@ import postSlice from './features/postSlice'
 import userSlice from './features/userSlice'
 
 const reducer = combineReducers({
+  articleSlice,
   postSlice,
   userSlice,
-  articleSlice,
 })
 const store = configureStore({
   reducer,

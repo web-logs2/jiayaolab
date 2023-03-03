@@ -29,6 +29,7 @@ import { POSTS, USER, USER_LOGIN, USER_REGISTER } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { verityToken } from '../../services/user'
 import { logout } from '../../store/features/userSlice'
+import { urlRedirect } from '../../utils/redirect'
 import classes from './index.module.less'
 
 const { Header, Content, Footer } = Layout
@@ -41,8 +42,8 @@ const BasicLayout: FC = () => {
   const { token, loginUserId } = useTypedSelector(s => s.userSlice)
   // 接受注册/登录前的页面，在注册/登录完成后自动跳转之前的页面
   const doRedirect = (path: string) => {
-    const redirect = location.pathname.includes(USER) ? '' : location.pathname
-    navigate(`${path}?redirect=${redirect}`, { replace: true })
+    const isUserPath = location.pathname.includes(USER) ? '' : location.pathname
+    navigate(urlRedirect(path, isUserPath), { replace: true })
   }
 
   // 验证token

@@ -12,6 +12,7 @@ import {
   getPostByCategories,
   postCleared,
 } from '../../store/features/postSlice'
+import { urlRedirect } from '../../utils/redirect'
 import classes from './index.module.less'
 
 const HomePage: FC = () => {
@@ -56,9 +57,7 @@ const HomePage: FC = () => {
             <Button
               type="primary"
               onClick={() =>
-                navigate(
-                  token ? POST_NEW : `${USER_LOGIN}/?redirect=${POST_NEW}`
-                )
+                navigate(token ? POST_NEW : urlRedirect(USER_LOGIN, POST_NEW))
               }
               icon={<EditOutlined />}
             >
