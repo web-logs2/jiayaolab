@@ -28,19 +28,6 @@ server.post(
   require('./service/user/verityUser').main
 )
 
-// 获得用户资料
-server.get(
-  '/profile/get',
-  jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] }),
-  require('./service/profile/getProfile').main
-)
-// 更新用户资料
-server.post(
-  '/profile/update',
-  jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] }),
-  require('./service/profile/updateProfile').main
-)
-
 async function main() {
   // 初始化数据库
   await initDB()
