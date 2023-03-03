@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import GlobalAnnouncement from '../../components/GlobalAnnouncement'
 import HeadTitle from '../../components/HeadTitle'
 import PostList from '../../components/PostList'
-import { POST_NEW } from '../../constant/paths'
+import { POST_NEW, USER_LOGIN } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { PostModelType } from '../../models/post'
 import {
@@ -16,6 +16,7 @@ import classes from './index.module.less'
 
 const HomePage: FC = () => {
   const { loading, posts } = useTypedSelector(s => s.postSlice)
+  const { token } = useTypedSelector(s => s.userSlice)
   // 页面大小
   const [size, setSize] = useState<number>(1)
   // 排序依据
@@ -48,21 +49,17 @@ const HomePage: FC = () => {
               }}
               activeKey={sortField}
               items={[
-                {
-                  key: 'createdAt',
-                  label: '最新发帖',
-                  disabled: loading,
-                },
-                {
-                  key: 'updatedAt',
-                  label: '推荐',
-                  disabled: loading,
-                },
+                { key: 'createdAt', label: '最新发帖', disabled: loading },
+                { key: 'updatedAt', label: '推荐', disabled: loading },
               ]}
             />
             <Button
               type="primary"
-              onClick={() => navigate(POST_NEW)}
+              onClick={() =>
+                navigate(
+                  token ? POST_NEW : `${USER_LOGIN}/?redirect=${POST_NEW}`
+                )
+              }
               icon={<EditOutlined />}
             >
               发布帖子

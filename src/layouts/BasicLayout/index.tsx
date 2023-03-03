@@ -50,11 +50,13 @@ const BasicLayout: FC = () => {
     if (token) {
       verityToken()
         .then(({ data }) => {
+          // 判断验证成功后的用户id是否匹配本地存储中的用户id
           if (data.userId !== loginUserId) {
             dispatch(logout())
           }
         })
         .catch(err => {
+          // 验证失败，退出当前登录状态，要求重新登录
           dispatch(logout())
           message.error(err.message)
         })

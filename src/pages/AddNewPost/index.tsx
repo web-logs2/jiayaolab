@@ -16,7 +16,7 @@ import { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import HeadTitle from '../../components/HeadTitle'
 import TextEditor from '../../components/TextEditor'
-import { POST_NEW } from '../../constant/paths'
+import { POST_NEW, USER_LOGIN } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { addPost } from '../../services/post'
 import {
@@ -79,8 +79,7 @@ const AddNewPost: FC = () => {
 
   useEffect(() => {
     if (!token) {
-      message.error('登录后才能发布帖子！')
-      navigate('/', { replace: true })
+      navigate(USER_LOGIN, { replace: true })
     }
   }, [token])
   return (
@@ -176,7 +175,6 @@ const AddNewPost: FC = () => {
                 onConfirm={() => {
                   removeDraftHandler()
                   navigate('/')
-                  message.warning('已取消！')
                 }}
                 okText="是"
                 cancelText="否"
