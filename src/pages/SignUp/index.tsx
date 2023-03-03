@@ -13,7 +13,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import HeadTitle from '../../components/HeadTitle'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { registerUser } from '../../services/user'
-import { setLoginUserId, setToken } from '../../store/features/accountSlice'
+import { setLoginUserId, setToken } from '../../store/features/userSlice'
 import classes from './index.module.less'
 
 const key = 'SignUp'
@@ -26,7 +26,7 @@ const SignUp: FC = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [registering, setRegistering] = useState<boolean>(false)
-  const { token } = useTypedSelector(s => s.accountSlice)
+  const { token } = useTypedSelector(s => s.userSlice)
 
   const onFinish = () => {
     setRegistering(true)

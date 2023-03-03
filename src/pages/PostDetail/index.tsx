@@ -12,11 +12,11 @@ import {
 } from 'antd'
 import { FC, PropsWithChildren, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import AccountTag from '../../components/AccountTag'
 import ErrorBoundaryOnFetch from '../../components/ErrorBoundaryOnFetch'
 import GlobalAnnouncement from '../../components/GlobalAnnouncement'
 import HeadTitle from '../../components/HeadTitle'
 import IconText from '../../components/IconText'
+import UserTag from '../../components/UserTag'
 import { PostModelType } from '../../models/post'
 import { fetchPostById } from '../../services/post'
 import classes from './index.module.less'
@@ -132,7 +132,7 @@ const PostDetail: FC = () => {
                   <Card>
                     <Row gutter={[0, 16]}>
                       <Col span={24}>
-                        <AccountTag
+                        <UserTag
                           size="large"
                           loading={loading}
                           userId={postDetail?.user.uuid || ''}

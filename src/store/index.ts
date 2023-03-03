@@ -1,11 +1,11 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import accountSlice from './features/accountSlice'
 import articleSlice from './features/articleSlice'
 import postSlice from './features/postSlice'
+import userSlice from './features/userSlice'
 
 const reducer = combineReducers({
   postSlice,
-  accountSlice,
+  userSlice,
   articleSlice,
 })
 const store = configureStore({

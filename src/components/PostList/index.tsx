@@ -17,9 +17,9 @@ import { FC } from 'react'
 import { POST } from '../../constant/paths'
 import { useTypedSelector } from '../../hook'
 import { formatDate, fromNowDate } from '../../utils/format'
-import AccountTag from '../AccountTag'
 import ErrorBoundaryOnFetch from '../ErrorBoundaryOnFetch'
 import IconText from '../IconText'
+import UserTag from '../UserTag'
 import classes from './index.module.less'
 
 const { Text, Paragraph, Link, Title } = Typography
@@ -55,7 +55,7 @@ const PostList: FC<{
           <Row gutter={[0, 12]}>
             <Col span={24}>
               <div className={classes.cardHeader}>
-                <AccountTag
+                <UserTag
                   size="default"
                   loading={loading}
                   userId={post.user.uuid}

@@ -5,7 +5,7 @@ import { USER } from '../../constant/paths'
 import classes from './index.module.less'
 
 const { Link, Paragraph } = Typography
-const AccountTag: FC<{
+const UserTag: FC<{
   size: number | 'small' | 'large' | 'default' | undefined
   paragraph?: CSSProperties
   loading: boolean
@@ -13,7 +13,7 @@ const AccountTag: FC<{
   name: string
 }> = ({ size, paragraph, loading, userId, name }) => {
   return (
-    <div className={classes.accountTag}>
+    <div className={classes.userTag}>
       {loading ? (
         <Skeleton.Avatar active size={size} />
       ) : (
@@ -25,12 +25,12 @@ const AccountTag: FC<{
         active
         loading={loading}
         paragraph={false}
-        title={{ className: classes.accountNameLoading }}
+        title={{ className: classes.usernameLoading }}
       >
         <Link
           href={`${USER}/${userId}`}
           target="_blank"
-          className={classes.accountName}
+          className={classes.username}
         >
           <Paragraph
             title={name}
@@ -45,4 +45,4 @@ const AccountTag: FC<{
   )
 }
 
-export default AccountTag
+export default UserTag

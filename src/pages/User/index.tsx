@@ -5,7 +5,7 @@ import { useTypedSelector } from '../../hook'
 
 const User: FC = () => {
   const navigate = useNavigate()
-  const { loginUserId } = useTypedSelector(s => s.accountSlice)
+  const { loginUserId } = useTypedSelector(s => s.userSlice)
   const { userId } = useParams<{ userId: string }>()
 
   useEffect(() => {

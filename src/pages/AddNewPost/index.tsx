@@ -36,7 +36,7 @@ const AddNewPost: FC = () => {
   const [publicly, setPublicly] = useState<boolean>(true)
   // 撰写的内容（也可以称为草稿箱，在页面不刷新的前提下，切换页面不会导致撰写的内容消失）
   const { title, text, html, pushing } = useTypedSelector(s => s.articleSlice)
-  const { token } = useTypedSelector(s => s.accountSlice)
+  const { token } = useTypedSelector(s => s.userSlice)
   const navigateHandler = () => {
     // 发布成功后如果还在发布帖子页面则返回主页
     // 这里需要用到window的location对象，使用useLocation的钩子会有问题

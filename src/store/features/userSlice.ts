@@ -9,8 +9,8 @@ const initialState: {
   loginUserId: storage.getLoginUserId() || null,
 }
 
-const accountSlice = createSlice({
-  name: 'accountSlice',
+const userSlice = createSlice({
+  name: 'userSlice',
   initialState,
   reducers: {
     setToken: (state, { payload }: PayloadAction<string>) => {
@@ -29,5 +29,5 @@ const accountSlice = createSlice({
     },
   },
 })
-export const { setLoginUserId, setToken, logout } = accountSlice.actions
-export default accountSlice.reducer
+export const { setLoginUserId, setToken, logout } = userSlice.actions
+export default userSlice.reducer

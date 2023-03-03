@@ -28,7 +28,7 @@ import IconText from '../../components/IconText'
 import { POSTS, USER, USER_LOGIN, USER_REGISTER } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { verityToken } from '../../services/user'
-import { logout } from '../../store/features/accountSlice'
+import { logout } from '../../store/features/userSlice'
 import classes from './index.module.less'
 
 const { Header, Content, Footer } = Layout
@@ -38,7 +38,7 @@ const BasicLayout: FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useAppDispatch()
-  const { token, loginUserId } = useTypedSelector(s => s.accountSlice)
+  const { token, loginUserId } = useTypedSelector(s => s.userSlice)
   // 接受注册/登录前的页面，在注册/登录完成后自动跳转之前的页面
   const doRedirect = (path: string) => {
     const redirect = location.pathname.includes(USER) ? '' : location.pathname
