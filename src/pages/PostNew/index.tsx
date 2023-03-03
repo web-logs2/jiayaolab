@@ -25,9 +25,9 @@ import {
   setTitleDraft,
 } from '../../store/features/articleSlice'
 
-const key = 'AddNewPost'
+const key = 'PostNew'
 const { Title, Text, Paragraph } = Typography
-const AddNewPost: FC = () => {
+const PostNew: FC = () => {
   const dispatch = useAppDispatch()
   const [form] = Form.useForm()
   const { message } = AntdApp.useApp()
@@ -189,4 +189,4 @@ const AddNewPost: FC = () => {
   )
 }
 
-export default AddNewPost
+export default PostNew

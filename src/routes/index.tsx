@@ -8,7 +8,7 @@ const BasicLayout = lazy(() => import('../layouts/BasicLayout'))
 const HomePage = lazy(() => import('../pages/Home'))
 const PostDetail = lazy(() => import('../pages/PostDetail'))
 const PostOverview = lazy(() => import('../pages/PostOverview'))
-const AddNewPost = lazy(() => import('../pages/AddNewPost'))
+const PostNew = lazy(() => import('../pages/PostNew'))
 const SignUp = lazy(() => import('../pages/SignUp'))
 const SignIn = lazy(() => import('../pages/SignIn'))
 const User = lazy(() => import('../pages/User'))
@@ -29,7 +29,7 @@ export default [
           // 携带ID访问，服务器根据ID返回相应内容
           { path: ':postId', element: <PostDetail /> },
           // 发布帖子
-          { path: 'new', element: <AddNewPost /> },
+          { path: 'new', element: <PostNew /> },
           // 捕获其他任意参数，显示页面不存在
           { path: '*', element: <PageNotFound /> },
         ],
