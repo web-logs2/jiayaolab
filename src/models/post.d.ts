@@ -1,3 +1,5 @@
+import { UserType } from './user'
+
 /**
  * 帖子类型
  */
@@ -17,12 +19,5 @@ export interface PostModelType {
   // 公开访问
   publicly: boolean
   // 用户信息
-  user: {
-    // 用户名称
-    username: string
-    // 简介
-    bio: string
-    // 用户ID
-    uuid: string
-  }
+  user: UserType
 }

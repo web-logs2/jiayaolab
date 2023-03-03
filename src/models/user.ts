@@ -3,7 +3,6 @@
  */
 export interface UserType {
   uuid: string
-  email: string
   username: string
   bio: string | null
 }
