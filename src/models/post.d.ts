@@ -16,8 +16,6 @@ export interface PostModelType {
   createdAt: string
   // 帖子更新时间
   updatedAt: string
-  // 公开访问
-  publicly: boolean
   // 用户信息
   user: UserType
 }

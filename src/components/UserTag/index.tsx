@@ -9,15 +9,15 @@ const UserTag: FC<{
   size: number | 'small' | 'large' | 'default' | undefined
   paragraph?: CSSProperties
   loading: boolean
-  userId: string
-  name: string
+  userId?: string
+  name?: string
 }> = ({ size, paragraph, loading, userId, name }) => {
   return (
     <div className={classes.userTag}>
       {loading ? (
         <Skeleton.Avatar active size={size} />
       ) : (
-        <Link href={`${USER}/${userId}`} target="_blank">
+        <Link href={`${USER}/${userId}`} target="_blank" disabled={!userId}>
           <Avatar size={size} icon={<UserOutlined />} draggable={false} />
         </Link>
       )}
@@ -31,6 +31,7 @@ const UserTag: FC<{
           href={`${USER}/${userId}`}
           target="_blank"
           className={classes.username}
+          disabled={!userId}
         >
           <Paragraph
             title={name}

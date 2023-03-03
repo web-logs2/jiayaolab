@@ -135,11 +135,11 @@ const PostDetail: FC = () => {
                         <UserTag
                           size="large"
                           loading={loading}
-                          userId={postDetail?.user.uuid || ''}
-                          name={postDetail?.user.username || ''}
+                          userId={postDetail?.user.uuid}
+                          name={postDetail?.user.username}
                         />
                       </Col>
-                      <Col span={24}>
+                      <Col span={24} hidden={!loading && !postDetail?.user.bio}>
                         <Skeleton
                           active
                           loading={loading}
@@ -148,7 +148,7 @@ const PostDetail: FC = () => {
                         >
                           <Paragraph
                             type="secondary"
-                            title={postDetail?.user.bio}
+                            title={postDetail?.user.bio || ''}
                             style={{ marginBlockEnd: 0 }}
                             ellipsis={{ rows: 3 }}
                           >
