@@ -96,16 +96,15 @@ const BasicLayout: FC = () => {
             menu={{
               items: [
                 {
-                  key: '注销',
-                  label: '注销',
+                  key: '退出登录',
+                  label: '退出登录',
                   icon: <LogoutOutlined />,
                   onClick: () => {
                     dispatch(logout())
-                    // 注销后如果在用户相关页面，则需要返回主页
+                    // 退出登录后如果在用户相关页面，则需要返回主页
                     if (location.pathname.includes(USER)) {
                       navigate('/')
                     }
-                    message.warning('已注销！')
                   },
                   danger: true,
                 },

@@ -16,7 +16,7 @@ import { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import HeadTitle from '../../components/HeadTitle'
 import TextEditor from '../../components/TextEditor'
-import { POSTS, POST_NEW } from '../../constant/paths'
+import { POST_NEW } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { addPost } from '../../services/post'
 import {
@@ -41,7 +41,7 @@ const AddNewPost: FC = () => {
     // 发布成功后如果还在发布帖子页面则返回主页
     // 这里需要用到window的location对象，使用useLocation的钩子会有问题
     if (window.location.pathname === POST_NEW) {
-      navigate(POSTS)
+      navigate('/')
     }
   }
   const setPushHandler = (value: boolean) => dispatch(setPushing(value))
@@ -175,7 +175,7 @@ const AddNewPost: FC = () => {
                 }
                 onConfirm={() => {
                   removeDraftHandler()
-                  navigate(POSTS)
+                  navigate('/')
                   message.warning('已取消！')
                 }}
                 okText="是"
