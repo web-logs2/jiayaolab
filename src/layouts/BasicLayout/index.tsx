@@ -42,8 +42,12 @@ const BasicLayout: FC = () => {
   const { token, loginUserId } = useTypedSelector(s => s.userSlice)
   // 接受注册/登录前的页面，在注册/登录完成后自动跳转之前的页面
   const doRedirect = (path: string) => {
-    const isUserPath = location.pathname.includes(USER) ? '' : location.pathname
-    navigate(urlRedirect(path, isUserPath), { replace: true })
+    const isAuthPage =
+      location.pathname.includes(USER_REGISTER) ||
+      location.pathname.includes(USER_LOGIN)
+        ? ''
+        : location.pathname
+    navigate(urlRedirect(path, isAuthPage))
   }
 
   // 验证token
