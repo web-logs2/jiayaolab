@@ -44,7 +44,7 @@ pnpm build
 
 Fork 本项目到自己的仓库中
 
-使用 GitHub 账号登录 [vercel.com](https://vercel.com)
+使用 GitHub 登录 [vercel.com](https://vercel.com)
 
 ![signin_with_github](assets/signin_with_github.png)
 
