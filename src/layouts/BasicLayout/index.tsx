@@ -25,7 +25,12 @@ import avatar from '../../assets/avatar.png'
 import FlexGrow from '../../components/FlexGrow'
 import HeadTitle from '../../components/HeadTitle'
 import IconText from '../../components/IconText'
-import { POSTS, USER, USER_LOGIN, USER_REGISTER } from '../../constant/paths'
+import {
+  POST_LIST,
+  USER,
+  USER_LOGIN,
+  USER_REGISTER,
+} from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { verityToken } from '../../services/user'
 import { logout } from '../../store/features/userSlice'
@@ -86,7 +91,7 @@ const BasicLayout: FC = () => {
           onSelect={e => navigate(e.key)}
           items={[
             { key: '/', label: '主页' },
-            { key: POSTS, label: '帖子' },
+            { key: POST_LIST, label: '帖子' },
             {
               key: `${USER}${loginUserId ? `/${loginUserId}` : ''}`,
               label: '我的',

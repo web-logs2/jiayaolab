@@ -24,11 +24,11 @@ import classes from './index.module.less'
 
 const { Text, Paragraph, Link, Title } = Typography
 /**
- * 帖子卡片的列表
+ * 帖子预览卡片的列表
  * @param size 当前页面大小
  * @param loadMoreHandler 点击加载更多按钮的逻辑处理
  */
-const PostList: FC<{
+const PostPreviewList: FC<{
   size: number
   loadMoreHandler: () => void
 }> = ({ size, loadMoreHandler }) => {
@@ -130,4 +130,4 @@ const PostList: FC<{
   )
 }
 
-export default PostList
+export default PostPreviewList

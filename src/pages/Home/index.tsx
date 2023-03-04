@@ -4,7 +4,7 @@ import { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import GlobalAnnouncement from '../../components/GlobalAnnouncement'
 import HeadTitle from '../../components/HeadTitle'
-import PostList from '../../components/PostList'
+import PostPreviewList from '../../components/PostPreviewList'
 import { POST_NEW, USER_LOGIN } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { PostModelType } from '../../models/post'
@@ -64,7 +64,10 @@ const HomePage: FC = () => {
               发布帖子
             </Button>
           </Space>
-          <PostList size={size} loadMoreHandler={() => setSize(size + 1)} />
+          <PostPreviewList
+            size={size}
+            loadMoreHandler={() => setSize(size + 1)}
+          />
         </Col>
         <Col span={6}>
           <Row gutter={[0, 16]}>

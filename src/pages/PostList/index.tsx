@@ -12,7 +12,7 @@ import {
 } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import HeadTitle from '../../components/HeadTitle'
-import PostList from '../../components/PostList'
+import PostPreviewList from '../../components/PostPreviewList'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { OrderByModuleType } from '../../models/orderBy'
 import { PostModelType } from '../../models/post'
@@ -22,7 +22,7 @@ import {
 } from '../../store/features/postSlice'
 
 const { Text } = Typography
-const PostOverview: FC = () => {
+const PostList: FC = () => {
   const { loading, posts } = useTypedSelector(s => s.postSlice)
   // 页面大小
   const [size, setSize] = useState<number>(1)
@@ -138,7 +138,10 @@ const PostOverview: FC = () => {
             </Card>
           </Col>
           <Col span={24}>
-            <PostList size={size} loadMoreHandler={() => setSize(size + 1)} />
+            <PostPreviewList
+              size={size}
+              loadMoreHandler={() => setSize(size + 1)}
+            />
           </Col>
         </Row>
       </div>
@@ -146,4 +149,4 @@ const PostOverview: FC = () => {
   )
 }
 
-export default PostOverview
+export default PostList

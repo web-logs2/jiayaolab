@@ -22,7 +22,7 @@ export const fetchPostByCategories = async (
 }
 
 /**
- * 获取帖子概览页面所需帖子
+ * 获取帖子列表页面所需帖子
  * @param current 当前帖子大小
  * @param sortField 根据依据
  * @param sortOrder 排序方式
