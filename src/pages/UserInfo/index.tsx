@@ -47,9 +47,11 @@ const UserInfo: FC = () => {
     if (userId) {
       fetchUserInfoHandler(userId)
     } else {
-      // 没有传递userId参数，但是用户登录了，则重定向到当前登录用户的界面
+      // 没有传递userId参数，但是用户登录了，则重定向到当前登录用户的用户帖子列表界面
       if (loginUserId) {
-        navigate(`${USER}/${loginUserId}`, { replace: true })
+        navigate(`${USER}/${loginUserId}/${USER_POST_LIST_ONLY}`, {
+          replace: true,
+        })
       } else {
         // 没有传递userId参数，也没有登录，则重定向到登录页面
         navigate(USER_LOGIN, { replace: true })
