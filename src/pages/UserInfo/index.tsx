@@ -30,6 +30,9 @@ const UserInfo: FC = () => {
     // 解决在页面不刷新的前提下，第二次点击不会显示加载中组件
     // 确保userId改变后，可以重新显示加载中组件
     setLoading(true)
+    // 如果有错误信息就要先清空错误信息，防止在页面不刷新的前提下
+    // 切换到其他用户，即使用户信息已经获取到了，依然会出现之前的错误
+    errorMsg && setErrorMsg(null)
     fetchUserInfo(userId)
       .then(({ data }) => {
         // 设置用户信息
