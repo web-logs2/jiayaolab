@@ -1,4 +1,5 @@
 const { Post, User } = require('../../../app')
+const { msg } = require('../../../util/msg')
 
 exports.main = async (req, res) => {
   const { id, type, current, sortField } = req.query
@@ -7,18 +8,29 @@ exports.main = async (req, res) => {
     // 帖子详情页面
     if (id && type === 'detail' && !current && !sortField) {
       const post = await Post.findOne({
-        attributes: ['uuid', 'createdAt', 'updatedAt', 'title', 'html'],
+        attributes: [
+          'uuid',
+          'createdAt',
+          'updatedAt',
+          'title',
+          'html',
+          'publicly',
+        ],
         include: {
           model: User,
           attributes: ['uuid', 'username', 'bio'],
         },
-        where: { uuid: id, publicly: true },
+        where: { uuid: id },
       })
-      res.status(post ? 200 : 400).json({
-        code: post ? 200 : 400,
-        data: post,
-        message: post ? 'ok' : '该帖子不存在或关闭了公开访问！',
-      })
+      if (post) {
+        if (post.publicly) {
+          res.status(200).json(msg(200, post, 'ok'))
+        } else {
+          res.status(400).json(msg(400, null, '该帖子关闭了公开访问！'))
+        }
+      } else {
+        res.status(400).json(msg(400, null, '该帖子不存在！'))
+      }
       // 主页 推荐/最多收藏/最多浏览 页面
     } else if (!id && type === 'category' && current && sortField) {
       const limit = 5
@@ -35,11 +47,11 @@ exports.main = async (req, res) => {
           publicly: true,
         },
       })
-      res.status(200).json({ code: 200, data: rows, message: 'ok' })
+      res.status(200).json(msg(200, rows, 'ok'))
     } else {
-      res.status(400).json({ code: 400, data: null, message: '参数无效！' })
+      res.status(400).json(msg(400, null, '参数无效！'))
     }
   } catch (e) {
-    res.status(400).json({ code: 400, data: null, message: '服务器错误！' })
+    res.status(400).json(msg(400, null, '服务器错误！'))
   }
 }

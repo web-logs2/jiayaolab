@@ -1,6 +1,7 @@
 const { CloudBaseRunServer } = require('./server.js')
 const { initDB } = require('./app')
 const { TokenExpiredError } = require('jsonwebtoken')
+const { msg } = require('./util/msg')
 const jwt = require('express-jwt').expressjwt
 
 const port = 3000
@@ -36,14 +37,17 @@ async function main() {
     .use(function (err, req, res, next) {
       // err.inner = JsonWebTokenError（token错误） / TokenExpiredError（token过期错误）
       if (err.name === 'UnauthorizedError') {
-        res.status(err.status).send({
-          code: err.status,
-          data: null,
-          message:
-            err.inner instanceof TokenExpiredError
-              ? '登录已过期，请重新登录！'
-              : '请先登录！',
-        })
+        res
+          .status(err.status)
+          .send(
+            msg(
+              err.status,
+              null,
+              err.inner instanceof TokenExpiredError
+                ? '登录已过期，请重新登录！'
+                : '请先登录！'
+            )
+          )
       } else {
         next(err)
       }
