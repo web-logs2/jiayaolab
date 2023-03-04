@@ -49,19 +49,19 @@ export const fetchPostByConditions = async (
  * @param title 帖子标题
  * @param text 帖子原始内容
  * @param html 帖子HTML内容
- * @param publicly 是否公开访问
+ * @param _public 公开访问
  */
 export const addPost = async (
   title: string,
   text: string,
   html: string,
-  publicly: boolean
+  _public: boolean
 ): Promise<ResponseModelType<string>> => {
   return await api.post('/post/add', {
     title: title.trim(),
     text,
     html,
-    publicly,
+    _public,
   })
 }
 

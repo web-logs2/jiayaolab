@@ -33,7 +33,7 @@ const PostNew: FC = () => {
   const { message } = AntdApp.useApp()
   const navigate = useNavigate()
   // 公开访问选项，默认开启
-  const [publicly, setPublicly] = useState<boolean>(true)
+  const [_public, setPublic] = useState<boolean>(true)
   // 撰写的内容（也可以称为草稿箱，在页面不刷新的前提下，切换页面不会导致撰写的内容消失）
   const { title, text, html, pushing } = useTypedSelector(s => s.articleSlice)
   const { token } = useTypedSelector(s => s.userSlice)
@@ -57,7 +57,7 @@ const PostNew: FC = () => {
       duration: 0,
     })
     // 发布帖子
-    addPost(title, text, html, publicly)
+    addPost(title, text, html, _public)
       .then(res => {
         removeDraftHandler()
         navigateHandler()
@@ -93,7 +93,7 @@ const PostNew: FC = () => {
         </Paragraph>
         <Form
           form={form}
-          initialValues={{ title, publicly }}
+          initialValues={{ title, _public }}
           onFinish={onFinish}
           disabled={pushing}
           scrollToFirstError
@@ -145,11 +145,11 @@ const PostNew: FC = () => {
               onValidateHandler={() => form.validateFields(['html'])}
             />
           </Form.Item>
-          <Form.Item name="publicly" label="公开访问">
+          <Form.Item name="_public" label="公开访问">
             <Space>
               <Checkbox
-                checked={publicly}
-                onChange={e => setPublicly(e.target.checked)}
+                checked={_public}
+                onChange={e => setPublic(e.target.checked)}
               />
               <Tooltip title="所有用户都能阅读这篇帖子">
                 <Text type="secondary">

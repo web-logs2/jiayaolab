@@ -9,12 +9,12 @@ exports.main = async (req, res) => {
     if (id && type === 'detail' && !current && !sortField) {
       const post = await Post.findOne({
         attributes: [
+          '_public',
           'uuid',
           'createdAt',
           'updatedAt',
           'title',
           'html',
-          'publicly',
         ],
         include: {
           model: User,
@@ -23,7 +23,7 @@ exports.main = async (req, res) => {
         where: { uuid: id },
       })
       if (post) {
-        if (post.publicly) {
+        if (post._public) {
           res.status(200).json(msg(200, post, 'ok'))
         } else {
           res.status(400).json(msg(400, null, '该帖子关闭了公开访问！'))
@@ -43,9 +43,7 @@ exports.main = async (req, res) => {
         },
         offset: Number(current) * limit - limit,
         order: [[sortField, 'DESC']],
-        where: {
-          publicly: true,
-        },
+        where: { _public: true },
       })
       res.status(200).json(msg(200, rows, 'ok'))
     } else {

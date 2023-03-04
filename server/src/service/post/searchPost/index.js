@@ -19,6 +19,7 @@ exports.main = async (req, res) => {
         order: [[sortField, sortOrder.toUpperCase()]],
         // 在标题或正文当中包含指定的关键字就返回该帖子
         where: {
+          _public: true,
           [Op.or]: [
             {
               title: {
@@ -31,7 +32,6 @@ exports.main = async (req, res) => {
               },
             },
           ],
-          publicly: true,
         },
       })
       res.status(200).json(msg(200, rows, 'ok'))
