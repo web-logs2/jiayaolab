@@ -16,12 +16,12 @@ import {
   Menu,
   Row,
   Space,
-  Spin,
   Typography,
 } from 'antd'
 import { FC, Suspense, useEffect } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import avatar from '../../assets/avatar.png'
+import ChunkLoading from '../../components/ChunkLoading'
 import FlexGrow from '../../components/FlexGrow'
 import HeadTitle from '../../components/HeadTitle'
 import IconText from '../../components/IconText'
@@ -54,6 +54,7 @@ const BasicLayout: FC = () => {
         : location.pathname
     navigate(urlRedirect(path, isAuthPage))
   }
+  const userMenuKey = `${USER}/${loginUserId}`
 
   // 验证token
   useEffect(() => {
@@ -87,16 +88,16 @@ const BasicLayout: FC = () => {
         <Menu
           className={classes.menu}
           mode="horizontal"
-          selectedKeys={[location.pathname]}
+          selectedKeys={[
+            location.pathname.includes(userMenuKey)
+              ? userMenuKey
+              : location.pathname,
+          ]}
           onSelect={e => navigate(e.key)}
           items={[
             { key: '/', label: '主页' },
             { key: POST_LIST, label: '帖子' },
-            {
-              key: `${USER}${loginUserId ? `/${loginUserId}` : ''}`,
-              label: '我的',
-              disabled: !token,
-            },
+            { key: userMenuKey, label: '我的', disabled: !token },
           ]}
         />
         <FlexGrow />
@@ -108,7 +109,7 @@ const BasicLayout: FC = () => {
             menu={{
               items: [
                 {
-                  key: '退出登录',
+                  key: 'logout',
                   label: '退出登录',
                   icon: <LogoutOutlined />,
                   onClick: () => {
@@ -141,13 +142,7 @@ const BasicLayout: FC = () => {
         )}
       </Header>
       <Content className={classes.content}>
-        <Suspense
-          fallback={
-            <div className={classes.spinner}>
-              <Spin />
-            </div>
-          }
-        >
+        <Suspense fallback={<ChunkLoading />}>
           <Outlet />
         </Suspense>
       </Content>

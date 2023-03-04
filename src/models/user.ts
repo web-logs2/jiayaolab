@@ -1,5 +1,5 @@
 /**
- * 用户资料类型
+ * 用户信息类型
  */
 export interface UserType {
   uuid: string

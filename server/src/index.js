@@ -28,6 +28,8 @@ server.post(
   jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] }),
   require('./service/user/verityUser').main
 )
+// 获取用户信息
+server.get('/user/info', require('./service/user/getUserInfo').main)
 
 async function main() {
   // 初始化数据库

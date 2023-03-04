@@ -1,5 +1,6 @@
 import api from '../lib/api'
 import { ResponseModelType } from '../models/response'
+import { UserType } from '../models/user'
 
 /**
  * 用户注册
@@ -29,9 +30,19 @@ export const loginUser = async (
  * 用户验证
  */
 export const verityToken = async (): Promise<
-  ResponseModelType<{
-    userId: string
-  }>
+  ResponseModelType<{ userId: string }>
 > => {
   return await api.post('/user/session/verity')
+}
+
+/**
+ * 获取用户信息
+ * @param userId 用户id
+ */
+export const fetchUserInfo = async (
+  userId: string
+): Promise<ResponseModelType<UserType>> => {
+  return await api.get('/user/info', {
+    params: { userId },
+  })
 }
