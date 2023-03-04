@@ -1,7 +1,7 @@
 import { UserOutlined } from '@ant-design/icons'
 import { Avatar, Skeleton, Typography } from 'antd'
 import { CSSProperties, FC } from 'react'
-import { USER } from '../../constant/paths'
+import { USER, USER_POST_LIST_ONLY } from '../../constant/paths'
 import classes from './index.module.less'
 
 const { Link, Paragraph } = Typography
@@ -12,12 +12,14 @@ const UserTag: FC<{
   userId?: string
   name?: string
 }> = ({ size, paragraph, loading, userId, name }) => {
+  const href = `${USER}/${userId}/${USER_POST_LIST_ONLY}`
+
   return (
     <div className={classes.userTag}>
       {loading ? (
         <Skeleton.Avatar active size={size} />
       ) : (
-        <Link href={`${USER}/${userId}`} target="_blank" disabled={!userId}>
+        <Link href={href} target="_blank" disabled={!userId}>
           <Avatar size={size} icon={<UserOutlined />} draggable={false} />
         </Link>
       )}
@@ -28,7 +30,7 @@ const UserTag: FC<{
         title={{ className: classes.usernameLoading }}
       >
         <Link
-          href={`${USER}/${userId}`}
+          href={href}
           target="_blank"
           className={classes.username}
           disabled={!userId}

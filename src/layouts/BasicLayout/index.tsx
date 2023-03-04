@@ -29,6 +29,7 @@ import {
   POST_LIST,
   USER,
   USER_LOGIN,
+  USER_POST_LIST_ONLY,
   USER_REGISTER,
 } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
@@ -55,6 +56,7 @@ const BasicLayout: FC = () => {
     navigate(urlRedirect(path, isAuthPage))
   }
   const userMenuKey = `${USER}/${loginUserId}`
+  const userPostListLink = `${userMenuKey}/${USER_POST_LIST_ONLY}`
 
   // 验证token
   useEffect(() => {
@@ -93,11 +95,18 @@ const BasicLayout: FC = () => {
               ? userMenuKey
               : location.pathname,
           ]}
-          onSelect={e => navigate(e.key)}
+          onSelect={e => {
+            // 手动跳转到用户帖子列表页面，虽然路由表里定义过了自动跳转到用户帖子页面，但总感觉不太好
+            navigate(e.key === userMenuKey ? userPostListLink : e.key)
+          }}
           items={[
             { key: '/', label: '主页' },
             { key: POST_LIST, label: '帖子' },
-            { key: userMenuKey, label: '我的', disabled: !token },
+            {
+              key: token && loginUserId ? userMenuKey : USER,
+              label: '我的',
+              disabled: !token,
+            },
           ]}
         />
         <FlexGrow />
@@ -108,6 +117,13 @@ const BasicLayout: FC = () => {
             placement="bottom"
             menu={{
               items: [
+                {
+                  key: 'user',
+                  label: '我的',
+                  icon: <UserOutlined />,
+                  onClick: () => navigate(userPostListLink),
+                },
+                { type: 'divider' },
                 {
                   key: 'logout',
                   label: '退出登录',
