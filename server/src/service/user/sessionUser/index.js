@@ -23,16 +23,7 @@ exports.main = async (req, res) => {
           )
         )
       } else {
-        res.status(400).json(
-          msg(
-            400,
-            {
-              token: jwt.getToken(email, password),
-              userId: user.uuid,
-            },
-            '邮箱或密码错误！'
-          )
-        )
+        res.status(400).json(msg(400, null, '邮箱或密码错误！'))
       }
     } else {
       res.status(400).json(msg(400, null, '参数无效！'))
