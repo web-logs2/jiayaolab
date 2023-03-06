@@ -1,43 +1,51 @@
 const { CloudBaseRunServer } = require('./server.js')
 const { initDB } = require('./app')
-const { TokenExpiredError } = require('jsonwebtoken')
 const { msg } = require('./util/msg')
-const jwt = require('express-jwt').expressjwt
+const { expressjwt } = require('express-jwt')
+const { TokenExpiredError } = require('jsonwebtoken')
 
 const port = 3000
 const server = new CloudBaseRunServer().express
+const jwtVerify = expressjwt({
+  secret: process.env.JWT_SECRET,
+  algorithms: ['HS256'],
+})
 
 // 获得帖子
 server.get('/post/get', require('./service/post/getPost').main)
 // 搜索帖子
 server.get('/post/search', require('./service/post/searchPost').main)
 // 发布帖子
-server.post(
-  '/post/add',
-  jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] }),
-  require('./service/post/addPost').main
-)
+server.post('/post/add', jwtVerify, require('./service/post/addPost').main)
 
-// 注册用户
+// 用户注册
 server.post('/user/add', require('./service/user/addUser').main)
-// 登录用户
+// 用户登录
 server.post('/user/session', require('./service/user/sessionUser').main)
-// 验证用户
+// 用户验证
 server.post(
   '/user/session/verity',
-  jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] }),
+  jwtVerify,
   require('./service/user/verityUser').main
 )
 // 获取用户信息
 server.get('/user/info', require('./service/user/getUserInfo').main)
+// 更新用户信息
+server.post(
+  '/user/update',
+  jwtVerify,
+  require('./service/user/updateUser').main
+)
 
 async function main() {
   // 初始化数据库
   await initDB()
-  // 用户TOKEN验证中间件
+  // token验证中间件
   server
     .use(function (err, req, res, next) {
-      // err.inner = JsonWebTokenError（token错误） / TokenExpiredError（token过期错误）
+      // err.inner可能抛出的错误类型
+      // JsonWebTokenError = token格式错误
+      // TokenExpiredError = token已过期
       if (err.name === 'UnauthorizedError') {
         res
           .status(err.status)

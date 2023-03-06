@@ -4,7 +4,7 @@ import { PostModelType } from '../models/post'
 import { ResponseModelType } from '../models/response'
 
 /**
- * 获取主页所需帖子
+ * 获取帖子（主页面）
  * @param current 当前帖子大小
  * @param sortField 根据依据
  */
@@ -22,7 +22,7 @@ export const fetchPostByCategories = async (
 }
 
 /**
- * 获取帖子列表页面所需帖子
+ * 搜索帖子（帖子页面）
  * @param current 当前帖子大小
  * @param sortField 根据依据
  * @param sortOrder 排序方式

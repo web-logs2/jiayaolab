@@ -60,7 +60,9 @@ const PostDetail: FC = () => {
   }, [postId])
   return (
     <>
-      <HeadTitle prefix={postDetail?.title ? postDetail.title : '帖子详情'} />
+      <HeadTitle
+        prefix={postDetail?.title ? `${postDetail.title}-帖子详情` : '帖子详情'}
+      />
       {loading || postDetail ? (
         <Row gutter={[16, 16]}>
           <Col span={18}>

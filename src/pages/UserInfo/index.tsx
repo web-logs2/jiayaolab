@@ -1,5 +1,13 @@
 import { CommentOutlined, EditOutlined, UserOutlined } from '@ant-design/icons'
-import { Avatar, Card, Col, Row, Skeleton, Space, Typography } from 'antd'
+import {
+  App as AntdApp,
+  Avatar,
+  Card,
+  Col,
+  Row,
+  Skeleton,
+  Typography,
+} from 'antd'
 import { FC, Suspense, useEffect, useState } from 'react'
 import { NavLink, Outlet, useNavigate, useParams } from 'react-router-dom'
 import ChunkLoading from '../../components/ChunkLoading'
@@ -14,16 +22,24 @@ import {
 } from '../../constant/paths'
 import { useTypedSelector } from '../../hook'
 import { UserType } from '../../models/user'
-import { fetchUserInfo } from '../../services/user'
+import { fetchUserInfo, updateUserInfo } from '../../services/user'
 import classes from './index.module.less'
 
-const { Title, Paragraph } = Typography
+const key = 'UpdateUser'
+const { Title, Paragraph, Text } = Typography
 const UserInfo: FC = () => {
   const navigate = useNavigate()
+  const { message } = AntdApp.useApp()
   const { loginUserId } = useTypedSelector(s => s.userSlice)
   const { userId } = useParams<{ userId: string }>()
+  // 用户信息
   const [userInfo, setUserInfo] = useState<UserType | null>(null)
+  // 用户信息缓存
+  const [usernameCache, setUsernameCache] = useState<string | null>(null)
+  const [bioCache, setBioCache] = useState<string | null>(null)
+  // 获取用户信息中
   const [loading, setLoading] = useState<boolean>(true)
+  // 获取用户信息时发生的错误
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   // 获得用户信息处理程序
   const fetchUserInfoHandler = (userId: string) => {
@@ -33,10 +49,14 @@ const UserInfo: FC = () => {
     // 如果有错误信息就要先清空错误信息，防止在页面不刷新的前提下
     // 切换到其他用户，即使用户信息已经获取到了，依然会出现之前的错误
     errorMsg && setErrorMsg(null)
+    // 获取用户信息
     fetchUserInfo(userId)
       .then(({ data }) => {
         // 设置用户信息
         setUserInfo({ ...data })
+        // 设置用户信息缓存
+        setUsernameCache(data.username)
+        setBioCache(data.bio)
       })
       .catch(err => {
         // 设置错误信息
@@ -45,20 +65,56 @@ const UserInfo: FC = () => {
       .finally(() => setLoading(false))
   }
 
+  // 更新用户信息
+  useEffect(() => {
+    // 只有在用户信息发生改变后，改变后的信息与原先的用户信息不一致时才会执行更新用户处理函数
+    if (
+      usernameCache &&
+      (usernameCache !== userInfo?.username || bioCache !== userInfo?.bio)
+    ) {
+      message.open({
+        key,
+        type: 'loading',
+        content: '更新中…',
+        duration: 0,
+      })
+      // 更新用户信息
+      updateUserInfo(usernameCache, bioCache)
+        .then(res => {
+          message.open({
+            key,
+            type: 'success',
+            content: res.message,
+          })
+          // 更新完成，返回最新的用户信息
+          setUserInfo({ ...res.data })
+        })
+        .catch(err => {
+          // 更新失败，还原到上一次的用户信息
+          if (userInfo) {
+            setUsernameCache(userInfo.username)
+            setBioCache(userInfo.bio)
+          }
+          message.open({
+            key,
+            type: 'error',
+            content: `更新失败，${err.message}`,
+          })
+        })
+    }
+  }, [usernameCache, bioCache])
   useEffect(() => {
     // 传递了userId参数
     if (userId) {
       fetchUserInfoHandler(userId)
-    } else {
+    } else if (loginUserId) {
       // 没有传递userId参数，但是用户登录了，则重定向到当前登录用户的用户帖子列表界面
-      if (loginUserId) {
-        navigate(`${USER}/${loginUserId}/${USER_POST_LIST_ONLY}`, {
-          replace: true,
-        })
-      } else {
-        // 没有传递userId参数，也没有登录，则重定向到登录页面
-        navigate(USER_LOGIN, { replace: true })
-      }
+      navigate(`${USER}/${loginUserId}/${USER_POST_LIST_ONLY}`, {
+        replace: true,
+      })
+    } else {
+      // 没有传递userId参数，也没有登录，则重定向到登录页面
+      navigate(USER_LOGIN, { replace: true })
     }
   }, [userId])
   return loading ? (
@@ -72,20 +128,43 @@ const UserInfo: FC = () => {
     <Row gutter={[16, 16]}>
       <Col span={24}>
         <Card>
-          <HeadTitle prefix={userInfo.username} />
+          <HeadTitle prefix={`${userInfo.username}-用户信息`} />
           <div className={classes.userInfoLayout}>
             <Avatar size={128} icon={<UserOutlined />} />
             <div className={classes.userInfo}>
               <Title
                 level={2}
                 ellipsis={{ rows: 1 }}
+                editable={
+                  userInfo.uuid === loginUserId
+                    ? {
+                        maxLength: 16,
+                        tooltip: false,
+                        onChange: username => setUsernameCache(username),
+                      }
+                    : false
+                }
                 style={{ marginBlockEnd: 0 }}
               >
-                {userInfo.username}
+                {usernameCache}
               </Title>
               <Paragraph type="secondary">{userInfo.uuid}</Paragraph>
-              <Paragraph style={{ marginBlockEnd: 0 }}>
-                {userInfo.bio}
+              <Paragraph
+                editable={
+                  userInfo.uuid === loginUserId
+                    ? {
+                        maxLength: 60,
+                        tooltip: false,
+                        onChange: bio => setBioCache(bio || null),
+                      }
+                    : false
+                }
+                style={{ marginBlockEnd: 0 }}
+              >
+                {bioCache ||
+                  (userInfo.uuid === loginUserId ? (
+                    <Text type="secondary">暂无简介</Text>
+                  ) : null)}
               </Paragraph>
             </div>
           </div>
@@ -93,24 +172,16 @@ const UserInfo: FC = () => {
       </Col>
       <Col span={5}>
         <Card>
-          <Space direction="vertical">
-            <NavLink
-              className={({ isActive }) => {
-                return isActive ? classes.userInfoList : undefined
-              }}
-              to={USER_POST_LIST_ONLY}
-            >
-              <IconText icon={<EditOutlined />} text="发帖" />
-            </NavLink>
-            <NavLink
-              className={({ isActive }) => {
-                return isActive ? classes.userInfoList : undefined
-              }}
-              to={USER_COMMENT_LIST_ONLY}
-            >
-              <IconText icon={<CommentOutlined />} text="评论" />
-            </NavLink>
-          </Space>
+          <NavLink to={USER_POST_LIST_ONLY}>
+            <Paragraph>
+              <IconText icon={<EditOutlined />} text="我的发帖" />
+            </Paragraph>
+          </NavLink>
+          <NavLink to={USER_COMMENT_LIST_ONLY}>
+            <Paragraph style={{ marginBlockEnd: 0 }}>
+              <IconText icon={<CommentOutlined />} text="我的评论" />
+            </Paragraph>
+          </NavLink>
         </Card>
       </Col>
       <Col span={19}>

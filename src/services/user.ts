@@ -46,3 +46,15 @@ export const fetchUserInfo = async (
     params: { userId },
   })
 }
+
+/**
+ * 更新用户信息
+ * @param username 用户名
+ * @param bio 用户简介
+ */
+export const updateUserInfo = async (
+  username: string,
+  bio: string | null
+): Promise<ResponseModelType<UserType>> => {
+  return await api.post('/user/update', { username, bio })
+}

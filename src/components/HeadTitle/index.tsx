@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet-async'
  */
 const HeadTitle: FC<{ prefix?: string }> = ({ prefix }) => (
   <Helmet>
-    <title>{prefix ? `${prefix} - ` : ''}佳垚的论坛</title>
+    <title>{prefix ? `${prefix}-` : ''}佳垚的论坛</title>
   </Helmet>
 )
 
