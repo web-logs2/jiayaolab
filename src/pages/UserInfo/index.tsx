@@ -141,7 +141,18 @@ const UserInfo: FC = () => {
                         ? {
                             maxLength: 16,
                             tooltip: false,
-                            onChange: username => setUsernameCache(username),
+                            onChange: username => {
+                              if (username) {
+                                // 只有当输入的用户名不为空时，才会更新用户名
+                                setUsernameCache(username)
+                              } else {
+                                message.open({
+                                  key,
+                                  type: 'error',
+                                  content: '用户名不能为空！',
+                                })
+                              }
+                            },
                           }
                         : false
                     }
