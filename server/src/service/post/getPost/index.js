@@ -31,7 +31,7 @@ exports.main = async (req, res) => {
       } else {
         res.status(400).json(msg(400, null, '该帖子不存在！'))
       }
-      // 主页 推荐/最多收藏/最多浏览 页面
+      // 主页面
     } else if (!id && type === 'category' && current && sortField) {
       const limit = 5
       const { rows } = await Post.findAndCountAll({
@@ -45,7 +45,19 @@ exports.main = async (req, res) => {
         order: [[sortField, 'DESC']],
         where: { _public: true },
       })
-      res.status(200).json(msg(200, rows, 'ok'))
+      res.status(200).json(
+        msg(
+          200,
+          rows.map(row => ({
+            ...row.dataValues,
+            text: row.dataValues.text
+              .replaceAll('\n', ' ')
+              .replaceAll(/\s+/g, ' ')
+              .slice(0, 256),
+          })),
+          'ok'
+        )
+      )
     } else {
       res.status(400).json(msg(400, null, '参数无效！'))
     }

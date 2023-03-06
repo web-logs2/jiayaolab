@@ -175,12 +175,22 @@ const UserInfo: FC = () => {
             <Card>
               <NavLink to={USER_POST_LIST_ONLY}>
                 <Paragraph>
-                  <IconText icon={<EditOutlined />} text="我的发帖" />
+                  <IconText
+                    icon={<EditOutlined />}
+                    text={`${
+                      userInfo.uuid === loginUserId ? '我的' : 'TA的'
+                    }发帖`}
+                  />
                 </Paragraph>
               </NavLink>
               <NavLink to={USER_COMMENT_LIST_ONLY}>
                 <Paragraph style={{ marginBlockEnd: 0 }}>
-                  <IconText icon={<CommentOutlined />} text="我的评论" />
+                  <IconText
+                    icon={<CommentOutlined />}
+                    text={`${
+                      userInfo.uuid === loginUserId ? '我的' : 'TA的'
+                    }评论`}
+                  />
                 </Paragraph>
               </NavLink>
             </Card>

@@ -34,7 +34,19 @@ exports.main = async (req, res) => {
           ],
         },
       })
-      res.status(200).json(msg(200, rows, 'ok'))
+      res.status(200).json(
+        msg(
+          200,
+          rows.map(row => ({
+            ...row.dataValues,
+            text: row.dataValues.text
+              .replaceAll('\n', ' ')
+              .replaceAll(/\s+/g, ' ')
+              .slice(0, 256),
+          })),
+          'ok'
+        )
+      )
     } else {
       res.status(400).json(msg(400, null, '参数无效！'))
     }
