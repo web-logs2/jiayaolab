@@ -19,6 +19,7 @@ exports.main = async (req, res) => {
       res.status(400).json(msg(400, null, '参数无效！'))
     }
   } catch (e) {
+    console.error(e)
     res.status(400).json(msg(400, null, '服务器错误！'))
   }
 }
