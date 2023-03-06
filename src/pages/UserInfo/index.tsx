@@ -134,7 +134,7 @@ const UserInfo: FC = () => {
                 <Avatar size={128} icon={<UserOutlined />} />
                 <div className={classes.userInfo}>
                   <Title
-                    level={2}
+                    level={3}
                     ellipsis={{ rows: 1 }}
                     editable={
                       userInfo.uuid === loginUserId
