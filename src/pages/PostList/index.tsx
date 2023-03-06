@@ -65,7 +65,7 @@ const PostList: FC = () => {
   // 点击查看更多按钮
   return (
     <>
-      <HeadTitle prefix="帖子" />
+      <HeadTitle layers={['帖子']} />
       <div>
         <Row gutter={[0, 16]}>
           <Col span={24}>

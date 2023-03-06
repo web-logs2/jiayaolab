@@ -68,7 +68,7 @@ const SignUp: FC = () => {
   }, [token])
   return (
     <>
-      <HeadTitle prefix="用户注册" />
+      <HeadTitle layers={['用户注册']} />
       <div className={classes.register}>
         <Card>
           <Title level={3}>用户注册</Title>

@@ -84,7 +84,7 @@ const PostNew: FC = () => {
   }, [token])
   return (
     <>
-      <HeadTitle prefix="发布帖子" />
+      <HeadTitle layers={['发布帖子']} />
       <Card>
         <Title level={3}>发布帖子</Title>
         <Divider />

@@ -117,81 +117,84 @@ const UserInfo: FC = () => {
       navigate(USER_LOGIN, { replace: true })
     }
   }, [userId])
-  return loading ? (
-    <Card>
-      <HeadTitle prefix="用户信息" />
-      <Skeleton active paragraph={{ style: { marginBlockEnd: 0 } }} />
-    </Card>
-  ) : errorMsg || !userInfo ? (
-    <ErrorBoundaryOnFetch errorMsg={errorMsg} />
-  ) : (
-    <Row gutter={[16, 16]}>
-      <Col span={24}>
+  return (
+    <>
+      <HeadTitle layers={[userInfo?.username, '用户信息']} />
+      {loading ? (
         <Card>
-          <HeadTitle prefix={`${userInfo.username}-用户信息`} />
-          <div className={classes.userInfoLayout}>
-            <Avatar size={128} icon={<UserOutlined />} />
-            <div className={classes.userInfo}>
-              <Title
-                level={2}
-                ellipsis={{ rows: 1 }}
-                editable={
-                  userInfo.uuid === loginUserId
-                    ? {
-                        maxLength: 16,
-                        tooltip: false,
-                        onChange: username => setUsernameCache(username),
-                      }
-                    : false
-                }
-                style={{ marginBlockEnd: 0 }}
-              >
-                {usernameCache}
-              </Title>
-              <Paragraph type="secondary">{userInfo.uuid}</Paragraph>
-              <Paragraph
-                editable={
-                  userInfo.uuid === loginUserId
-                    ? {
-                        maxLength: 60,
-                        tooltip: false,
-                        onChange: bio => setBioCache(bio || null),
-                      }
-                    : false
-                }
-                style={{ marginBlockEnd: 0 }}
-              >
-                {bioCache ||
-                  (userInfo.uuid === loginUserId ? (
-                    <Text type="secondary">暂无简介</Text>
-                  ) : null)}
-              </Paragraph>
-            </div>
-          </div>
+          <Skeleton active paragraph={{ style: { marginBlockEnd: 0 } }} />
         </Card>
-      </Col>
-      <Col span={5}>
-        <Card>
-          <NavLink to={USER_POST_LIST_ONLY}>
-            <Paragraph>
-              <IconText icon={<EditOutlined />} text="我的发帖" />
-            </Paragraph>
-          </NavLink>
-          <NavLink to={USER_COMMENT_LIST_ONLY}>
-            <Paragraph style={{ marginBlockEnd: 0 }}>
-              <IconText icon={<CommentOutlined />} text="我的评论" />
-            </Paragraph>
-          </NavLink>
-        </Card>
-      </Col>
-      <Col span={19}>
-        <Card>
-          <Suspense fallback={<ChunkLoading />}>
-            <Outlet />
-          </Suspense>
-        </Card>
-      </Col>
-    </Row>
+      ) : errorMsg || !userInfo ? (
+        <ErrorBoundaryOnFetch errorMsg={errorMsg} />
+      ) : (
+        <Row gutter={[16, 16]}>
+          <Col span={24}>
+            <Card>
+              <div className={classes.userInfoLayout}>
+                <Avatar size={128} icon={<UserOutlined />} />
+                <div className={classes.userInfo}>
+                  <Title
+                    level={2}
+                    ellipsis={{ rows: 1 }}
+                    editable={
+                      userInfo.uuid === loginUserId
+                        ? {
+                            maxLength: 16,
+                            tooltip: false,
+                            onChange: username => setUsernameCache(username),
+                          }
+                        : false
+                    }
+                    style={{ marginBlockEnd: 0 }}
+                  >
+                    {usernameCache}
+                  </Title>
+                  <Paragraph type="secondary">{userInfo.uuid}</Paragraph>
+                  <Paragraph
+                    editable={
+                      userInfo.uuid === loginUserId
+                        ? {
+                            maxLength: 60,
+                            tooltip: false,
+                            onChange: bio => setBioCache(bio || null),
+                          }
+                        : false
+                    }
+                    style={{ marginBlockEnd: 0 }}
+                  >
+                    {bioCache ||
+                      (userInfo.uuid === loginUserId ? (
+                        <Text type="secondary">暂无简介</Text>
+                      ) : null)}
+                  </Paragraph>
+                </div>
+              </div>
+            </Card>
+          </Col>
+          <Col span={5}>
+            <Card>
+              <NavLink to={USER_POST_LIST_ONLY}>
+                <Paragraph>
+                  <IconText icon={<EditOutlined />} text="我的发帖" />
+                </Paragraph>
+              </NavLink>
+              <NavLink to={USER_COMMENT_LIST_ONLY}>
+                <Paragraph style={{ marginBlockEnd: 0 }}>
+                  <IconText icon={<CommentOutlined />} text="我的评论" />
+                </Paragraph>
+              </NavLink>
+            </Card>
+          </Col>
+          <Col span={19}>
+            <Card>
+              <Suspense fallback={<ChunkLoading />}>
+                <Outlet />
+              </Suspense>
+            </Card>
+          </Col>
+        </Row>
+      )}
+    </>
   )
 }
 

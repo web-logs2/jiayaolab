@@ -38,7 +38,7 @@ const HomePage: FC = () => {
   }, [size, sortField])
   return (
     <>
-      <HeadTitle prefix="主页" />
+      <HeadTitle layers={['主页']} />
       <Row gutter={[16, 0]}>
         <Col span={18}>
           <Space size="middle" className={classes.tabBar}>
