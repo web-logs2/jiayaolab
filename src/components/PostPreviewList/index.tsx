@@ -10,15 +10,14 @@ import {
   Skeleton,
   Space,
   Tag,
-  Tooltip,
   Typography,
 } from 'antd'
 import { FC } from 'react'
 import { POST } from '../../constant/paths'
 import { useTypedSelector } from '../../hook'
-import { formatDate, fromNowDate } from '../../utils/format'
 import ErrorBoundaryOnFetch from '../ErrorBoundaryOnFetch'
 import IconText from '../IconText'
+import TimelineDetail from '../TimelineDetail'
 import UserPreviewCard from '../UserPreviewCard'
 import classes from './index.module.less'
 
@@ -36,13 +35,11 @@ const PostPreviewList: FC<{
 
   return loading ? (
     <>
-      {Array.from({ length: posts?.length ? posts.length : 5 }).map(
-        (_, index) => (
-          <Card className={classes.cardItem} key={index}>
-            <Skeleton active paragraph={{ style: { marginBlockEnd: 0 } }} />
-          </Card>
-        )
-      )}
+      {Array.from({ length: posts?.length || 5 }).map((_, index) => (
+        <Card className={classes.cardItem} key={index}>
+          <Skeleton active paragraph={{ style: { marginBlockEnd: 0 } }} />
+        </Card>
+      ))}
     </>
   ) : errorMsg || !posts ? (
     <ErrorBoundaryOnFetch errorMsg={errorMsg} />
@@ -63,9 +60,7 @@ const PostPreviewList: FC<{
                   paragraph={{ maxWidth: 230 }}
                 />
                 <Divider type="vertical" />
-                <Tooltip title={formatDate(post.createdAt)} placement="right">
-                  <Text type="secondary">{fromNowDate(post.createdAt)}</Text>
-                </Tooltip>
+                <TimelineDetail date={post.createdAt} placement="right" />
               </div>
             </Col>
             <Col span={24}>

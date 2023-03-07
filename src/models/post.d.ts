@@ -4,7 +4,7 @@ import { UserType } from './user'
  * 帖子类型
  */
 export interface PostModelType {
-  // 帖子ID
+  // 帖子id
   uuid: string
   // 帖子标题
   title: string

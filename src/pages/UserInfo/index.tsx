@@ -137,24 +137,22 @@ const UserInfo: FC = () => {
                     level={3}
                     ellipsis={{ rows: 1 }}
                     editable={
-                      userInfo.uuid === loginUserId
-                        ? {
-                            maxLength: 16,
-                            tooltip: false,
-                            onChange: username => {
-                              if (username) {
-                                // 只有当输入的用户名不为空时，才会更新用户名
-                                setUsernameCache(username)
-                              } else {
-                                message.open({
-                                  key,
-                                  type: 'error',
-                                  content: '用户名不能为空！',
-                                })
-                              }
-                            },
+                      userInfo.uuid === loginUserId && {
+                        maxLength: 16,
+                        tooltip: false,
+                        onChange: username => {
+                          if (username) {
+                            // 只有当输入的用户名不为空时，才会更新用户名
+                            setUsernameCache(username)
+                          } else {
+                            message.open({
+                              key,
+                              type: 'error',
+                              content: '用户名不能为空！',
+                            })
                           }
-                        : false
+                        },
+                      }
                     }
                     style={{ marginBlockEnd: 0 }}
                   >
@@ -163,20 +161,18 @@ const UserInfo: FC = () => {
                   <Paragraph type="secondary">{userInfo.uuid}</Paragraph>
                   <Paragraph
                     editable={
-                      userInfo.uuid === loginUserId
-                        ? {
-                            maxLength: 60,
-                            tooltip: false,
-                            onChange: bio => setBioCache(bio || null),
-                          }
-                        : false
+                      userInfo.uuid === loginUserId && {
+                        maxLength: 60,
+                        tooltip: false,
+                        onChange: bio => setBioCache(bio || null),
+                      }
                     }
                     style={{ marginBlockEnd: 0 }}
                   >
                     {bioCache ||
-                      (userInfo.uuid === loginUserId ? (
+                      (userInfo.uuid === loginUserId && (
                         <Text type="secondary">暂无简介</Text>
-                      ) : null)}
+                      ))}
                   </Paragraph>
                 </div>
               </div>

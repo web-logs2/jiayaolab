@@ -40,7 +40,7 @@ export default [
         children: [
           // 不携带参数访问自动重定向到帖子列表页面
           { index: true, element: <Navigate to={POST_LIST} replace /> },
-          // 携带参数访问，将视为帖子的id，服务器根据帖子ID返回相应内容
+          // 携带参数访问，将视为帖子的id，服务器根据帖子id返回相应内容
           { path: ':postId', element: <PostDetail /> },
           // 帖子列表
           { path: POST_LIST_ONLY, element: <PostList /> },
@@ -56,7 +56,7 @@ export default [
         children: [
           // 不携带参数访问自动重定向到用户页面，用户页面会根据用户登录情况判断跳转页面
           { index: true, element: <UserInfo /> },
-          // 携带参数访问，将视为用户的id，服务器根据用户ID返回相应内容
+          // 携带参数访问，将视为用户的id，服务器根据用户id返回相应内容
           {
             path: ':userId',
             element: <UserInfo />,

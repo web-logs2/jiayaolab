@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom'
 import { USER_REGISTER } from '../../constant/paths'
 
 const { Paragraph } = Typography
+/**
+ * 全局公告
+ */
 const GlobalAnnouncement: FC = () => {
   return (
     <Card title="公告">

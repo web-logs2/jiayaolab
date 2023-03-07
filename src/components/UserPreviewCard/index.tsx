@@ -5,6 +5,14 @@ import { USER, USER_POST_LIST_ONLY } from '../../constant/paths'
 import classes from './index.module.less'
 
 const { Link, Paragraph } = Typography
+/**
+ * 预览用户信息卡片组件
+ * @param size 用户头像大小
+ * @param paragraph 用户名段落设置
+ * @param loading 是否正在加载中
+ * @param userId 用户id
+ * @param name 用户名
+ */
 const UserPreviewCard: FC<{
   size: number | 'small' | 'large' | 'default' | undefined
   paragraph?: CSSProperties

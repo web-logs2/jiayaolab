@@ -16,6 +16,7 @@ import ErrorBoundaryOnFetch from '../../components/ErrorBoundaryOnFetch'
 import GlobalAnnouncement from '../../components/GlobalAnnouncement'
 import HeadTitle from '../../components/HeadTitle'
 import IconText from '../../components/IconText'
+import TimelineDetail from '../../components/TimelineDetail'
 import UserPreviewCard from '../../components/UserPreviewCard'
 import { PostModelType } from '../../models/post'
 import { fetchPostById } from '../../services/post'
@@ -23,7 +24,7 @@ import classes from './index.module.less'
 
 const { Title, Text, Paragraph } = Typography
 const PostDetail: FC = () => {
-  // 帖子ID
+  // 帖子id
   const { postId } = useParams<{ postId: string }>()
   // 帖子详情
   const [postDetail, setPostDetail] = useState<PostModelType | null>(null)
@@ -69,13 +70,39 @@ const PostDetail: FC = () => {
                 active
                 loading={loading}
                 title={{ className: classes.titleLoading }}
-                paragraph={false}
+                paragraph={{ rows: 1, className: classes.timelineLoading }}
               >
-                <Title level={3}>{postDetail?.title}</Title>
+                <Title level={3} className={classes.title}>
+                  {postDetail?.title}
+                </Title>
+                <Paragraph className={classes.timeline}>
+                  <Text type="secondary">
+                    帖子发表：
+                    <TimelineDetail
+                      date={postDetail?.createdAt}
+                      placement="bottom"
+                    />
+                  </Text>
+                  {postDetail?.createdAt !== postDetail?.updatedAt && (
+                    <>
+                      <Divider type="vertical" />
+                      <Text type="secondary">
+                        最后编辑：
+                        <TimelineDetail
+                          date={postDetail?.updatedAt}
+                          placement="bottom"
+                        />
+                      </Text>
+                    </>
+                  )}
+                </Paragraph>
               </Skeleton>
-              <Divider />
-              <Skeleton active loading={loading} paragraph={{ rows: 8 }}>
-                <Paragraph>
+              <Skeleton
+                active
+                loading={loading}
+                paragraph={{ rows: 8, style: { marginBlockEnd: 32 } }}
+              >
+                <Paragraph style={{ marginBlockEnd: 32 }}>
                   <div
                     dangerouslySetInnerHTML={{
                       __html: postDetail?.html || '',

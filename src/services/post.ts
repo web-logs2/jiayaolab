@@ -67,7 +67,7 @@ export const addPost = async (
 
 /**
  * 获取帖子详情
- * @param id 帖子ID
+ * @param id 帖子id
  */
 export const fetchPostById = async (
   id: string | number

@@ -4,6 +4,9 @@ import { useRouteError } from 'react-router-dom'
 import classes from './index.module.less'
 
 const { Paragraph } = Typography
+/**
+ * 全局范围的错误边界组件
+ */
 const GlobalErrorBoundary: React.FC = () => {
   const error = useRouteError() as string
 
