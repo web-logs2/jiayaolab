@@ -16,7 +16,7 @@ import ErrorBoundaryOnFetch from '../../components/ErrorBoundaryOnFetch'
 import GlobalAnnouncement from '../../components/GlobalAnnouncement'
 import HeadTitle from '../../components/HeadTitle'
 import IconText from '../../components/IconText'
-import UserTag from '../../components/UserTag'
+import UserPreviewCard from '../../components/UserPreviewCard'
 import { PostModelType } from '../../models/post'
 import { fetchPostById } from '../../services/post'
 import classes from './index.module.less'
@@ -132,7 +132,7 @@ const PostDetail: FC = () => {
                   <Card>
                     <Row gutter={[0, 16]}>
                       <Col span={24}>
-                        <UserTag
+                        <UserPreviewCard
                           size="large"
                           loading={loading}
                           userId={postDetail?.user.uuid}

@@ -5,7 +5,7 @@ import { USER, USER_POST_LIST_ONLY } from '../../constant/paths'
 import classes from './index.module.less'
 
 const { Link, Paragraph } = Typography
-const UserTag: FC<{
+const UserPreviewCard: FC<{
   size: number | 'small' | 'large' | 'default' | undefined
   paragraph?: CSSProperties
   loading: boolean
@@ -15,7 +15,7 @@ const UserTag: FC<{
   const href = `${USER}/${userId}/${USER_POST_LIST_ONLY}`
 
   return (
-    <div className={classes.userTag}>
+    <div className={classes.userPreviewCard}>
       {loading ? (
         <Skeleton.Avatar active size={size} />
       ) : (
@@ -48,4 +48,4 @@ const UserTag: FC<{
   )
 }
 
-export default UserTag
+export default UserPreviewCard

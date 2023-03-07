@@ -19,7 +19,7 @@ import { useTypedSelector } from '../../hook'
 import { formatDate, fromNowDate } from '../../utils/format'
 import ErrorBoundaryOnFetch from '../ErrorBoundaryOnFetch'
 import IconText from '../IconText'
-import UserTag from '../UserTag'
+import UserPreviewCard from '../UserPreviewCard'
 import classes from './index.module.less'
 
 const { Text, Paragraph, Link, Title } = Typography
@@ -55,7 +55,7 @@ const PostPreviewList: FC<{
           <Row gutter={[0, 12]}>
             <Col span={24}>
               <div className={classes.cardHeader}>
-                <UserTag
+                <UserPreviewCard
                   size="default"
                   loading={loading}
                   userId={post.user.uuid}
