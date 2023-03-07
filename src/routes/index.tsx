@@ -1,5 +1,6 @@
 import { lazy } from 'react'
 import { Navigate, RouteObject } from 'react-router-dom'
+import GlobalErrorBoundary from '../components/GlobalErrorBoundary'
 import PageNotFound from '../components/PageNotFound'
 import {
   POST,
@@ -29,6 +30,7 @@ export default [
   {
     path: '/',
     element: <BasicLayout />,
+    errorElement: <GlobalErrorBoundary />,
     children: [
       // 主页
       { path: '/', element: <HomePage /> },
