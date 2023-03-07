@@ -24,9 +24,9 @@ server.post('/user/add', require('./service/user/addUser').main)
 server.post('/user/session', require('./service/user/sessionUser').main)
 // 用户验证
 server.post(
-  '/user/session/verity',
+  '/user/session/verify',
   jwtVerify,
-  require('./service/user/verityUser').main
+  require('./service/user/verifyUser').main
 )
 // 获取用户信息
 server.get('/user/info', require('./service/user/getUserInfo').main)

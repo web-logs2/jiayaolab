@@ -10,6 +10,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import { Provider as ReduxProvider } from 'react-redux'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import GlobalLoading from './components/GlobalLoading'
+import VerifyToken from './components/VerifyToken'
 import routes from './routes'
 import store from './store'
 
@@ -22,6 +23,7 @@ createRoot(document.getElementById('root') as HTMLElement).render(
         <ConfigProvider locale={locale}>
           <AntdApp>
             <Suspense fallback={<GlobalLoading />}>
+              <VerifyToken />
               <RouterProvider router={createBrowserRouter(routes)} />
             </Suspense>
           </AntdApp>

@@ -7,7 +7,6 @@ import {
   UserOutlined,
 } from '@ant-design/icons'
 import {
-  App as AntdApp,
   Avatar,
   Button,
   Col,
@@ -18,7 +17,7 @@ import {
   Space,
   Typography,
 } from 'antd'
-import { FC, Suspense, useEffect } from 'react'
+import { FC, Suspense } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import avatar from '../../assets/avatar.png'
 import ChunkLoading from '../../components/ChunkLoading'
@@ -33,7 +32,6 @@ import {
   USER_REGISTER,
 } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
-import { verityToken } from '../../services/user'
 import { logout } from '../../store/features/userSlice'
 import { urlRedirect } from '../../utils/redirect'
 import classes from './index.module.less'
@@ -41,7 +39,6 @@ import classes from './index.module.less'
 const { Header, Content, Footer } = Layout
 const { Text, Title, Link: AntdLink } = Typography
 const BasicLayout: FC = () => {
-  const { message } = AntdApp.useApp()
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useAppDispatch()
@@ -58,23 +55,6 @@ const BasicLayout: FC = () => {
   const userMenuKey = `${USER}/${loginUserId}`
   const userPostListLink = `${userMenuKey}/${USER_POST_LIST_ONLY}`
 
-  // 验证token
-  useEffect(() => {
-    if (token) {
-      verityToken()
-        .then(({ data }) => {
-          // 判断验证成功后的用户id是否匹配本地存储中的用户id
-          if (data.userId !== loginUserId) {
-            dispatch(logout())
-          }
-        })
-        .catch(err => {
-          // 验证失败，退出当前登录状态，要求重新登录
-          dispatch(logout())
-          message.error(err.message)
-        })
-    }
-  }, [token])
   return (
     <Layout>
       <HeadTitle />

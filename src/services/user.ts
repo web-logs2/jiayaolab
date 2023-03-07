@@ -29,10 +29,10 @@ export const loginUser = async (
 /**
  * 用户验证
  */
-export const verityToken = async (): Promise<
+export const verifyToken = async (): Promise<
   ResponseModelType<{ userId: string }>
 > => {
-  return await api.post('/user/session/verity')
+  return await api.post('/user/session/verify')
 }
 
 /**
