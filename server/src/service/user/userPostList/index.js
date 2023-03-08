@@ -19,7 +19,7 @@ exports.main = async (req, res) => {
           offset: Number(current) * limit - limit,
           order: [['createdAt', 'DESC']],
           where: {
-            userId: id,
+            userId: user.id,
           },
         })
         res.status(200).json(
