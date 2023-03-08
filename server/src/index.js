@@ -37,7 +37,7 @@ server.post(
   require('./service/user/updateUser').main
 )
 // 用户帖子列表
-server.get('/user/post/list', require('./service/user/userPost').main)
+server.get('/user/post/list', require('./service/user/userPostList').main)
 
 async function main() {
   // 初始化数据库
