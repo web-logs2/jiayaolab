@@ -8,7 +8,8 @@ exports.main = async (req, res) => {
   try {
     if (userId && current) {
       const user = await User.findOne({ where: { uuid: userId } })
-      if (user?.id) {
+
+      if (user) {
         const { rows } = await Post.findAndCountAll({
           limit,
           attributes: ['uuid', 'createdAt', 'updatedAt', 'title', 'text'],
