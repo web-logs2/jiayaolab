@@ -26,19 +26,30 @@ const { Text, Paragraph, Link, Title } = Typography
  * 帖子预览卡片的列表
  * @param size 当前页面大小
  * @param loadMoreHandler 点击加载更多按钮的逻辑处理
+ * @param userInfo 用户信息展示
+ * @param compact 紧凑模式（取消卡片边框，内边距）
  */
 const PostPreviewList: FC<{
   size: number
   loadMoreHandler: () => void
-}> = ({ size, loadMoreHandler }) => {
+  userInfo?: boolean
+  compact?: boolean
+}> = ({ size, loadMoreHandler, userInfo = true, compact }) => {
   const { loading, posts, errorMsg } = useTypedSelector(s => s.postSlice)
 
   return loading ? (
     <>
       {Array.from({ length: posts?.length || 5 }).map((_, index) => (
-        <Card className={classes.cardItem} key={index}>
-          <Skeleton active paragraph={{ style: { marginBlockEnd: 0 } }} />
-        </Card>
+        <>
+          <Card
+            className={compact ? classes.cardItemCompact : classes.cardItem}
+            style={{ border: compact ? 'none' : undefined }}
+            key={index}
+          >
+            <Skeleton active paragraph={{ style: { marginBlockEnd: 0 } }} />
+          </Card>
+          <Divider />
+        </>
       ))}
     </>
   ) : errorMsg || !posts ? (
@@ -48,62 +59,73 @@ const PostPreviewList: FC<{
       itemLayout="vertical"
       dataSource={posts}
       renderItem={post => (
-        <Card className={classes.cardItem}>
-          <Row gutter={[0, 12]}>
-            <Col span={24}>
-              <div className={classes.cardHeader}>
-                <UserPreviewCard
-                  size="default"
-                  loading={loading}
-                  userId={post.user.uuid}
-                  name={post.user.username}
-                  paragraph={{ maxWidth: 230 }}
-                />
-                <Divider type="vertical" />
-                <TimelineDetail date={post.createdAt} placement="right" />
-              </div>
-            </Col>
-            <Col span={24}>
-              <Link
-                href={`${POST}/${post.uuid}`}
-                target="_blank"
-                className={classes.cardLink}
-              >
-                <Title level={5}>{post.title}</Title>
-                <Paragraph
-                  type="secondary"
-                  ellipsis={{ rows: 2 }}
-                  style={{ marginBlockEnd: 0 }}
+        <>
+          <Card
+            className={compact ? classes.cardItemCompact : classes.cardItem}
+            style={{ border: compact ? 'none' : undefined }}
+          >
+            <Row gutter={[0, 12]}>
+              {userInfo && (
+                <Col span={24}>
+                  <div className={classes.cardHeader}>
+                    <UserPreviewCard
+                      size="default"
+                      loading={loading}
+                      userId={post.user.uuid}
+                      name={post.user.username}
+                      paragraph={{ maxWidth: 230 }}
+                    />
+                    <Divider type="vertical" />
+                    <TimelineDetail date={post.createdAt} placement="right" />
+                  </div>
+                </Col>
+              )}
+              <Col span={24}>
+                <Link
+                  href={`${POST}/${post.uuid}`}
+                  target="_blank"
+                  className={classes.cardLink}
                 >
-                  {post.text}
-                </Paragraph>
-              </Link>
-            </Col>
-            <Col span={24}>
-              <div className={classes.cardFooter} style={{ flexWrap: 'wrap' }}>
-                <div className={classes.tagList}>
-                  <Tag>标签</Tag>
-                  <Tag>标签</Tag>
-                  <Tag>标签</Tag>
-                  <Tag>标签</Tag>
-                  <Tag>标签</Tag>
-                  <Tag>标签</Tag>
-                  <Tag>标签</Tag>
-                  <Tag>标签</Tag>
+                  <Title level={5}>{post.title}</Title>
+                  <Paragraph
+                    type="secondary"
+                    ellipsis={{ rows: 2 }}
+                    style={{ marginBlockEnd: 0 }}
+                  >
+                    {post.text}
+                  </Paragraph>
+                </Link>
+              </Col>
+              <Col span={24}>
+                <div
+                  className={classes.cardFooter}
+                  style={{ flexWrap: 'wrap' }}
+                >
+                  <div className={classes.tagList}>
+                    <Tag>标签</Tag>
+                    <Tag>标签</Tag>
+                    <Tag>标签</Tag>
+                    <Tag>标签</Tag>
+                    <Tag>标签</Tag>
+                    <Tag>标签</Tag>
+                    <Tag>标签</Tag>
+                    <Tag>标签</Tag>
+                  </div>
+                  <Text type="secondary">
+                    <Space>
+                      <IconText icon={<EyeOutlined />} text={3487} />
+                      <Divider type="vertical" />
+                      <IconText icon={<MessageOutlined />} text={1598} />
+                      <Divider type="vertical" />
+                      <IconText icon={<LikeOutlined />} text={12417} />
+                    </Space>
+                  </Text>
                 </div>
-                <Text type="secondary">
-                  <Space>
-                    <IconText icon={<EyeOutlined />} text={3487} />
-                    <Divider type="vertical" />
-                    <IconText icon={<MessageOutlined />} text={1598} />
-                    <Divider type="vertical" />
-                    <IconText icon={<LikeOutlined />} text={12417} />
-                  </Space>
-                </Text>
-              </div>
-            </Col>
-          </Row>
-        </Card>
+              </Col>
+            </Row>
+          </Card>
+          <Divider />
+        </>
       )}
       loadMore={
         <div

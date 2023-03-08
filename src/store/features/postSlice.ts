@@ -5,6 +5,7 @@ import {
   fetchPostByCategories,
   fetchPostByConditions,
 } from '../../services/post'
+import { fetchPostByUser } from '../../services/user'
 
 // 响应锁，解决ReactStrict模式会请求多次导致页面重复渲染报错的问题！
 let reactStrictModeLock = false
@@ -51,6 +52,17 @@ export const getPostByConditions = createAsyncThunk<
     return data
   }
 )
+export const getPostByUser = createAsyncThunk<
+  PostModelType[] | null,
+  {
+    userId: string
+    size: number
+  }
+>(`${POST_FEATURE_KEY}/getPostByUser`, async ({ userId, size }) => {
+  const { data } = await fetchPostByUser(userId, size)
+
+  return data
+})
 
 const postSlice = createSlice({
   name: POST_FEATURE_KEY,
@@ -97,6 +109,27 @@ const postSlice = createSlice({
         state.errorMsg = null
       })
       .addCase(getPostByConditions.rejected, (state, action) => {
+        state.loading = false
+        state.posts = null
+        if (action.error.message) {
+          state.errorMsg = action.error.message
+        }
+      })
+    builder
+      .addCase(getPostByUser.pending, state => {
+        state.loading = true
+        state.errorMsg = null
+        reactStrictModeLock = false
+      })
+      .addCase(getPostByUser.fulfilled, (state, action) => {
+        state.loading = false
+        if (!reactStrictModeLock) {
+          state.posts = [...(state.posts || []), ...(action.payload || [])]
+          reactStrictModeLock = !reactStrictModeLock
+        }
+        state.errorMsg = null
+      })
+      .addCase(getPostByUser.rejected, (state, action) => {
         state.loading = false
         state.posts = null
         if (action.error.message) {

@@ -211,11 +211,9 @@ const UserInfo: FC = () => {
             </Card>
           </Col>
           <Col span={isMobile ? 24 : 19}>
-            <Card>
-              <Suspense fallback={<ChunkLoading />}>
-                <Outlet />
-              </Suspense>
-            </Card>
+            <Suspense fallback={<ChunkLoading />}>
+              <Outlet context={userId} />
+            </Suspense>
           </Col>
         </Row>
       )}

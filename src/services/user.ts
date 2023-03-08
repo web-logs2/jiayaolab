@@ -1,4 +1,5 @@
 import api from '../lib/api'
+import { PostModelType } from '../models/post'
 import { ResponseModelType } from '../models/response'
 import { UserType } from '../models/user'
 
@@ -57,4 +58,18 @@ export const updateUserInfo = async (
   bio: string | null
 ): Promise<ResponseModelType<UserType>> => {
   return await api.post('/user/update', { username, bio })
+}
+
+/**
+ * 获取用户帖子列表
+ * @param userId 用户id
+ * @param size 当前帖子大小
+ */
+export const fetchPostByUser = async (
+  userId: string,
+  size: string | number
+): Promise<ResponseModelType<PostModelType[] | null>> => {
+  return await api.get('/user/post/list', {
+    params: { userId, current: size },
+  })
 }
