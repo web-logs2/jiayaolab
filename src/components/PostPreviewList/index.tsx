@@ -80,8 +80,8 @@ const PostPreviewList: FC<{
               </Link>
             </Col>
             <Col span={24}>
-              <div className={classes.cardFooter}>
-                <div>
+              <div className={classes.cardFooter} style={{ flexWrap: 'wrap' }}>
+                <div className={classes.tagList}>
                   <Tag>标签</Tag>
                   <Tag>标签</Tag>
                   <Tag>标签</Tag>

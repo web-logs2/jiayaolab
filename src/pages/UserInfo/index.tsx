@@ -4,6 +4,7 @@ import {
   Avatar,
   Card,
   Col,
+  Grid,
   Row,
   Skeleton,
   Typography,
@@ -27,8 +28,11 @@ import classes from './index.module.less'
 
 const key = 'UpdateUser'
 const { Title, Paragraph, Text } = Typography
+const { useBreakpoint } = Grid
 const UserInfo: FC = () => {
   const navigate = useNavigate()
+  const { xs, lg } = useBreakpoint()
+  const isMobile = xs || !lg
   const { message } = AntdApp.useApp()
   const { loginUserId } = useTypedSelector(s => s.userSlice)
   const { userId } = useParams<{ userId: string }>()
@@ -178,31 +182,35 @@ const UserInfo: FC = () => {
               </div>
             </Card>
           </Col>
-          <Col span={5}>
+          <Col span={isMobile ? 24 : 5}>
             <Card>
-              <NavLink to={USER_POST_LIST_ONLY}>
-                <Paragraph>
-                  <IconText
-                    icon={<EditOutlined />}
-                    text={`${
-                      userInfo.uuid === loginUserId ? '我的' : 'TA的'
-                    }发帖`}
-                  />
-                </Paragraph>
-              </NavLink>
-              <NavLink to={USER_COMMENT_LIST_ONLY}>
-                <Paragraph style={{ marginBlockEnd: 0 }}>
-                  <IconText
-                    icon={<CommentOutlined />}
-                    text={`${
-                      userInfo.uuid === loginUserId ? '我的' : 'TA的'
-                    }评论`}
-                  />
-                </Paragraph>
-              </NavLink>
+              <div className={isMobile ? classes.userTab : undefined}>
+                <NavLink to={USER_POST_LIST_ONLY}>
+                  <Paragraph
+                    style={{ marginBlockEnd: isMobile ? 0 : undefined }}
+                  >
+                    <IconText
+                      icon={<EditOutlined />}
+                      text={`${
+                        userInfo.uuid === loginUserId ? '我的' : 'TA的'
+                      }发帖`}
+                    />
+                  </Paragraph>
+                </NavLink>
+                <NavLink to={USER_COMMENT_LIST_ONLY}>
+                  <Paragraph style={{ marginBlockEnd: 0 }}>
+                    <IconText
+                      icon={<CommentOutlined />}
+                      text={`${
+                        userInfo.uuid === loginUserId ? '我的' : 'TA的'
+                      }评论`}
+                    />
+                  </Paragraph>
+                </NavLink>
+              </div>
             </Card>
           </Col>
-          <Col span={19}>
+          <Col span={isMobile ? 24 : 19}>
             <Card>
               <Suspense fallback={<ChunkLoading />}>
                 <Outlet />

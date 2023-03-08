@@ -11,6 +11,7 @@ import {
   Button,
   Col,
   Dropdown,
+  Grid,
   Layout,
   Menu,
   Row,
@@ -38,11 +39,14 @@ import classes from './index.module.less'
 
 const { Header, Content, Footer } = Layout
 const { Text, Title, Link: AntdLink } = Typography
+const { useBreakpoint } = Grid
 const BasicLayout: FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useAppDispatch()
   const { token, loginUserId } = useTypedSelector(s => s.userSlice)
+  const { xs, lg } = useBreakpoint()
+  const isMobile = xs || !lg
   // 接受注册/登录前的页面，在注册/登录完成后自动跳转之前的页面
   const doRedirect = (path: string) => {
     const isAuthPage =
@@ -56,13 +60,13 @@ const BasicLayout: FC = () => {
   const userPostListLink = `${userMenuKey}/${USER_POST_LIST_ONLY}`
 
   return (
-    <Layout>
+    <Layout style={{ minWidth: 360 }}>
       <HeadTitle />
       <Header className={classes.header}>
-        <div style={{ marginInlineEnd: 50 }}>
+        <div style={{ marginInlineEnd: isMobile ? 25 : 50 }}>
           <Link to="/" className={classes.navigate}>
             <img src={avatar} alt="" draggable={false} width={32} height={32} />
-            <Title className={classes.title} level={5}>
+            <Title className={classes.title} level={5} hidden={xs}>
               佳垚的论坛
             </Title>
           </Link>
@@ -137,7 +141,10 @@ const BasicLayout: FC = () => {
           </Space>
         )}
       </Header>
-      <Content className={classes.content}>
+      <Content
+        className={classes.content}
+        style={{ paddingInline: isMobile ? 25 : 50 }}
+      >
         <Suspense fallback={<ChunkLoading />}>
           <Outlet />
         </Suspense>

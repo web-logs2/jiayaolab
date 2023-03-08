@@ -13,6 +13,15 @@
   .card-footer {
     display: flex;
     justify-content: space-between;
+    gap: 12px;
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      [class*='ant-tag'] {
+        margin-inline-end: 0;
+      }
+    }
   }
 }
 .load-more-button {

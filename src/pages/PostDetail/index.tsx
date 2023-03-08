@@ -5,6 +5,7 @@ import {
   Card,
   Col,
   Divider,
+  Grid,
   Row,
   Skeleton,
   Space,
@@ -22,10 +23,13 @@ import { PostModelType } from '../../models/post'
 import { fetchPostById } from '../../services/post'
 import classes from './index.module.less'
 
+const { useBreakpoint } = Grid
 const { Title, Text, Paragraph } = Typography
 const PostDetail: FC = () => {
   // 帖子id
   const { postId } = useParams<{ postId: string }>()
+  const { xs, lg } = useBreakpoint()
+  const isMobile = xs || !lg
   // 帖子详情
   const [postDetail, setPostDetail] = useState<PostModelType | null>(null)
   // 获取帖子详情中
@@ -38,15 +42,45 @@ const PostDetail: FC = () => {
       <Skeleton
         active
         loading={loading}
-        avatar={{
-          size: 'large',
-          style: { marginInlineEnd: -16 },
-        }}
+        avatar={{ size: 'large', style: { marginInlineEnd: -16 } }}
         title={false}
         paragraph={false}
       >
         {children}
       </Skeleton>
+    )
+  }
+  const UserPrevCard: FC = () => {
+    return (
+      <Card>
+        <Row gutter={[0, 16]}>
+          <Col span={24}>
+            <UserPreviewCard
+              size="large"
+              loading={loading}
+              userId={postDetail?.user.uuid}
+              name={postDetail?.user.username}
+            />
+          </Col>
+          <Col span={24} hidden={!loading && !postDetail?.user.bio}>
+            <Skeleton
+              active
+              loading={loading}
+              title={false}
+              paragraph={{ rows: 3, style: { marginBlockEnd: 0 } }}
+            >
+              <Paragraph
+                type="secondary"
+                title={postDetail?.user.bio || ''}
+                style={{ marginBlockEnd: 0 }}
+                ellipsis={{ rows: 3 }}
+              >
+                {postDetail?.user.bio}
+              </Paragraph>
+            </Skeleton>
+          </Col>
+        </Row>
+      </Card>
     )
   }
 
@@ -64,7 +98,7 @@ const PostDetail: FC = () => {
       <HeadTitle layers={[postDetail?.title, '帖子详情']} />
       {loading || postDetail ? (
         <Row gutter={[16, 16]}>
-          <Col span={18}>
+          <Col span={isMobile ? 24 : 18}>
             <Card>
               <Skeleton
                 active
@@ -149,47 +183,23 @@ const PostDetail: FC = () => {
               </div>
             </Card>
           </Col>
-          <Col span={6}>
+          <Col span={isMobile ? 24 : 6}>
             <Row gutter={[0, 16]}>
               <Col span={24}>
                 <GlobalAnnouncement />
               </Col>
               <Col span={24}>
-                <Affix offsetTop={16}>
-                  <Card>
-                    <Row gutter={[0, 16]}>
-                      <Col span={24}>
-                        <UserPreviewCard
-                          size="large"
-                          loading={loading}
-                          userId={postDetail?.user.uuid}
-                          name={postDetail?.user.username}
-                        />
-                      </Col>
-                      <Col span={24} hidden={!loading && !postDetail?.user.bio}>
-                        <Skeleton
-                          active
-                          loading={loading}
-                          title={false}
-                          paragraph={{ rows: 3, style: { marginBlockEnd: 0 } }}
-                        >
-                          <Paragraph
-                            type="secondary"
-                            title={postDetail?.user.bio || ''}
-                            style={{ marginBlockEnd: 0 }}
-                            ellipsis={{ rows: 3 }}
-                          >
-                            {postDetail?.user.bio}
-                          </Paragraph>
-                        </Skeleton>
-                      </Col>
-                    </Row>
-                  </Card>
-                </Affix>
+                {isMobile ? (
+                  <UserPrevCard />
+                ) : (
+                  <Affix offsetTop={16}>
+                    <UserPrevCard />
+                  </Affix>
+                )}
               </Col>
             </Row>
           </Col>
-          <Col span={18}>
+          <Col span={isMobile ? 24 : 18}>
             <Card title="评论">
               <Skeleton active></Skeleton>
             </Card>

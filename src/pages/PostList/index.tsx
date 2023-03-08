@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   Col,
+  Grid,
   Input,
   Radio,
   Row,
@@ -21,6 +22,7 @@ import {
   postCleared,
 } from '../../store/features/postSlice'
 
+const { useBreakpoint } = Grid
 const { Text } = Typography
 const PostList: FC = () => {
   const { loading, posts } = useTypedSelector(s => s.postSlice)
@@ -33,6 +35,8 @@ const PostList: FC = () => {
   // 关键字
   const [keywords, setKeywords] = useState<string>('')
   const dispatch = useAppDispatch()
+  const { xs, lg } = useBreakpoint()
+  const isMobile = xs || !lg
   // 搜索按钮
   const searchHandler = () => {
     setSize(1)
@@ -70,8 +74,8 @@ const PostList: FC = () => {
         <Row gutter={[0, 16]}>
           <Col span={24}>
             <Card>
-              <Row align="middle" gutter={[32, 0]}>
-                <Col span={6}>
+              <Row align="middle" gutter={[32, isMobile ? 16 : 0]}>
+                <Col span={isMobile ? 24 : 6}>
                   <Space>
                     <Text>排序依据</Text>
                     <Select
@@ -87,7 +91,7 @@ const PostList: FC = () => {
                     />
                   </Space>
                 </Col>
-                <Col span={6}>
+                <Col span={isMobile ? 24 : 6}>
                   <Space>
                     <Text>排序方式</Text>
                     <Radio.Group
@@ -104,7 +108,7 @@ const PostList: FC = () => {
                     />
                   </Space>
                 </Col>
-                <Col span={6}>
+                <Col span={isMobile ? 24 : 6}>
                   <Input
                     allowClear
                     value={keywords}
@@ -114,7 +118,7 @@ const PostList: FC = () => {
                     onPressEnter={searchHandler}
                   />
                 </Col>
-                <Col span={6}>
+                <Col span={isMobile ? 24 : 6}>
                   <Space>
                     <Button
                       type="primary"
