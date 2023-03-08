@@ -48,7 +48,7 @@ const PostPreviewList: FC<{
           >
             <Skeleton active paragraph={{ style: { marginBlockEnd: 0 } }} />
           </Card>
-          <Divider />
+          {compact && <Divider />}
         </>
       ))}
     </>
@@ -124,7 +124,7 @@ const PostPreviewList: FC<{
               </Col>
             </Row>
           </Card>
-          <Divider />
+          {compact && <Divider />}
         </>
       )}
       loadMore={
