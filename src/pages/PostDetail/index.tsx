@@ -179,7 +179,7 @@ const PostDetail: FC = () => {
                     </LoadingButton>
                   </Space>
                   {loading ? (
-                    <Skeleton.Button />
+                    <Skeleton.Button active />
                   ) : (
                     <Button type="link" danger>
                       举报
