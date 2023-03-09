@@ -142,7 +142,8 @@ const PostPreviewList: FC<{
                         <IconText icon={<LikeOutlined />} text={12417} />
                         {location.pathname.includes(USER_POST_LIST_ONLY) &&
                           post.user.uuid === loginUserId && (
-                            <div style={{ marginInlineStart: 32 }}>
+                            <>
+                              <Divider type="vertical" />
                               <Button
                                 type="text"
                                 size="small"
@@ -176,7 +177,7 @@ const PostPreviewList: FC<{
                                   删除
                                 </Button>
                               </Popconfirm>
-                            </div>
+                            </>
                           )}
                       </Space>
                     </Text>
