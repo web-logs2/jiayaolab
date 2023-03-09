@@ -14,13 +14,14 @@ import {
 import { FC, PropsWithChildren, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import ErrorBoundaryOnFetch from '../../components/ErrorBoundaryOnFetch'
+import FlexGrow from '../../components/FlexGrow'
 import GlobalAnnouncement from '../../components/GlobalAnnouncement'
 import HeadTitle from '../../components/HeadTitle'
 import IconText from '../../components/IconText'
 import TimelineDetail from '../../components/TimelineDetail'
 import UserPreviewCard from '../../components/UserPreviewCard'
 import { PostModelType } from '../../models/post'
-import { fetchPostById } from '../../services/post'
+import { fetchPostDetail } from '../../services/post'
 import classes from './index.module.less'
 
 const { useBreakpoint } = Grid
@@ -87,7 +88,7 @@ const PostDetail: FC = () => {
   // 匹配到路由，当有id参数时执行钩子
   useEffect(() => {
     if (postId) {
-      fetchPostById(postId)
+      fetchPostDetail(postId)
         .then(({ data }) => setPostDetail(data))
         .catch(err => setErrorMsg(err.message))
         .finally(() => setLoading(false))
@@ -98,92 +99,97 @@ const PostDetail: FC = () => {
       <HeadTitle layers={[postDetail?.title, '帖子详情']} />
       {loading || postDetail ? (
         <Row gutter={[16, 16]}>
-          <Col span={isMobile ? 24 : 18}>
-            <Card>
-              <Skeleton
-                active
-                loading={loading}
-                title={{ className: classes.titleLoading }}
-                paragraph={{ rows: 1, className: classes.timelineLoading }}
-              >
-                <Title level={3} className={classes.title}>
-                  {postDetail?.title}
-                </Title>
-                <Paragraph className={classes.timeline}>
-                  <Text type="secondary">
-                    帖子发表：
-                    <TimelineDetail
-                      date={postDetail?.createdAt}
-                      placement="bottom"
+          <Col span={isMobile ? 24 : 17}>
+            <Card className={classes.card}>
+              <div>
+                <Skeleton
+                  active
+                  loading={loading}
+                  title={{ className: classes.titleLoading }}
+                  paragraph={{ rows: 1, className: classes.timelineLoading }}
+                >
+                  <Title level={3} className={classes.title}>
+                    {postDetail?.title}
+                  </Title>
+                  <Paragraph className={classes.timeline}>
+                    <Text type="secondary">
+                      帖子发表：
+                      <TimelineDetail
+                        date={postDetail?.createdAt}
+                        placement="bottom"
+                      />
+                    </Text>
+                    {postDetail?.createdAt !== postDetail?.updatedAt && (
+                      <>
+                        <Divider type="vertical" />
+                        <Text type="secondary">
+                          最后编辑：
+                          <TimelineDetail
+                            date={postDetail?.updatedAt}
+                            placement="bottom"
+                          />
+                        </Text>
+                      </>
+                    )}
+                  </Paragraph>
+                </Skeleton>
+                <Skeleton
+                  active
+                  loading={loading}
+                  paragraph={{ rows: 8, style: { marginBlockEnd: 32 } }}
+                >
+                  <Paragraph style={{ marginBlockEnd: 32 }}>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: postDetail?.html || '',
+                      }}
                     />
-                  </Text>
-                  {postDetail?.createdAt !== postDetail?.updatedAt && (
-                    <>
-                      <Divider type="vertical" />
-                      <Text type="secondary">
-                        最后编辑：
-                        <TimelineDetail
-                          date={postDetail?.updatedAt}
-                          placement="bottom"
-                        />
-                      </Text>
-                    </>
+                  </Paragraph>
+                </Skeleton>
+              </div>
+              <FlexGrow />
+              <div>
+                <Divider />
+                <div className={classes.actions}>
+                  <Space size="large">
+                    <LoadingButton>
+                      <IconText
+                        icon={
+                          <Button
+                            shape="circle"
+                            size="large"
+                            type="primary"
+                            icon={<LikeFilled />}
+                          />
+                        }
+                        text={<Text type="secondary">25368</Text>}
+                      />
+                    </LoadingButton>
+                    <LoadingButton>
+                      <IconText
+                        icon={
+                          <Button
+                            shape="circle"
+                            size="large"
+                            icon={<StarOutlined />}
+                          />
+                        }
+                        text={<Text type="secondary">441</Text>}
+                      />
+                    </LoadingButton>
+                  </Space>
+                  {loading ? (
+                    <Skeleton.Button />
+                  ) : (
+                    <Button type="link" danger>
+                      举报
+                    </Button>
                   )}
-                </Paragraph>
-              </Skeleton>
-              <Skeleton
-                active
-                loading={loading}
-                paragraph={{ rows: 8, style: { marginBlockEnd: 32 } }}
-              >
-                <Paragraph style={{ marginBlockEnd: 32 }}>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: postDetail?.html || '',
-                    }}
-                  />
-                </Paragraph>
-              </Skeleton>
-              <Divider />
-              <div className={classes.actions}>
-                <Space size="large">
-                  <LoadingButton>
-                    <IconText
-                      icon={
-                        <Button
-                          shape="circle"
-                          size="large"
-                          type="primary"
-                          icon={<LikeFilled />}
-                        />
-                      }
-                      text={<Text type="secondary">25368</Text>}
-                    />
-                  </LoadingButton>
-                  <LoadingButton>
-                    <IconText
-                      icon={
-                        <Button
-                          shape="circle"
-                          size="large"
-                          icon={<StarOutlined />}
-                        />
-                      }
-                      text={<Text type="secondary">441</Text>}
-                    />
-                  </LoadingButton>
-                </Space>
-                {loading ? (
-                  <Skeleton.Button />
-                ) : (
-                  <Button type="link" danger>
-                    举报
-                  </Button>
-                )}
+                </div>
               </div>
             </Card>
           </Col>
-          <Col span={isMobile ? 24 : 6}>
+          <Col span={isMobile ? 24 : 7}>
             <Row gutter={[0, 16]}>
               <Col span={24}>
                 <GlobalAnnouncement />
@@ -199,7 +205,7 @@ const PostDetail: FC = () => {
               </Col>
             </Row>
           </Col>
-          <Col span={isMobile ? 24 : 18}>
+          <Col span={isMobile ? 24 : 17}>
             <Card title="评论">
               <Skeleton active></Skeleton>
             </Card>

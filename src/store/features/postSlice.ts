@@ -1,11 +1,12 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { OrderByModuleType } from '../../models/orderBy'
 import { PostModelType } from '../../models/post'
 import {
-  fetchPostByCategories,
-  fetchPostByConditions,
+  fetchRecommendPostList,
+  fetchSearchPostList,
 } from '../../services/post'
 import { fetchPostByUser } from '../../services/user'
+import { RootState } from '../index'
 
 // 响应锁，解决ReactStrict模式会请求多次导致页面重复渲染报错的问题！
 let reactStrictModeLock = false
@@ -14,6 +15,7 @@ const initialState: {
   loading: boolean
   posts: PostModelType[] | null
   errorMsg: string | null
+  size: number
 } = {
   // 数据正在获取中
   loading: true,
@@ -21,29 +23,31 @@ const initialState: {
   posts: null,
   // 数据获取失败，返回的错误信息
   errorMsg: null,
+  // 当前页面大小
+  size: 1,
 }
 
-export const getPostByCategories = createAsyncThunk<
+export const getPostByField = createAsyncThunk<
   PostModelType[] | null,
-  { size: number; sortField: keyof PostModelType }
->(`${POST_FEATURE_KEY}/getPostByCategories`, async ({ size, sortField }) => {
-  const { data } = await fetchPostByCategories(size, sortField)
-
+  keyof PostModelType
+>(`${POST_FEATURE_KEY}/getPostByField`, async (sortField, { getState }) => {
+  const { postSlice } = getState() as RootState
+  const { data } = await fetchRecommendPostList(postSlice.size, sortField)
   return data
 })
-export const getPostByConditions = createAsyncThunk<
+export const getPostBySearch = createAsyncThunk<
   PostModelType[] | null,
   {
-    size: number
     sortField: keyof PostModelType
     sortOrder: OrderByModuleType
     keywords: string
   }
 >(
-  `${POST_FEATURE_KEY}/getPostByConditions`,
-  async ({ size, sortField, sortOrder, keywords }) => {
-    const { data } = await fetchPostByConditions(
-      size,
+  `${POST_FEATURE_KEY}/getPostBySearch`,
+  async ({ sortField, sortOrder, keywords }, { getState }) => {
+    const { postSlice } = getState() as RootState
+    const { data } = await fetchSearchPostList(
+      postSlice.size,
       sortField,
       sortOrder,
       keywords.trim()
@@ -54,10 +58,7 @@ export const getPostByConditions = createAsyncThunk<
 )
 export const getPostByUser = createAsyncThunk<
   PostModelType[] | null,
-  {
-    userId: string
-    size: number
-  }
+  { userId: string; size: number }
 >(`${POST_FEATURE_KEY}/getPostByUser`, async ({ userId, size }) => {
   const { data } = await fetchPostByUser(userId, size)
 
@@ -68,18 +69,21 @@ const postSlice = createSlice({
   name: POST_FEATURE_KEY,
   initialState,
   reducers: {
-    postCleared: state => {
+    clearPostList: state => {
       state.posts = null
+    },
+    setFetchSize: (state, { payload }: PayloadAction<number>) => {
+      state.size = payload
     },
   },
   extraReducers: builder => {
     builder
-      .addCase(getPostByCategories.pending, state => {
+      .addCase(getPostByField.pending, state => {
         state.loading = true
         state.errorMsg = null
         reactStrictModeLock = false
       })
-      .addCase(getPostByCategories.fulfilled, (state, action) => {
+      .addCase(getPostByField.fulfilled, (state, action) => {
         state.loading = false
         if (!reactStrictModeLock) {
           state.posts = [...(state.posts || []), ...(action.payload || [])]
@@ -87,7 +91,7 @@ const postSlice = createSlice({
         }
         state.errorMsg = null
       })
-      .addCase(getPostByCategories.rejected, (state, action) => {
+      .addCase(getPostByField.rejected, (state, action) => {
         state.loading = false
         state.posts = null
         if (action.error.message) {
@@ -95,12 +99,12 @@ const postSlice = createSlice({
         }
       })
     builder
-      .addCase(getPostByConditions.pending, state => {
+      .addCase(getPostBySearch.pending, state => {
         state.loading = true
         state.errorMsg = null
         reactStrictModeLock = false
       })
-      .addCase(getPostByConditions.fulfilled, (state, action) => {
+      .addCase(getPostBySearch.fulfilled, (state, action) => {
         state.loading = false
         if (!reactStrictModeLock) {
           state.posts = [...(state.posts || []), ...(action.payload || [])]
@@ -108,7 +112,7 @@ const postSlice = createSlice({
         }
         state.errorMsg = null
       })
-      .addCase(getPostByConditions.rejected, (state, action) => {
+      .addCase(getPostBySearch.rejected, (state, action) => {
         state.loading = false
         state.posts = null
         if (action.error.message) {
@@ -138,5 +142,5 @@ const postSlice = createSlice({
       })
   },
 })
-export const { postCleared } = postSlice.actions
+export const { clearPostList, setFetchSize } = postSlice.actions
 export default postSlice.reducer

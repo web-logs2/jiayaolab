@@ -12,11 +12,17 @@ const jwtVerify = expressjwt({
 })
 
 // 获得帖子
-server.get('/post/get', require('./service/post/getPost').main)
+server.get('/post/recommend', require('./service/post/recommendPost').main)
+// 获得帖子详情
+server.get('/post/detail', require('./service/post/detailPost').main)
 // 搜索帖子
 server.get('/post/search', require('./service/post/searchPost').main)
 // 发布帖子
-server.post('/post/add', jwtVerify, require('./service/post/addPost').main)
+server.post(
+  '/post/submit',
+  jwtVerify,
+  require('./service/post/submitPost').main
+)
 
 // 用户注册
 server.post('/user/add', require('./service/user/addUser').main)

@@ -11,61 +11,51 @@ import {
   Space,
   Typography,
 } from 'antd'
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import HeadTitle from '../../components/HeadTitle'
 import PostPreviewList from '../../components/PostPreviewList'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { OrderByModuleType } from '../../models/orderBy'
 import { PostModelType } from '../../models/post'
 import {
-  getPostByConditions,
-  postCleared,
+  clearPostList,
+  getPostBySearch,
+  setFetchSize,
 } from '../../store/features/postSlice'
 
 const { useBreakpoint } = Grid
 const { Text } = Typography
 const PostList: FC = () => {
-  const { loading, posts } = useTypedSelector(s => s.postSlice)
-  // 页面大小
-  const [size, setSize] = useState<number>(1)
-  // 排序依据
+  const { loading } = useTypedSelector(s => s.postSlice)
   const [sortField, setSortField] = useState<keyof PostModelType>('updatedAt')
-  // 排序方式
   const [sortOrder, setSortOrder] = useState<OrderByModuleType>('DESC')
-  // 关键字
   const [keywords, setKeywords] = useState<string>('')
   const dispatch = useAppDispatch()
   const { xs, lg } = useBreakpoint()
   const isMobile = xs || !lg
+  const fetchPostHandler = () =>
+    dispatch(getPostBySearch({ sortField, sortOrder, keywords }))
   // 搜索按钮
   const searchHandler = () => {
-    setSize(1)
-    dispatch(postCleared())
-    dispatch(getPostByConditions({ size: 1, sortField, sortOrder, keywords }))
+    // 清空帖子列表
+    dispatch(clearPostList())
+    // 重置获取帖子页面大小
+    dispatch(setFetchSize(1))
+    // 执行获取帖子处理程序
+    fetchPostHandler()
   }
   // 重置按钮
   const resetHandler = () => {
-    setSize(1)
+    // 重置获取帖子页面大小
+    dispatch(setFetchSize(1))
+    // 重置排序依据
     setSortField('updatedAt')
+    // 重置排序方式
     setSortOrder('DESC')
+    // 重置关键字
     setKeywords('')
   }
 
-  // 这个钩子作用和HomePage里的作用类似，都是载入页面清除原来的数据
-  // 页面载入后，进行一次数据获取操作
-  useEffect(() => {
-    if (posts) {
-      dispatch(postCleared())
-    }
-    dispatch(getPostByConditions({ size, sortField, sortOrder, keywords }))
-  }, [])
-  // 处理点击查看更多按钮的操作，这里用了if判断解决了搜索按钮和重置按钮点击后改变size导致这里的钩子获取数据的问题
-  // （PS：这个钩子正常执行应该只能在点击查看更多按钮后）
-  useEffect(() => {
-    if (size > 1) {
-      dispatch(getPostByConditions({ size, sortField, sortOrder, keywords }))
-    }
-  }, [size])
   // 点击查看更多按钮
   return (
     <>
@@ -142,10 +132,7 @@ const PostList: FC = () => {
             </Card>
           </Col>
           <Col span={24}>
-            <PostPreviewList
-              size={size}
-              loadMoreHandler={() => setSize(size + 1)}
-            />
+            <PostPreviewList fetchPostHandler={fetchPostHandler} />
           </Col>
         </Row>
       </div>

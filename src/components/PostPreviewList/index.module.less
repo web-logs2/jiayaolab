@@ -1,36 +1,28 @@
-.card-item-compact {
+.card {
   [class='ant-card-body'] {
-    padding: 0;
+    padding-block: 0;
   }
-}
-.card-item,
-.card-item-compact {
-  margin-block-end: 12px;
+  [class*='ant-list-item'] {
+    display: block;
+    padding-block: 24px;
+  }
   .card-header {
     display: flex;
     align-items: center;
   }
   .card-link {
+    width: 100%;
     color: inherit;
     h5[class*='ant-typography'] {
       color: inherit;
     }
   }
-  .card-footer {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    .tag-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      [class*='ant-tag'] {
-        margin-inline-end: 0;
-      }
-    }
-  }
 }
-.load-more-button {
-  margin-block-start: 32px;
+.load-more {
   text-align: center;
+  margin-block: 32px 24px;
+  padding: 0 !important;
+}
+.empty {
+  padding-block: 24px;
 }

@@ -20,7 +20,9 @@ const GlobalErrorBoundary: React.FC = () => {
         <Button
           type="primary"
           key="retry"
-          onClick={() => window.location.reload()}
+          onClick={() => {
+            window.location.pathname = '/'
+          }}
         >
           重试
         </Button>,

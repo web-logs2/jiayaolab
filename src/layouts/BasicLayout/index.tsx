@@ -27,6 +27,7 @@ import HeadTitle from '../../components/HeadTitle'
 import IconText from '../../components/IconText'
 import {
   POST_LIST,
+  POST_NEW,
   USER,
   USER_LOGIN,
   USER_POST_LIST_ONLY,
@@ -85,11 +86,17 @@ const BasicLayout: FC = () => {
           }}
           items={[
             { key: '/', label: '主页' },
+            {
+              key:
+                token && loginUserId
+                  ? POST_NEW
+                  : `${urlRedirect(USER_LOGIN, POST_NEW)}`,
+              label: '发帖',
+            },
             { key: POST_LIST, label: '帖子' },
             {
               key: token && loginUserId ? userMenuKey : USER,
               label: '我的',
-              disabled: !token,
             },
           ]}
         />

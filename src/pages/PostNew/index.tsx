@@ -4,7 +4,6 @@ import {
   Button,
   Card,
   Checkbox,
-  Divider,
   Form,
   Input,
   Popconfirm,
@@ -18,7 +17,7 @@ import HeadTitle from '../../components/HeadTitle'
 import TextEditor from '../../components/TextEditor'
 import { POST_NEW, USER_LOGIN } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
-import { addPost } from '../../services/post'
+import { submitPost } from '../../services/post'
 import {
   removeDraft,
   setPushing,
@@ -26,7 +25,7 @@ import {
 } from '../../store/features/articleSlice'
 
 const key = 'PostNew'
-const { Title, Text, Paragraph } = Typography
+const { Text } = Typography
 const PostNew: FC = () => {
   const dispatch = useAppDispatch()
   const [form] = Form.useForm()
@@ -57,7 +56,7 @@ const PostNew: FC = () => {
       duration: 0,
     })
     // 发布帖子
-    addPost(title, text, html, _public)
+    submitPost(title, text, html, _public)
       .then(res => {
         removeDraftHandler()
         navigateHandler()
@@ -86,11 +85,6 @@ const PostNew: FC = () => {
     <>
       <HeadTitle layers={['发布帖子']} />
       <Card>
-        <Title level={3}>发布帖子</Title>
-        <Divider />
-        <Paragraph type="warning">
-          未发布的帖子将会自动保存为草稿，帖子发布成功或取消发布帖子后清空草稿。
-        </Paragraph>
         <Form
           form={form}
           initialValues={{ title, _public }}

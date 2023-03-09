@@ -1,7 +1,5 @@
 import { Card, Typography } from 'antd'
 import { FC } from 'react'
-import { Link } from 'react-router-dom'
-import { USER_REGISTER } from '../../constant/paths'
 
 const { Paragraph } = Typography
 /**
@@ -10,9 +8,12 @@ const { Paragraph } = Typography
 const GlobalAnnouncement: FC = () => {
   return (
     <Card title="公告">
-      <Paragraph style={{ marginBlockEnd: 0 }}>
-        用户注册无需邮箱验证码验证，任意邮箱均可注册！
-        <Link to={USER_REGISTER}>点我去注册</Link>
+      <Paragraph>本项目是「赵佳磊」的毕业设计，遵循MIT协议开源。</Paragraph>
+      <Paragraph type="success">你可以免费使用软件或出售</Paragraph>
+      <Paragraph type="success">你可以将本项目用于商业用途</Paragraph>
+      <Paragraph type="success">你可以修改项目代码</Paragraph>
+      <Paragraph type="warning" style={{ marginBlockEnd: 0 }}>
+        你的源文件里必须包含MIT许可证
       </Paragraph>
     </Card>
   )
