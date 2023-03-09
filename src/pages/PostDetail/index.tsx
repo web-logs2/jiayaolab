@@ -136,9 +136,9 @@ const PostDetail: FC = () => {
                 <Skeleton
                   active
                   loading={loading}
-                  paragraph={{ rows: 8, style: { marginBlockEnd: 32 } }}
+                  paragraph={{ rows: 8, style: { marginBlockEnd: 48 } }}
                 >
-                  <Paragraph style={{ marginBlockEnd: 32 }}>
+                  <Paragraph style={{ marginBlockEnd: 48 }}>
                     <div
                       dangerouslySetInnerHTML={{
                         __html: postDetail?.html || '',
@@ -149,7 +149,7 @@ const PostDetail: FC = () => {
               </div>
               <FlexGrow />
               <div>
-                <Divider />
+                <Divider style={{ marginBlockStart: 0 }} />
                 <div className={classes.actions}>
                   <Space size="large">
                     <LoadingButton>
