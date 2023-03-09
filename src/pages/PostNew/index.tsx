@@ -25,7 +25,7 @@ import {
 } from '../../store/features/articleSlice'
 
 const key = 'PostNew'
-const { Text } = Typography
+const { Text, Paragraph } = Typography
 const PostNew: FC = () => {
   const dispatch = useAppDispatch()
   const [form] = Form.useForm()
@@ -85,6 +85,9 @@ const PostNew: FC = () => {
     <>
       <HeadTitle layers={['发布帖子']} />
       <Card>
+        <Paragraph type="warning">
+          未发布的帖子将会自动保存为草稿，帖子发布成功或取消发布帖子后清空草稿。
+        </Paragraph>
         <Form
           form={form}
           initialValues={{ title, _public }}
