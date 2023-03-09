@@ -56,7 +56,6 @@ const PostList: FC = () => {
     setKeywords('')
   }
 
-  // 点击查看更多按钮
   return (
     <>
       <HeadTitle layers={['帖子']} />
