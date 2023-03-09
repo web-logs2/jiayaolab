@@ -52,18 +52,17 @@ export const getPostBySearch = createAsyncThunk<
       sortOrder,
       keywords.trim()
     )
-
     return data
   }
 )
-export const getPostByUser = createAsyncThunk<
-  PostModelType[] | null,
-  { userId: string; size: number }
->(`${POST_FEATURE_KEY}/getPostByUser`, async ({ userId, size }) => {
-  const { data } = await fetchPostByUser(userId, size)
-
-  return data
-})
+export const getPostByUser = createAsyncThunk<PostModelType[] | null, string>(
+  `${POST_FEATURE_KEY}/getPostByUser`,
+  async (userId, { getState }) => {
+    const { postSlice } = getState() as RootState
+    const { data } = await fetchPostByUser(userId, postSlice.size)
+    return data
+  }
+)
 
 const postSlice = createSlice({
   name: POST_FEATURE_KEY,

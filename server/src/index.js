@@ -23,6 +23,12 @@ server.post(
   jwtVerify,
   require('./service/post/submitPost').main
 )
+// 删除帖子
+server.delete(
+  '/post/remove',
+  jwtVerify,
+  require('./service/post/removePost').main
+)
 
 // 用户注册
 server.post('/user/add', require('./service/user/addUser').main)

@@ -73,3 +73,9 @@ export const fetchPostByUser = async (
     params: { userId, current: size },
   })
 }
+
+export const removePost = async (
+  postId: string
+): Promise<ResponseModelType<null>> => {
+  return await api.delete('/post/remove', { params: { postId } })
+}
