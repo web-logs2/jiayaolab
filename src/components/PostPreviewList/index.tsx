@@ -65,7 +65,7 @@ const PostPreviewList: FC<{
       .catch(err => {
         message.open({
           key,
-          type: 'success',
+          type: 'error',
           content: `帖子删除失败，${err.message}`,
         })
       })
