@@ -26,6 +26,7 @@ import { removePost } from '../../services/user'
 import { clearPostList, setFetchSize } from '../../store/features/postSlice'
 import ErrorBoundaryOnFetch from '../ErrorBoundaryOnFetch'
 import IconText from '../IconText'
+import PostEditInfo from '../PostEditInfo'
 import TimelineDetail from '../TimelineDetail'
 import UserPreviewCard from '../UserPreviewCard'
 import classes from './index.module.less'
@@ -102,18 +103,24 @@ const PostPreviewList: FC<{
                 <Row gutter={[0, 12]}>
                   <Col span={24}>
                     <div className={classes.cardHeader}>
-                      <UserPreviewCard
-                        size="default"
-                        loading={false}
-                        userId={post.user.uuid}
-                        name={post.user.username}
-                        paragraph={{ maxWidth: 230 }}
-                      />
-                      <Divider type="vertical" />
-                      <TimelineDetail
-                        date={post.createdAt}
-                        placement="bottom"
-                      />
+                      {location.pathname.includes(USER_POST_LIST_ONLY) ? (
+                        <PostEditInfo post={post} />
+                      ) : (
+                        <>
+                          <UserPreviewCard
+                            size="default"
+                            loading={false}
+                            userId={post.user.uuid}
+                            name={post.user.username}
+                            paragraph={{ maxWidth: 230 }}
+                          />
+                          <Divider type="vertical" />
+                          <TimelineDetail
+                            date={post.createdAt}
+                            placement="bottom"
+                          />
+                        </>
+                      )}
                     </div>
                   </Col>
                   <Col span={24}>

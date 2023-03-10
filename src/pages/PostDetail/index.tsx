@@ -18,7 +18,7 @@ import FlexGrow from '../../components/FlexGrow'
 import GlobalAnnouncement from '../../components/GlobalAnnouncement'
 import HeadTitle from '../../components/HeadTitle'
 import IconText from '../../components/IconText'
-import TimelineDetail from '../../components/TimelineDetail'
+import PostEditInfo from '../../components/PostEditInfo'
 import UserPreviewCard from '../../components/UserPreviewCard'
 import { PostModelType } from '../../models/post'
 import { fetchPostDetail } from '../../services/post'
@@ -106,32 +106,14 @@ const PostDetail: FC = () => {
                   active
                   loading={loading}
                   title={{ className: classes.titleLoading }}
-                  paragraph={{ rows: 1, className: classes.timelineLoading }}
+                  paragraph={{ rows: 1, className: classes.editTimeLoading }}
                 >
                   <Title level={3} className={classes.title}>
                     {postDetail?.title}
                   </Title>
-                  <Paragraph className={classes.timeline}>
-                    <Text type="secondary">
-                      帖子发表：
-                      <TimelineDetail
-                        date={postDetail?.createdAt}
-                        placement="bottom"
-                      />
-                    </Text>
-                    {postDetail?.createdAt !== postDetail?.updatedAt && (
-                      <>
-                        <Divider type="vertical" />
-                        <Text type="secondary">
-                          最后编辑：
-                          <TimelineDetail
-                            date={postDetail?.updatedAt}
-                            placement="bottom"
-                          />
-                        </Text>
-                      </>
-                    )}
-                  </Paragraph>
+                  <div className={classes.postEditInfo}>
+                    <PostEditInfo post={postDetail} />
+                  </div>
                 </Skeleton>
                 <Skeleton
                   active
