@@ -9,7 +9,7 @@ const GlobalAnnouncement: FC = () => {
   return (
     <Card title="公告">
       <Paragraph>本项目是「赵佳磊」的毕业设计，遵循MIT协议开源。</Paragraph>
-      <Paragraph type="success">你可以免费使用软件或出售</Paragraph>
+      <Paragraph type="success">你可以免费使用软件</Paragraph>
       <Paragraph type="success">你可以将本项目用于商业用途</Paragraph>
       <Paragraph type="success">你可以修改项目代码</Paragraph>
       <Paragraph type="warning" style={{ marginBlockEnd: 0 }}>

@@ -23,6 +23,7 @@ import {
   setPushing,
   setTitleDraft,
 } from '../../store/features/articleSlice'
+import { urlRedirect } from '../../utils/redirect'
 
 const key = 'PostNew'
 const { Text, Paragraph } = Typography
@@ -78,7 +79,7 @@ const PostNew: FC = () => {
 
   useEffect(() => {
     if (!token) {
-      navigate(USER_LOGIN, { replace: true })
+      navigate(urlRedirect(USER_LOGIN, POST_NEW), { replace: true })
     }
   }, [token])
   return (

@@ -49,16 +49,18 @@ const BasicLayout: FC = () => {
   const { xs, lg } = useBreakpoint()
   const isMobile = xs || !lg
   // 接受注册/登录前的页面，在注册/登录完成后自动跳转之前的页面
-  const doRedirect = (path: string) => {
-    const isAuthPage =
+  const notUserRedirect = (path: string) => {
+    const isUserPage =
       location.pathname.includes(USER_REGISTER) ||
       location.pathname.includes(USER_LOGIN)
         ? ''
         : location.pathname
-    navigate(urlRedirect(path, isAuthPage))
+    navigate(urlRedirect(path, isUserPage))
   }
-  const userMenuKey = `${USER}/${loginUserId}`
-  const userPostListLink = `${userMenuKey}/${USER_POST_LIST_ONLY}`
+  const UnauthorizedUserInfoKey = 'UnauthorizedUserInfoKey'
+  const UnauthorizedPostNewKey = 'UnauthorizedPostNewKey'
+  const USER_KEY_ONLY = `${USER}/${loginUserId}`
+  const USER_KEY_FULL = `${USER_KEY_ONLY}/${USER_POST_LIST_ONLY}`
 
   return (
     <Layout style={{ minWidth: 360 }}>
@@ -76,26 +78,33 @@ const BasicLayout: FC = () => {
           className={classes.menu}
           mode="horizontal"
           selectedKeys={[
-            location.pathname.includes(userMenuKey)
-              ? userMenuKey
+            // 因为用户信息页面还有其他子页面，所以这里要判断
+            // 当前路径是否包含登录用户，如果包含登录用户则
+            // 菜单中 我的 变成选中状态
+            location.pathname.includes(USER_KEY_ONLY)
+              ? USER_KEY_ONLY
               : location.pathname,
           ]}
           onSelect={e => {
-            // 手动跳转到用户帖子列表页面，虽然路由表里定义过了自动跳转到用户帖子页面，但总感觉不太好
-            navigate(e.key === userMenuKey ? userPostListLink : e.key)
+            if (e.key === UnauthorizedPostNewKey) {
+              navigate(urlRedirect(USER_LOGIN, POST_NEW))
+            } else if (e.key === UnauthorizedUserInfoKey) {
+              navigate(urlRedirect(USER_LOGIN, USER))
+            } else if (e.key === USER_KEY_ONLY) {
+              navigate(USER_KEY_FULL)
+            } else {
+              navigate(e.key)
+            }
           }}
           items={[
             { key: '/', label: '主页' },
             {
-              key:
-                token && loginUserId
-                  ? POST_NEW
-                  : `${urlRedirect(USER_LOGIN, POST_NEW)}`,
+              key: token ? POST_NEW : UnauthorizedPostNewKey,
               label: '发帖',
             },
             { key: POST_LIST, label: '帖子' },
             {
-              key: token && loginUserId ? userMenuKey : USER,
+              key: token ? USER_KEY_ONLY : UnauthorizedUserInfoKey,
               label: '我的',
             },
           ]}
@@ -112,7 +121,7 @@ const BasicLayout: FC = () => {
                   key: 'user',
                   label: '我的',
                   icon: <UserOutlined />,
-                  onClick: () => navigate(userPostListLink),
+                  onClick: () => navigate(USER_KEY_FULL),
                 },
                 { type: 'divider' },
                 {
@@ -139,10 +148,13 @@ const BasicLayout: FC = () => {
           </Dropdown>
         ) : (
           <Space>
-            <Button type="primary" onClick={() => doRedirect(USER_REGISTER)}>
+            <Button
+              type="primary"
+              onClick={() => notUserRedirect(USER_REGISTER)}
+            >
               注册
             </Button>
-            <Button type="default" onClick={() => doRedirect(USER_LOGIN)}>
+            <Button type="default" onClick={() => notUserRedirect(USER_LOGIN)}>
               登录
             </Button>
           </Space>
