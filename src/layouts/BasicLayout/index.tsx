@@ -4,7 +4,7 @@ import {
   EditOutlined,
   FileTextOutlined,
   GithubOutlined,
-  LikeOutlined,
+  HomeOutlined,
   LogoutOutlined,
   MailOutlined,
   UserOutlined,
@@ -23,7 +23,13 @@ import {
   Typography,
 } from 'antd'
 import { FC, Suspense } from 'react'
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom'
 import avatar from '../../assets/avatar.png'
 import ChunkLoading from '../../components/ChunkLoading'
 import FlexGrow from '../../components/FlexGrow'
@@ -50,17 +56,19 @@ const BasicLayout: FC = () => {
   const location = useLocation()
   const { message } = AntdApp.useApp()
   const dispatch = useAppDispatch()
+  const [params] = useSearchParams()
   const { token, loginUserId } = useTypedSelector(s => s.userSlice)
   const { xs, lg } = useBreakpoint()
   const isMobile = xs || !lg
-  // 接受注册/登录前的页面，在注册/登录完成后自动跳转之前的页面
-  const notUserRedirect = (path: string) => {
-    const isUserPage =
+  // 接受点击 注册/登录 前的页面，在 注册/登录 完成后自动跳转之前的页面
+  // 注册/登录 页面两者切换时不会顶掉原先的页面
+  const redirectHandler = (path: string) => {
+    const pathname =
       location.pathname.includes(USER_REGISTER) ||
       location.pathname.includes(USER_LOGIN)
         ? ''
         : location.pathname
-    navigate(urlRedirect(path, isUserPage))
+    navigate(urlRedirect(path, params.get('redirect') || pathname))
   }
   const UnauthorizedUserInfoKey = 'UnauthorizedUserInfoKey'
   const UnauthorizedPostNewKey = 'UnauthorizedPostNewKey'
@@ -112,7 +120,7 @@ const BasicLayout: FC = () => {
             }
           }}
           items={[
-            { icon: <LikeOutlined />, key: '/', label: '推荐' },
+            { icon: <HomeOutlined />, key: '/', label: '主页' },
             { icon: <FileTextOutlined />, key: POST_LIST, label: '帖子' },
             {
               icon: <EditOutlined />,
@@ -167,11 +175,11 @@ const BasicLayout: FC = () => {
           <Space>
             <Button
               type="primary"
-              onClick={() => notUserRedirect(USER_REGISTER)}
+              onClick={() => redirectHandler(USER_REGISTER)}
             >
               注册
             </Button>
-            <Button type="default" onClick={() => notUserRedirect(USER_LOGIN)}>
+            <Button type="default" onClick={() => redirectHandler(USER_LOGIN)}>
               登录
             </Button>
           </Space>
