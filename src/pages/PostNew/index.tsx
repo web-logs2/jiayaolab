@@ -4,9 +4,11 @@ import {
   Button,
   Card,
   Checkbox,
+  Col,
   Form,
   Input,
   Popconfirm,
+  Row,
   Space,
   Tooltip,
   Typography,
@@ -85,104 +87,112 @@ const PostNew: FC = () => {
   return (
     <>
       <HeadTitle layers={['发布帖子']} />
-      <Card>
-        <Paragraph type="warning">
-          未发布的帖子将会自动保存为草稿，帖子发布成功或取消发布帖子后清空草稿。
-        </Paragraph>
-        <Form
-          form={form}
-          initialValues={{ title, _public }}
-          onFinish={onFinish}
-          disabled={pushing}
-          scrollToFirstError
-          autoComplete="off"
-        >
-          <Form.Item
-            label="标题"
-            name="title"
-            rules={[
-              { required: true, message: '请填写帖子标题' },
-              { whitespace: true, message: '请填写帖子标题' },
-              { max: 30, message: '帖子标题不能大于30个字符' },
-            ]}
-          >
-            <Input
-              autoFocus
-              placeholder="标题（必填）"
-              onPressEnter={e => e.preventDefault()}
-              onChange={e => dispatch(setTitleDraft(e.target.value))}
-              showCount
-              maxLength={30}
-            />
-          </Form.Item>
-          <Form.Item
-            label="内容"
-            name="html"
-            required
-            rules={[
-              () => ({
-                validator() {
-                  if (text.trim().length) {
-                    return Promise.resolve()
-                  }
-                  return Promise.reject('请填写帖子内容')
-                },
-              }),
-              () => ({
-                validator() {
-                  if (text.trim().length < 30000) {
-                    return Promise.resolve()
-                  }
-                  return Promise.reject('帖子内容不能大于30000个字符')
-                },
-              }),
-            ]}
-          >
-            <TextEditor
-              pushing={pushing}
-              onValidateHandler={() => form.validateFields(['html'])}
-            />
-          </Form.Item>
-          <Form.Item name="_public" label="公开访问">
-            <Space>
-              <Checkbox
-                checked={_public}
-                onChange={e => setPublic(e.target.checked)}
-              />
-              <Tooltip title="所有用户都能阅读这篇帖子">
-                <Text type="secondary">
-                  <QuestionCircleOutlined />
-                </Text>
-              </Tooltip>
-            </Space>
-          </Form.Item>
-          <Form.Item>
-            <Space>
-              <Button type="primary" htmlType="submit" loading={pushing}>
-                {pushing ? '发布中…' : '发布'}
-              </Button>
-              <Popconfirm
-                title="取消发布"
-                description={
-                  <>
-                    <Text>确定要取消发布帖子吗？</Text>
-                    <br />
-                    <Text type="danger">（撰写的内容将会被清除）</Text>
-                  </>
-                }
-                onConfirm={() => {
-                  removeDraftHandler()
-                  navigate('/')
-                }}
-                okText="是"
-                cancelText="否"
+      <Row gutter={[0, 16]}>
+        <Col span={24}>
+          <Card title="小提示">
+            <Paragraph style={{ marginBlockEnd: 0 }}>
+              撰写但未发布的帖子将会自动保存为草稿，帖子发布成功或取消发布后清空草稿。
+            </Paragraph>
+          </Card>
+        </Col>
+        <Col span={24}>
+          <Card>
+            <Form
+              form={form}
+              initialValues={{ title, _public }}
+              onFinish={onFinish}
+              disabled={pushing}
+              scrollToFirstError
+              autoComplete="off"
+            >
+              <Form.Item
+                label="标题"
+                name="title"
+                rules={[
+                  { required: true, message: '请填写帖子标题' },
+                  { whitespace: true, message: '请填写帖子标题' },
+                  { max: 30, message: '帖子标题不能大于30个字符' },
+                ]}
               >
-                <Button>取消</Button>
-              </Popconfirm>
-            </Space>
-          </Form.Item>
-        </Form>
-      </Card>
+                <Input
+                  autoFocus
+                  placeholder="标题（必填）"
+                  onPressEnter={e => e.preventDefault()}
+                  onChange={e => dispatch(setTitleDraft(e.target.value))}
+                  showCount
+                  maxLength={30}
+                />
+              </Form.Item>
+              <Form.Item
+                label="内容"
+                name="html"
+                required
+                rules={[
+                  () => ({
+                    validator() {
+                      if (text.trim().length) {
+                        return Promise.resolve()
+                      }
+                      return Promise.reject('请填写帖子内容')
+                    },
+                  }),
+                  () => ({
+                    validator() {
+                      if (text.trim().length < 30000) {
+                        return Promise.resolve()
+                      }
+                      return Promise.reject('帖子内容不能大于30000个字符')
+                    },
+                  }),
+                ]}
+              >
+                <TextEditor
+                  pushing={pushing}
+                  onValidateHandler={() => form.validateFields(['html'])}
+                />
+              </Form.Item>
+              <Form.Item name="_public" label="公开访问">
+                <Space>
+                  <Checkbox
+                    checked={_public}
+                    onChange={e => setPublic(e.target.checked)}
+                  />
+                  <Tooltip title="所有用户都能阅读这篇帖子">
+                    <Text type="secondary">
+                      <QuestionCircleOutlined />
+                    </Text>
+                  </Tooltip>
+                </Space>
+              </Form.Item>
+              <Form.Item>
+                <Space>
+                  <Button type="primary" htmlType="submit" loading={pushing}>
+                    {pushing ? '发布中…' : '发布'}
+                  </Button>
+                  <Popconfirm
+                    title="取消发布"
+                    description={
+                      <>
+                        <Text>确定要取消发布帖子吗？</Text>
+                        <br />
+                        <Text type="danger">（撰写的内容将会被清除）</Text>
+                      </>
+                    }
+                    onConfirm={() => {
+                      removeDraftHandler()
+                      navigate('/')
+                    }}
+                    okText="是"
+                    cancelText="否"
+                  >
+                    <Button>取消</Button>
+                  </Popconfirm>
+                </Space>
+              </Form.Item>
+            </Form>
+          </Card>
+        </Col>
+      </Row>
     </>
   )
 }
