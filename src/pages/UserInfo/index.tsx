@@ -1,4 +1,8 @@
-import { CommentOutlined, EditOutlined, UserOutlined } from '@ant-design/icons'
+import {
+  CommentOutlined,
+  FileTextOutlined,
+  UserOutlined,
+} from '@ant-design/icons'
 import {
   App as AntdApp,
   Avatar,
@@ -190,7 +194,7 @@ const UserInfo: FC = () => {
                     style={{ marginBlockEnd: isMobile ? 0 : undefined }}
                   >
                     <IconText
-                      icon={<EditOutlined />}
+                      icon={<FileTextOutlined />}
                       text={`${
                         userInfo.uuid === loginUserId ? '我的' : 'TA的'
                       }发帖`}

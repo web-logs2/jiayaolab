@@ -1,12 +1,16 @@
 import {
   BugOutlined,
   CopyrightOutlined,
+  EditOutlined,
+  FileTextOutlined,
   GithubOutlined,
+  LikeOutlined,
   LogoutOutlined,
   MailOutlined,
   UserOutlined,
 } from '@ant-design/icons'
 import {
+  App as AntdApp,
   Avatar,
   Button,
   Col,
@@ -44,6 +48,7 @@ const { useBreakpoint } = Grid
 const BasicLayout: FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
+  const { message } = AntdApp.useApp()
   const dispatch = useAppDispatch()
   const { token, loginUserId } = useTypedSelector(s => s.userSlice)
   const { xs, lg } = useBreakpoint()
@@ -87,8 +92,18 @@ const BasicLayout: FC = () => {
           ]}
           onSelect={e => {
             if (e.key === UnauthorizedPostNewKey) {
+              message.open({
+                key: UnauthorizedPostNewKey,
+                type: 'error',
+                content: '登录后才能发布帖子！',
+              })
               navigate(urlRedirect(USER_LOGIN, POST_NEW))
             } else if (e.key === UnauthorizedUserInfoKey) {
+              message.open({
+                key: UnauthorizedUserInfoKey,
+                type: 'error',
+                content: '请先登录！',
+              })
               navigate(urlRedirect(USER_LOGIN, USER))
             } else if (e.key === USER_KEY_ONLY) {
               navigate(USER_KEY_FULL)
@@ -97,13 +112,15 @@ const BasicLayout: FC = () => {
             }
           }}
           items={[
-            { key: '/', label: '主页' },
+            { icon: <LikeOutlined />, key: '/', label: '推荐' },
+            { icon: <FileTextOutlined />, key: POST_LIST, label: '帖子' },
             {
+              icon: <EditOutlined />,
               key: token ? POST_NEW : UnauthorizedPostNewKey,
               label: '发帖',
             },
-            { key: POST_LIST, label: '帖子' },
             {
+              icon: <UserOutlined />,
               key: token ? USER_KEY_ONLY : UnauthorizedUserInfoKey,
               label: '我的',
             },
