@@ -170,7 +170,7 @@ const PostDetail: FC = () => {
                           icon={<LikeFilled />}
                         />
                       }
-                      text={<Text type="secondary">25368</Text>}
+                      text={<Text type="secondary">0</Text>}
                     />
                   </LoadingButton>
                   <LoadingButton>
@@ -182,7 +182,7 @@ const PostDetail: FC = () => {
                           icon={<StarOutlined />}
                         />
                       }
-                      text={<Text type="secondary">441</Text>}
+                      text={<Text type="secondary">0</Text>}
                     />
                   </LoadingButton>
                 </Space>

@@ -106,11 +106,12 @@ const PostPreviewList: FC<{
                     <div className={classes.cardHeader}>
                       {location.pathname.includes(USER_POST_LIST_ONLY) ? (
                         <>
-                          {post._public ? (
-                            <Tag color="success">所有人可见</Tag>
-                          ) : (
-                            <Tag color="warning">仅自己可见</Tag>
-                          )}
+                          {post.user.uuid === loginUserId &&
+                            (post._public ? (
+                              <Tag color="success">所有人可见</Tag>
+                            ) : (
+                              <Tag color="warning">仅自己可见</Tag>
+                            ))}
                           <PostEditInfo post={post} />
                         </>
                       ) : (
@@ -147,14 +148,21 @@ const PostPreviewList: FC<{
                       </Paragraph>
                     </Link>
                   </Col>
+                  <Col span={24} className={classes.cardTagList}>
+                    <Tag>标签</Tag>
+                    <Tag>标签</Tag>
+                    <Tag>标签</Tag>
+                    <Tag>标签</Tag>
+                    <Tag>标签</Tag>
+                  </Col>
                   <Col span={24}>
                     <Text type="secondary">
                       <Space wrap style={{ justifyContent: 'center' }}>
-                        <IconText icon={<EyeOutlined />} text={3487} />
+                        <IconText icon={<EyeOutlined />} text={0} />
                         <Divider type="vertical" />
-                        <IconText icon={<MessageOutlined />} text={1598} />
+                        <IconText icon={<MessageOutlined />} text={0} />
                         <Divider type="vertical" />
-                        <IconText icon={<LikeOutlined />} text={12417} />
+                        <IconText icon={<LikeOutlined />} text={0} />
                         {location.pathname.includes(USER_POST_LIST_ONLY) &&
                           post.user.uuid === loginUserId && (
                             <>
