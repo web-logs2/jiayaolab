@@ -187,7 +187,7 @@ const BasicLayout: FC = () => {
       </Header>
       <Content
         className={classes.content}
-        style={{ paddingInline: isMobile ? 25 : 50 }}
+        style={{ paddingInline: isMobile ? 10 : 50 }}
       >
         <Suspense fallback={<ChunkLoading />}>
           <Outlet />
