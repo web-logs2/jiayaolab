@@ -1,16 +1,14 @@
-import { QuestionCircleOutlined } from '@ant-design/icons'
 import {
   App as AntdApp,
   Button,
   Card,
-  Checkbox,
   Col,
   Form,
   Input,
   Popconfirm,
   Row,
   Space,
-  Tooltip,
+  Switch,
   Typography,
 } from 'antd'
 import { FC, useEffect, useState } from 'react'
@@ -34,8 +32,8 @@ const PostNew: FC = () => {
   const [form] = Form.useForm()
   const { message } = AntdApp.useApp()
   const navigate = useNavigate()
-  // 公开访问选项，默认开启
-  const [_public, setPublic] = useState<boolean>(true)
+  // 仅自己可见选项，默认开启
+  const [_private, setPrivate] = useState<boolean>(false)
   // 撰写的内容（也可以称为草稿箱，在页面不刷新的前提下，切换页面不会导致撰写的内容消失）
   const { title, text, html, pushing } = useTypedSelector(s => s.articleSlice)
   const { token } = useTypedSelector(s => s.userSlice)
@@ -59,7 +57,7 @@ const PostNew: FC = () => {
       duration: 0,
     })
     // 发布帖子
-    submitPost(title, text, html, _public)
+    submitPost(title, text, html, _private)
       .then(res => {
         removeDraftHandler()
         navigateHandler()
@@ -99,7 +97,7 @@ const PostNew: FC = () => {
           <Card>
             <Form
               form={form}
-              initialValues={{ title, _public }}
+              initialValues={{ title, _private }}
               onFinish={onFinish}
               disabled={pushing}
               scrollToFirstError
@@ -107,6 +105,7 @@ const PostNew: FC = () => {
             >
               <Form.Item
                 label="标题"
+                colon={false}
                 name="title"
                 rules={[
                   { required: true, message: '请填写帖子标题' },
@@ -125,6 +124,7 @@ const PostNew: FC = () => {
               </Form.Item>
               <Form.Item
                 label="内容"
+                colon={false}
                 name="html"
                 required
                 rules={[
@@ -151,18 +151,11 @@ const PostNew: FC = () => {
                   onValidateHandler={() => form.validateFields(['html'])}
                 />
               </Form.Item>
-              <Form.Item name="_public" label="公开访问">
-                <Space>
-                  <Checkbox
-                    checked={_public}
-                    onChange={e => setPublic(e.target.checked)}
-                  />
-                  <Tooltip title="所有用户都能阅读这篇帖子">
-                    <Text type="secondary">
-                      <QuestionCircleOutlined />
-                    </Text>
-                  </Tooltip>
-                </Space>
+              <Form.Item name="_private" label="仅自己可见" colon={false}>
+                <Switch
+                  checked={_private}
+                  onChange={value => setPrivate(value)}
+                />
               </Form.Item>
               <Form.Item>
                 <Space>

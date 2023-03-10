@@ -19,7 +19,7 @@ exports.main = async (req, res) => {
         order: [[sortField, sortOrder.toUpperCase()]],
         // 在标题或正文当中包含指定的关键字就返回该帖子
         where: {
-          _public: true,
+          _private: false,
           [Op.or]: [
             {
               title: {

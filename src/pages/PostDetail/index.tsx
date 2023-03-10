@@ -107,11 +107,11 @@ const PostDetail: FC = () => {
   }, [postId])
   // 验证当前登录用户是否是该帖子的所有者
   useEffect(() => {
-    // 获取到帖子并且这是一篇关闭了公开访问的帖子
+    // 获取到帖子并且这是一篇仅自己可见的帖子
     // 判断该帖子所有者是否是当前登录用户
     if (
       postDetail &&
-      !postDetail._public &&
+      postDetail._private &&
       postDetail.user.uuid !== loginUserId
     ) {
       // 重新获取帖子，返回的应该是空data，并且返回消息：该帖子仅作者可见！

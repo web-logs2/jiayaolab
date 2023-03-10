@@ -16,7 +16,7 @@ exports.main = async (req, res) => {
         },
         offset: Number(current) * limit - limit,
         order: [[sortField, 'DESC']],
-        where: { _public: true },
+        where: { _private: false },
       })
       res.status(200).json(
         msg(

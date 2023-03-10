@@ -2,11 +2,11 @@ const { Post, User } = require('../../../app')
 const { msg } = require('../../../util/msg')
 
 exports.main = async (req, res) => {
-  const { title, text, html, _public } = req.body
+  const { title, text, html, _private } = req.body
   const { email, password } = req.auth
 
   try {
-    if (title && text && html && typeof _public === 'boolean') {
+    if (title && text && html && typeof _private === 'boolean') {
       // 获取用户ID
       const { id: userId } = await User.findOne({
         where: { email, password },
@@ -16,7 +16,7 @@ exports.main = async (req, res) => {
         title,
         text,
         html,
-        _public,
+        _private,
         userId,
       })
       res.status(201).json(msg(201, null, '帖子发布成功！'))

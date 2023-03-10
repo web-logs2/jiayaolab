@@ -107,10 +107,10 @@ const PostPreviewList: FC<{
                       {location.pathname.includes(USER_POST_LIST_ONLY) ? (
                         <>
                           {post.user.uuid === loginUserId &&
-                            (post._public ? (
-                              <Tag color="success">所有人可见</Tag>
-                            ) : (
+                            (post._private ? (
                               <Tag color="warning">仅自己可见</Tag>
+                            ) : (
+                              <Tag color="success">所有人可见</Tag>
                             ))}
                           <PostEditInfo post={post} />
                         </>

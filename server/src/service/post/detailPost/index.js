@@ -9,7 +9,7 @@ exports.main = async (req, res) => {
     let isUserSelf = false
     const post = await Post.findOne({
       attributes: [
-        '_public',
+        '_private',
         'uuid',
         'createdAt',
         'updatedAt',
@@ -37,12 +37,11 @@ exports.main = async (req, res) => {
       // 帖子的所有者访问，返回帖子的内容
       if (isUserSelf) {
         res.status(200).json(msg(200, post, 'ok'))
-        // 判断是否是一个公开访问的帖子
-      } else if (post._public) {
-        res.status(200).json(msg(200, post, 'ok'))
-      } else {
-        // 关闭了公开访问，返回空数据
+        // 判断该帖子是否仅自己可见
+      } else if (post._private) {
         res.status(400).json(msg(400, null, '该帖子仅作者可见！'))
+      } else {
+        res.status(200).json(msg(200, post, 'ok'))
       }
     } else {
       res.status(400).json(msg(400, null, '该帖子不存在！'))

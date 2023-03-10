@@ -62,7 +62,7 @@ const Post = app.define('post', {
     type: DataTypes.TEXT('medium'),
     allowNull: false,
   },
-  _public: {
+  _private: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
   },

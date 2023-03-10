@@ -30,7 +30,7 @@ exports.main = async (req, res) => {
             'updatedAt',
             'title',
             'text',
-            '_public',
+            '_private',
           ],
           include: {
             model: User,
@@ -40,7 +40,7 @@ exports.main = async (req, res) => {
           order: [['createdAt', 'DESC']],
           where: {
             userId: findUser.id,
-            ...(isUserSelf ? {} : { _public: true }),
+            ...(isUserSelf ? {} : { _private: false }),
           },
         })
         res.status(200).json(

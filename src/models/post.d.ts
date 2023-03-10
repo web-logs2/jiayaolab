@@ -18,6 +18,6 @@ export interface PostModelType {
   updatedAt: string
   // 用户信息
   user: UserType
-  // 帖子是否是公开访问的
-  _public: boolean
+  // 仅自己可见
+  _private: boolean
 }
