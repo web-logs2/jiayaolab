@@ -1,5 +1,6 @@
 const { Post, User } = require('../../../app')
 const { msg } = require('../../../util/msg')
+const { toArrayTags } = require('../../../util/toArrayTags')
 
 exports.main = async (req, res) => {
   const { id } = req.query
@@ -8,15 +9,9 @@ exports.main = async (req, res) => {
     // 判断是否是用户自身访问
     let isUserSelf = false
     const post = await Post.findOne({
-      attributes: [
-        '_private',
-        'uuid',
-        'createdAt',
-        'updatedAt',
-        'title',
-        'tags',
-        'html',
-      ],
+      attributes: {
+        exclude: ['userId', 'id', 'text'],
+      },
       include: {
         model: User,
         attributes: ['uuid', 'username', 'bio'],
@@ -37,32 +32,28 @@ exports.main = async (req, res) => {
       }
       // 帖子的所有者访问，返回帖子的内容
       if (isUserSelf) {
-        res.status(200).json(
-          msg(
-            200,
-            {
-              ...post.dataValues,
-              tags: post.dataValues.tags
-                ? post.dataValues.tags.split('|')
-                : null,
-            },
-            'ok'
+        res
+          .status(200)
+          .json(
+            msg(
+              200,
+              { ...post.dataValues, tags: toArrayTags(post.dataValues.tags) },
+              'ok'
+            )
           )
-        )
         // 判断该帖子是否仅自己可见
       } else if (post._private) {
         res.status(400).json(msg(400, null, '该帖子仅作者可见！'))
       } else {
-        res.status(200).json(
-          msg(
-            200,
-            {
-              ...post.dataValues,
-              tags: post.dataValues.tags ? post.dataValues.tags.split('|') : [],
-            },
-            'ok'
+        res
+          .status(200)
+          .json(
+            msg(
+              200,
+              { ...post.dataValues, tags: toArrayTags(post.dataValues.tags) },
+              'ok'
+            )
           )
-        )
       }
     } else {
       res.status(400).json(msg(400, null, '该帖子不存在！'))

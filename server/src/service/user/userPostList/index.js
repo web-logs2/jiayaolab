@@ -1,5 +1,7 @@
 const { msg } = require('../../../util/msg')
 const { Post, User } = require('../../../app')
+const { toArrayTags } = require('../../../util/toArrayTags')
+const { sliceText } = require('../../../util/sliceText')
 
 exports.main = async (req, res) => {
   const limit = 5
@@ -24,15 +26,9 @@ exports.main = async (req, res) => {
         }
         const { rows } = await Post.findAndCountAll({
           limit,
-          attributes: [
-            'uuid',
-            'createdAt',
-            'updatedAt',
-            'title',
-            'tags',
-            'text',
-            '_private',
-          ],
+          attributes: {
+            exclude: ['html', 'id', 'userId'],
+          },
           include: {
             model: User,
             attributes: ['uuid'],
@@ -49,11 +45,8 @@ exports.main = async (req, res) => {
             200,
             rows.map(row => ({
               ...row.dataValues,
-              text: row.dataValues.text
-                .replace(/\s+/g, ' ')
-                .trim()
-                .slice(0, 256),
-              tags: row.dataValues.tags ? row.dataValues.tags.split('|') : [],
+              text: sliceText(row.dataValues.text),
+              tags: toArrayTags(row.dataValues.tags),
             })),
             'ok'
           )
