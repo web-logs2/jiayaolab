@@ -7,12 +7,31 @@ exports.main = async (req, res) => {
 
   try {
     if (userId && current) {
-      const user = await User.findOne({ where: { uuid: userId } })
+      // 判断是否是登录用户访问自身用户信息页面
+      let isUserSelf = false
+      const findUser = await User.findOne({ where: { uuid: userId } })
 
-      if (user) {
+      if (findUser) {
+        // 判断是否有用户登录信息，没有就是未登录的用户
+        if (req.auth) {
+          const { email, password } = req.auth
+          const loginUser = await User.findOne({ where: { email, password } })
+          // 如果登录用户信息和查看用户的id对应，则是用户访问自己的用户信息页面
+          // 返回用户所有的帖子
+          if (loginUser.uuid === findUser.uuid) {
+            isUserSelf = true
+          }
+        }
         const { rows } = await Post.findAndCountAll({
           limit,
-          attributes: ['uuid', 'createdAt', 'updatedAt', 'title', 'text'],
+          attributes: [
+            'uuid',
+            'createdAt',
+            'updatedAt',
+            'title',
+            'text',
+            '_public',
+          ],
           include: {
             model: User,
             attributes: ['uuid'],
@@ -20,7 +39,8 @@ exports.main = async (req, res) => {
           offset: Number(current) * limit - limit,
           order: [['createdAt', 'DESC']],
           where: {
-            userId: user.id,
+            userId: findUser.id,
+            ...(isUserSelf ? {} : { _public: true }),
           },
         })
         res.status(200).json(

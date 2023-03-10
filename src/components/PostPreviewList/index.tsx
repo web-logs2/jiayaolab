@@ -17,6 +17,7 @@ import {
   Row,
   Skeleton,
   Space,
+  Tag,
   Typography,
 } from 'antd'
 import { FC, useEffect } from 'react'
@@ -104,7 +105,14 @@ const PostPreviewList: FC<{
                   <Col span={24}>
                     <div className={classes.cardHeader}>
                       {location.pathname.includes(USER_POST_LIST_ONLY) ? (
-                        <PostEditInfo post={post} />
+                        <>
+                          {post._public ? (
+                            <Tag color="success">所有人可见</Tag>
+                          ) : (
+                            <Tag color="warning">仅自己可见</Tag>
+                          )}
+                          <PostEditInfo post={post} />
+                        </>
                       ) : (
                         <>
                           <UserPreviewCard

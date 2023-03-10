@@ -8,9 +8,15 @@ exports.main = async (req, res) => {
   try {
     if (postId) {
       const user = await User.findOne({ where: { email, password } })
-      const post = await Post.findOne({ where: { uuid: postId } })
+      const post = await Post.findOne({
+        include: {
+          model: User,
+          attributes: ['uuid'],
+        },
+        where: { uuid: postId },
+      })
 
-      if (user.id === post.userId) {
+      if (user.uuid === post.user.uuid) {
         await Post.destroy({ where: { uuid: postId } })
         res.status(200).json(msg(200, null, '帖子删除成功！'))
       } else {
