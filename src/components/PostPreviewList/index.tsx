@@ -149,11 +149,9 @@ const PostPreviewList: FC<{
                     </Link>
                   </Col>
                   <Col span={24} className={classes.cardTagList}>
-                    <Tag>标签</Tag>
-                    <Tag>标签</Tag>
-                    <Tag>标签</Tag>
-                    <Tag>标签</Tag>
-                    <Tag>标签</Tag>
+                    {post.tags.map(tag => (
+                      <Tag key={tag}>{tag}</Tag>
+                    ))}
                   </Col>
                   <Col span={24}>
                     <Text type="secondary">

@@ -29,6 +29,7 @@ exports.main = async (req, res) => {
             'createdAt',
             'updatedAt',
             'title',
+            'tags',
             'text',
             '_private',
           ],
@@ -52,6 +53,7 @@ exports.main = async (req, res) => {
                 .replace(/\s+/g, ' ')
                 .trim()
                 .slice(0, 256),
+              tags: row.dataValues.tags ? row.dataValues.tags.split('|') : [],
             })),
             'ok'
           )

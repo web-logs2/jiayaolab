@@ -14,6 +14,7 @@ exports.main = async (req, res) => {
         'createdAt',
         'updatedAt',
         'title',
+        'tags',
         'html',
       ],
       include: {
@@ -36,12 +37,32 @@ exports.main = async (req, res) => {
       }
       // 帖子的所有者访问，返回帖子的内容
       if (isUserSelf) {
-        res.status(200).json(msg(200, post, 'ok'))
+        res.status(200).json(
+          msg(
+            200,
+            {
+              ...post.dataValues,
+              tags: post.dataValues.tags
+                ? post.dataValues.tags.split('|')
+                : null,
+            },
+            'ok'
+          )
+        )
         // 判断该帖子是否仅自己可见
       } else if (post._private) {
         res.status(400).json(msg(400, null, '该帖子仅作者可见！'))
       } else {
-        res.status(200).json(msg(200, post, 'ok'))
+        res.status(200).json(
+          msg(
+            200,
+            {
+              ...post.dataValues,
+              tags: post.dataValues.tags ? post.dataValues.tags.split('|') : [],
+            },
+            'ok'
+          )
+        )
       }
     } else {
       res.status(400).json(msg(400, null, '该帖子不存在！'))

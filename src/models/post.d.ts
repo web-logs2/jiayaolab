@@ -8,6 +8,8 @@ export interface PostModelType {
   uuid: string
   // 帖子标题
   title: string
+  // 帖子标签
+  tags: string[]
   // 帖子原始内容
   text: string
   // 帖子HTML内容

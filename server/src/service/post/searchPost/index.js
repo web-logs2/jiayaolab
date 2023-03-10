@@ -10,7 +10,7 @@ exports.main = async (req, res) => {
     if (current && sortField && sortOrder && (keywords || keywords === '')) {
       const { rows } = await Post.findAndCountAll({
         limit,
-        attributes: ['uuid', 'createdAt', 'updatedAt', 'title', 'text'],
+        attributes: ['uuid', 'createdAt', 'updatedAt', 'title', 'tags', 'text'],
         include: {
           model: User,
           attributes: ['uuid', 'username', 'bio'],
@@ -40,6 +40,7 @@ exports.main = async (req, res) => {
           rows.map(row => ({
             ...row.dataValues,
             text: row.dataValues.text.replace(/\s+/g, ' ').trim().slice(0, 256),
+            tags: row.dataValues.tags ? row.dataValues.tags.split('|') : [],
           })),
           'ok'
         )

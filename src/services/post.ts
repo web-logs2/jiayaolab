@@ -55,18 +55,21 @@ export const fetchPostDetail = async (
 /**
  * 发布帖子
  * @param title 帖子标题
+ * @param tags 帖子标签列表
  * @param text 帖子原始内容
  * @param html 帖子HTML内容
  * @param _private 仅自己可见
  */
 export const submitPost = async (
   title: string,
+  tags: string[],
   text: string,
   html: string,
   _private: boolean
 ): Promise<ResponseModelType<string>> => {
   return await api.post('/post/submit', {
     title: title.trim(),
+    tags: tags.join('|'),
     text,
     html,
     _private,

@@ -3,10 +3,12 @@ import {
   Button,
   Card,
   Col,
+  Empty,
   Form,
   Input,
   Popconfirm,
   Row,
+  Select,
   Space,
   Switch,
   Typography,
@@ -32,8 +34,10 @@ const PostNew: FC = () => {
   const [form] = Form.useForm()
   const { message } = AntdApp.useApp()
   const navigate = useNavigate()
-  // 仅自己可见选项，默认开启
+  // 仅自己可见选项，默认关闭
   const [_private, setPrivate] = useState<boolean>(false)
+  // 标签选择
+  const [tags, setTags] = useState<string[]>([])
   // 撰写的内容（也可以称为草稿箱，在页面不刷新的前提下，切换页面不会导致撰写的内容消失）
   const { title, text, html, pushing } = useTypedSelector(s => s.articleSlice)
   const { token } = useTypedSelector(s => s.userSlice)
@@ -57,7 +61,7 @@ const PostNew: FC = () => {
       duration: 0,
     })
     // 发布帖子
-    submitPost(title, text, html, _private)
+    submitPost(title, tags, text, html, _private)
       .then(res => {
         removeDraftHandler()
         navigateHandler()
@@ -97,7 +101,7 @@ const PostNew: FC = () => {
           <Card>
             <Form
               form={form}
-              initialValues={{ title, _private }}
+              initialValues={{ title, _private, tags }}
               onFinish={onFinish}
               disabled={pushing}
               scrollToFirstError
@@ -120,6 +124,39 @@ const PostNew: FC = () => {
                   onChange={e => dispatch(setTitleDraft(e.target.value))}
                   showCount
                   maxLength={30}
+                />
+              </Form.Item>
+              <Form.Item
+                label="标签"
+                colon={false}
+                name="tags"
+                rules={[
+                  { required: true, message: '请填写帖子标签' },
+                  () => ({
+                    validator(_rule, value) {
+                      if (value.length > 8) {
+                        return Promise.reject('最多填写8个帖子标签')
+                      }
+                      return Promise.resolve()
+                    },
+                  }),
+                  () => ({
+                    validator(_rule, values) {
+                      if (values.filter((v: string) => v.length > 10).length) {
+                        return Promise.reject('标签单个长度不能超过10个字符')
+                      }
+                      return Promise.resolve()
+                    },
+                  }),
+                ]}
+              >
+                <Select
+                  placeholder="标签（必填）"
+                  notFoundContent={<Empty description={false} />}
+                  maxTagTextLength={10}
+                  mode="tags"
+                  onChange={values => setTags(values)}
+                  tokenSeparators={[',', '，', '|', ' ']}
                 />
               </Form.Item>
               <Form.Item

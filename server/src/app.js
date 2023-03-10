@@ -54,6 +54,10 @@ const Post = app.define('post', {
     type: DataTypes.STRING(32),
     allowNull: false,
   },
+  tags: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   text: {
     type: DataTypes.TEXT,
     allowNull: false,
