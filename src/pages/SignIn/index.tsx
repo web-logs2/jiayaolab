@@ -73,7 +73,10 @@ const SignUp: FC = () => {
         <Card>
           <Title level={3}>用户登录</Title>
           <Divider />
-          <Paragraph type="warning">使用你的邮箱和密码登录</Paragraph>
+          <Paragraph type="warning">使用你的邮箱和密码进行登录</Paragraph>
+          <Paragraph type="warning">
+            登录成功后，经过服务器数字签名的登录凭证，加密后将会保存在客户端（本地），请不要将你的登录凭证（token）泄露给任何人！
+          </Paragraph>
           <Form
             onFinish={onFinish}
             disabled={logging}
@@ -90,6 +93,7 @@ const SignUp: FC = () => {
           >
             <Form.Item
               name="email"
+              colon={false}
               label="邮箱"
               rules={[
                 { required: true, message: '请填写邮箱' },
@@ -107,6 +111,7 @@ const SignUp: FC = () => {
             </Form.Item>
             <Form.Item
               name="password"
+              colon={false}
               label="密码"
               rules={[
                 { required: true, message: '请填写密码' },

@@ -74,7 +74,10 @@ const SignUp: FC = () => {
           <Title level={3}>用户注册</Title>
           <Divider />
           <Paragraph type="warning">
-            密码使用SHA256算法加密存储在数据库
+            用户密码通过SHA256散列算法加密存储在数据库
+          </Paragraph>
+          <Paragraph type="warning">
+            请注意不要使用简单的密码，那样是不安全的，虽然SHA256散列算法非常强大，但还是会有被破解的可能。
           </Paragraph>
           <Form
             onFinish={onFinish}
@@ -93,6 +96,7 @@ const SignUp: FC = () => {
           >
             <Form.Item
               name="email"
+              colon={false}
               label="邮箱"
               rules={[
                 { required: true, message: '请填写邮箱' },
@@ -110,6 +114,7 @@ const SignUp: FC = () => {
             </Form.Item>
             <Form.Item
               name="password"
+              colon={false}
               label="密码"
               rules={[
                 { required: true, message: '请填写密码' },
