@@ -9,16 +9,16 @@ import {
   Card,
   Col,
   Grid,
+  Menu,
   Row,
   Skeleton,
   Typography,
 } from 'antd'
 import { FC, Suspense, useEffect, useState } from 'react'
-import { NavLink, Outlet, useNavigate, useParams } from 'react-router-dom'
+import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import ChunkLoading from '../../components/ChunkLoading'
 import ErrorBoundaryOnFetch from '../../components/ErrorBoundaryOnFetch'
 import HeadTitle from '../../components/HeadTitle'
-import IconText from '../../components/IconText'
 import {
   USER,
   USER_COMMENT_LIST_ONLY,
@@ -49,30 +49,40 @@ const UserInfo: FC = () => {
   const [loading, setLoading] = useState<boolean>(true)
   // 获取用户信息时发生的错误
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
-  // 获得用户信息处理程序
-  const fetchUserInfoHandler = (userId: string) => {
-    // 解决在页面不刷新的前提下，第二次点击不会显示加载中组件
-    // 确保userId改变后，可以重新显示加载中组件
-    setLoading(true)
-    // 如果有错误信息就要先清空错误信息，防止在页面不刷新的前提下
-    // 切换到其他用户，即使用户信息已经获取到了，依然会出现之前的错误
-    errorMsg && setErrorMsg(null)
-    // 获取用户信息
-    fetchUserInfo(userId)
-      .then(({ data }) => {
-        // 设置用户信息
-        setUserInfo({ ...data })
-        // 设置用户信息缓存
-        setUsernameCache(data.username)
-        setBioCache(data.bio)
-      })
-      .catch(err => {
-        // 设置错误信息
-        setErrorMsg(err.message)
-      })
-      .finally(() => setLoading(false))
-  }
 
+  useEffect(() => {
+    // 传递了userId参数，获取用户信息
+    if (userId) {
+      // 解决在页面不刷新的前提下，第二次点击不会显示加载中组件
+      // 确保userId改变后，可以重新显示加载中组件
+      setLoading(true)
+      // 如果有错误信息就要先清空错误信息，防止在页面不刷新的前提下
+      // 切换到其他用户，即使用户信息已经获取到了，依然会出现之前的错误
+      errorMsg && setErrorMsg(null)
+      // 获取用户信息
+      fetchUserInfo(userId)
+        .then(({ data }) => {
+          // 设置用户信息
+          setUserInfo({ ...data })
+          // 设置用户信息缓存
+          setUsernameCache(data.username)
+          setBioCache(data.bio)
+        })
+        .catch(err => {
+          // 设置错误信息
+          setErrorMsg(err.message)
+        })
+        .finally(() => setLoading(false))
+    } else if (loginUserId) {
+      // 没有传递userId参数，但是用户登录了，则重定向到当前登录用户的用户帖子列表界面
+      navigate(`${USER}/${loginUserId}/${USER_POST_LIST_ONLY}`, {
+        replace: true,
+      })
+    } else {
+      // 没有传递userId参数，也没有登录，则重定向到登录页面
+      navigate(USER_LOGIN, { replace: true })
+    }
+  }, [userId])
   // 更新用户信息
   useEffect(() => {
     // 只有在用户信息发生改变后，改变后的信息与原先的用户信息不一致时才会执行更新用户处理函数
@@ -111,30 +121,18 @@ const UserInfo: FC = () => {
         })
     }
   }, [usernameCache, bioCache])
-  useEffect(() => {
-    // 传递了userId参数
-    if (userId) {
-      fetchUserInfoHandler(userId)
-    } else if (loginUserId) {
-      // 没有传递userId参数，但是用户登录了，则重定向到当前登录用户的用户帖子列表界面
-      navigate(`${USER}/${loginUserId}/${USER_POST_LIST_ONLY}`, {
-        replace: true,
-      })
-    } else {
-      // 没有传递userId参数，也没有登录，则重定向到登录页面
-      navigate(USER_LOGIN, { replace: true })
-    }
-  }, [userId])
+  if (errorMsg) {
+    return <ErrorBoundaryOnFetch errorMsg={errorMsg} />
+  }
   return (
     <>
       <HeadTitle layers={[userInfo?.username, '用户信息']} />
-      {loading ? (
+      {loading && (
         <Card>
           <Skeleton active paragraph={{ style: { marginBlockEnd: 0 } }} />
         </Card>
-      ) : errorMsg || !userInfo ? (
-        <ErrorBoundaryOnFetch errorMsg={errorMsg} />
-      ) : (
+      )}
+      {userInfo && (
         <Row gutter={[16, 16]}>
           <Col span={24}>
             <Card>
@@ -187,31 +185,33 @@ const UserInfo: FC = () => {
             </Card>
           </Col>
           <Col span={isMobile ? 24 : 5}>
-            <Card>
-              <div className={isMobile ? classes.userTab : undefined}>
-                <NavLink to={USER_POST_LIST_ONLY}>
-                  <Paragraph
-                    style={{ marginBlockEnd: isMobile ? 0 : undefined }}
-                  >
-                    <IconText
-                      icon={<FileTextOutlined />}
-                      text={`${
-                        userInfo.uuid === loginUserId ? '我的' : 'TA的'
-                      }发帖`}
-                    />
-                  </Paragraph>
-                </NavLink>
-                <NavLink to={USER_COMMENT_LIST_ONLY}>
-                  <Paragraph style={{ marginBlockEnd: 0 }}>
-                    <IconText
-                      icon={<CommentOutlined />}
-                      text={`${
-                        userInfo.uuid === loginUserId ? '我的' : 'TA的'
-                      }评论`}
-                    />
-                  </Paragraph>
-                </NavLink>
-              </div>
+            <Card className={classes.userMenu}>
+              <Menu
+                mode={isMobile ? 'horizontal' : 'vertical'}
+                style={{ borderInlineEnd: 0 }}
+                selectedKeys={[
+                  location.pathname
+                    .split(`${USER}/${userInfo.uuid}/`)
+                    .filter(Boolean)[0],
+                ]}
+                onSelect={e => navigate(e.key)}
+                items={[
+                  {
+                    key: USER_POST_LIST_ONLY,
+                    label: `${
+                      userInfo.uuid === loginUserId ? '我' : 'TA'
+                    }的发帖`,
+                    icon: <FileTextOutlined />,
+                  },
+                  {
+                    key: USER_COMMENT_LIST_ONLY,
+                    label: `${
+                      userInfo.uuid === loginUserId ? '我' : 'TA'
+                    }的评论`,
+                    icon: <CommentOutlined />,
+                  },
+                ]}
+              />
             </Card>
           </Col>
           <Col span={isMobile ? 24 : 19}>
