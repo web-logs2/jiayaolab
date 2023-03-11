@@ -132,7 +132,7 @@ const UserInfo: FC = () => {
           <Skeleton active paragraph={{ style: { marginBlockEnd: 0 } }} />
         </Card>
       )}
-      {userInfo && (
+      {!loading && userInfo && (
         <Row gutter={[16, 16]}>
           <Col span={24}>
             <Card>
