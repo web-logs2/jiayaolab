@@ -185,10 +185,10 @@ const UserInfo: FC = () => {
             </Card>
           </Col>
           <Col span={isMobile ? 24 : 5}>
-            <Card className={classes.userMenu}>
+            <Card className={classes.userMenuLayout}>
               <Menu
+                className={classes.userMenu}
                 mode={isMobile ? 'horizontal' : 'vertical'}
-                style={{ borderInlineEnd: 0 }}
                 selectedKeys={[
                   location.pathname
                     .split(`${USER}/${userInfo.uuid}/`)

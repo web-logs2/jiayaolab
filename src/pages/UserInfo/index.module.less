@@ -6,9 +6,15 @@
     padding-inline-start: 24px;
   }
 }
-.user-menu {
+.user-menu-layout {
   overflow: hidden;
   [class='ant-card-body'] {
     padding: 0;
+  }
+  .user-menu[class*='ant-menu-vertical'] {
+    border-inline-end: 0;
+  }
+  .user-menu[class*='ant-menu-horizontal'] {
+    border-block-end-color: transparent;
   }
 }
