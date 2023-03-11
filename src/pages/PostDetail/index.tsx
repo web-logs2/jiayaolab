@@ -19,6 +19,7 @@ import GlobalAnnouncement from '../../components/GlobalAnnouncement'
 import HeadTitle from '../../components/HeadTitle'
 import IconText from '../../components/IconText'
 import PostEditInfo from '../../components/PostEditInfo'
+import TagList from '../../components/TagList'
 import UserPreviewCard from '../../components/UserPreviewCard'
 import { useTypedSelector } from '../../hook'
 import { PostModelType } from '../../models/post'
@@ -144,7 +145,7 @@ const PostDetail: FC = () => {
               <Skeleton
                 active
                 loading={loading}
-                paragraph={{ rows: 8, style: { marginBlockEnd: 48 } }}
+                paragraph={{ style: { marginBlockEnd: 48 } }}
               >
                 <Paragraph style={{ marginBlockEnd: 48 }}>
                   <div
@@ -157,7 +158,14 @@ const PostDetail: FC = () => {
             </div>
             <FlexGrow />
             <div>
-              <Divider style={{ marginBlockStart: 0 }} />
+              <Skeleton
+                loading={loading}
+                title={{ width: '100%', style: { marginBlockEnd: 0 } }}
+                paragraph={false}
+              >
+                <TagList tags={postDetail?.tags || []} />
+              </Skeleton>
+              <Divider />
               <div className={classes.actions}>
                 <Space size="large">
                   <LoadingButton>

@@ -28,6 +28,7 @@ import { clearPostList, setFetchSize } from '../../store/features/postSlice'
 import ErrorBoundaryOnFetch from '../ErrorBoundaryOnFetch'
 import IconText from '../IconText'
 import PostEditInfo from '../PostEditInfo'
+import TagList from '../TagList'
 import TimelineDetail from '../TimelineDetail'
 import UserPreviewCard from '../UserPreviewCard'
 import classes from './index.module.less'
@@ -148,10 +149,8 @@ const PostPreviewList: FC<{
                       </Paragraph>
                     </Link>
                   </Col>
-                  <Col span={24} className={classes.cardTagList}>
-                    {post.tags.map(tag => (
-                      <Tag key={tag}>{tag}</Tag>
-                    ))}
+                  <Col span={24}>
+                    <TagList tags={post.tags} />
                   </Col>
                   <Col span={24}>
                     <Text type="secondary">
