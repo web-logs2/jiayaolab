@@ -194,7 +194,7 @@ const UserInfo: FC = () => {
                     .split(`${USER}/${userInfo.uuid}/`)
                     .filter(Boolean)[0],
                 ]}
-                onSelect={e => navigate(e.key)}
+                onSelect={e => navigate(e.key, { replace: true })}
                 items={[
                   {
                     key: USER_POST_LIST_ONLY,
