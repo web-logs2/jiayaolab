@@ -70,7 +70,7 @@ const PostList: FC = () => {
                     <Select
                       value={sortField}
                       disabled={loading}
-                      onChange={key => setSortField(key)}
+                      onChange={value => setSortField(value)}
                       options={
                         [
                           { value: 'updatedAt', label: '最近更新' },
@@ -87,7 +87,7 @@ const PostList: FC = () => {
                       disabled={loading}
                       value={sortOrder}
                       optionType="button"
-                      onChange={radio => setSortOrder(radio.target.value)}
+                      onChange={e => setSortOrder(e.target.value)}
                       options={
                         [
                           { value: 'ASC', label: '升序' },
@@ -103,7 +103,7 @@ const PostList: FC = () => {
                     value={keywords}
                     placeholder="请输入想要搜索的任意关键字"
                     disabled={loading}
-                    onChange={input => setKeywords(input.target.value)}
+                    onChange={e => setKeywords(e.target.value)}
                     onPressEnter={searchHandler}
                   />
                 </Col>

@@ -80,9 +80,10 @@ const SignUp: FC = () => {
           <Form
             onFinish={onFinish}
             disabled={logging}
-            onValuesChange={value => {
-              value.email && setEmail(value.email)
-              value.password && setPassword(SHA256(value.password).toString())
+            onValuesChange={changedValues => {
+              changedValues.email && setEmail(changedValues.email)
+              changedValues.password &&
+                setPassword(SHA256(changedValues.password).toString())
             }}
             initialValues={{
               email,

@@ -82,10 +82,10 @@ const SignUp: FC = () => {
           <Form
             onFinish={onFinish}
             disabled={registering}
-            onValuesChange={value => {
-              value.email && setEmail(value.email)
-              // SHA256加密存储到数据库
-              value.password && setPassword(SHA256(value.password).toString())
+            onValuesChange={changedValues => {
+              changedValues.email && setEmail(changedValues.email)
+              changedValues.password &&
+                setPassword(SHA256(changedValues.password).toString())
             }}
             initialValues={{
               email,
