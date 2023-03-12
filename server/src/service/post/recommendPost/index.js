@@ -16,7 +16,7 @@ exports.main = async (req, res) => {
         },
         include: {
           model: User,
-          attributes: ['uuid', 'username', 'bio'],
+          attributes: ['uuid', 'username'],
         },
         offset: Number(current) * limit - limit,
         order: [[sortField, 'DESC']],
