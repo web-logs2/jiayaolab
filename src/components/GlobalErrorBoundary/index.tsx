@@ -12,7 +12,7 @@ const GlobalErrorBoundary: React.FC = () => {
 
   return (
     <Result
-      className={classes.errorBoundaryOnApp}
+      className={classes.globalErrorBoundary}
       status="error"
       title="未知错误"
       subTitle="网站在运行时发生了未知的错误，请重试或向管理员报告此问题！"
@@ -20,9 +20,7 @@ const GlobalErrorBoundary: React.FC = () => {
         <Button
           type="primary"
           key="retry"
-          onClick={() => {
-            window.location.pathname = '/'
-          }}
+          onClick={() => window.location.reload()}
         >
           重试
         </Button>,
