@@ -6,8 +6,8 @@ specifiers:
   express-jwt: ^8.4.1
   jsonwebtoken: ^9.0.0
   morgan: ^1.10.0
-  mysql2: ^3.1.2
-  sequelize: ^6.29.0
+  mysql2: ^3.2.0
+  sequelize: ^6.29.3
 
 dependencies:
   cors: 2.8.5
@@ -15,8 +15,8 @@ dependencies:
   express-jwt: 8.4.1
   jsonwebtoken: 9.0.0
   morgan: 1.10.0
-  mysql2: 3.1.2
-  sequelize: 6.29.0_mysql2@3.1.2
+  mysql2: 3.2.0
+  sequelize: 6.29.3_mysql2@3.2.0
 
 packages:
 
@@ -456,8 +456,8 @@ packages:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
     dev: false
 
-  /mysql2/3.1.2:
-    resolution: {integrity: sha512-NXz6sUvHSEOKz1jv3koSga7eb2dHrwD/mnPmqbbZzMRvjQcSpb0Eh0ectWyYt1U60CLlEbjoA3XYjjbbReRF5Q==}
+  /mysql2/3.2.0:
+    resolution: {integrity: sha512-0Vn6a9WSrq6fWwvPgrvIwnOCldiEcgbzapVRDAtDZ4cMTxN7pnGqCTx8EG32S/NYXl6AXkdO+9hV1tSIi/LigA==}
     engines: {node: '>= 8.0'}
     dependencies:
       denque: 2.1.0
@@ -607,8 +607,8 @@ packages:
     engines: {node: '>= 10.0.0'}
     dev: false
 
-  /sequelize/6.29.0_mysql2@3.1.2:
-    resolution: {integrity: sha512-m8Wi90rs3NZP9coXE52c7PL4Q078nwYZXqt1IxPvgki7nOFn0p/F0eKsYDBXCPw9G8/BCEa6zZNk0DQUAT4ypA==}
+  /sequelize/6.29.3_mysql2@3.2.0:
+    resolution: {integrity: sha512-iLbrN//Eh18zXIlNEUNQx7lk5R+SF39m+66bnrT3x8WB8sbxMH2hF4vw8RIa9ZzB1+c94rclMv/i8fngXmb/4A==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       ibm_db: '*'
@@ -648,7 +648,7 @@ packages:
       lodash: 4.17.21
       moment: 2.29.4
       moment-timezone: 0.5.40
-      mysql2: 3.1.2
+      mysql2: 3.2.0
       pg-connection-string: 2.5.0
       retry-as-promised: 7.0.4
       semver: 7.3.8
