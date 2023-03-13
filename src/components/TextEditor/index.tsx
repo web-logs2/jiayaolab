@@ -3,22 +3,21 @@ import { Editor, Toolbar } from '@wangeditor/editor-for-react'
 import '@wangeditor/editor/dist/css/style.css'
 import { FC, useEffect, useState } from 'react'
 import { useAppDispatch, useTypedSelector } from '../../hook'
-import { setContentDraft } from '../../store/features/articleSlice'
+import { setContentDraft } from '../../store/features/postDraftSlice'
 import classes from './index.module.less'
 
 /**
  * 富文本编辑器
- * @param pushing 是否正在发布中
- * @param onValidateHandler 验证处理程序
+ * @param loading 是否正在加载中
+ * @param onChange 当编辑器的内容发生变化时调用
  */
 const TextEditor: FC<{
-  pushing: boolean
-  onValidateHandler: () => void
-}> = ({ pushing, onValidateHandler }) => {
+  loading: boolean
+  onChange: (newValue: string) => void
+}> = ({ loading, onChange }) => {
   const dispatch = useAppDispatch()
   const [editor, setEditor] = useState<IDomEditor | null>(null)
-  // 验证锁，取消第一次载入执行验证函数
-  const [locked, setLocked] = useState<boolean>(true)
+  const [onChangeLocked, setOnChangeLocked] = useState<boolean>(true)
   const toolbarConfig: Partial<IToolbarConfig> = {
     excludeKeys: [
       'fontFamily',
@@ -33,9 +32,10 @@ const TextEditor: FC<{
   const editorConfig: Partial<IEditorConfig> = {
     maxLength: 30000,
     autoFocus: false,
+    scroll: false,
     placeholder: '内容（必填）',
   }
-  const { text, html } = useTypedSelector(s => s.articleSlice)
+  const { textContent, htmlContent } = useTypedSelector(s => s.postDraftSlice)
 
   // 页面切换后销毁编辑器
   useEffect(
@@ -47,19 +47,20 @@ const TextEditor: FC<{
     },
     [editor]
   )
+  // 当编辑器的内容发生变化时调用
   useEffect(() => {
-    if (!locked) {
-      onValidateHandler()
+    // 编辑器首次发生变化时不调用
+    if (!onChangeLocked) {
+      onChange(textContent)
     }
-    locked && setLocked(false)
-  }, [text])
+    onChangeLocked && setOnChangeLocked(false)
+  }, [textContent])
+  // 在加载中的时候禁用编辑器
   useEffect(() => {
-    if (pushing) {
-      editor?.disable()
-    } else {
-      editor?.enable()
+    if (editor) {
+      loading ? editor.disable() : editor.enable()
     }
-  }, [editor, pushing])
+  }, [editor, loading])
   return (
     <div className={classes.textEditor}>
       <Toolbar
@@ -70,10 +71,15 @@ const TextEditor: FC<{
       <Editor
         className={classes.editor}
         defaultConfig={editorConfig}
-        value={html}
+        value={htmlContent}
         onCreated={setEditor}
-        onChange={e =>
-          dispatch(setContentDraft({ text: e.getText(), html: e.getHtml() }))
+        onChange={({ getText, getHtml }) =>
+          dispatch(
+            setContentDraft({
+              textContent: getText(),
+              htmlContent: getHtml(),
+            })
+          )
         }
       />
     </div>

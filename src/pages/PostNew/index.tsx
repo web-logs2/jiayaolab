@@ -24,7 +24,7 @@ import {
   removeDraft,
   setPushing,
   setTitleDraft,
-} from '../../store/features/articleSlice'
+} from '../../store/features/postDraftSlice'
 import { urlRedirect } from '../../utils/redirect'
 
 const key = 'PostNew'
@@ -39,7 +39,9 @@ const PostNew: FC = () => {
   // 标签选择
   const [tags, setTags] = useState<string[]>([])
   // 撰写的内容（也可以称为草稿箱，在页面不刷新的前提下，切换页面不会导致撰写的内容消失）
-  const { title, text, html, pushing } = useTypedSelector(s => s.articleSlice)
+  const { title, textContent, htmlContent, pushing } = useTypedSelector(
+    s => s.postDraftSlice
+  )
   const { token } = useTypedSelector(s => s.userSlice)
   const navigateHandler = () => {
     // 发布成功后如果还在发布帖子页面则返回主页
@@ -61,7 +63,7 @@ const PostNew: FC = () => {
       duration: 0,
     })
     // 发布帖子
-    submitPost(title, tags, text, html, _private)
+    submitPost(title, tags, textContent, htmlContent, _private)
       .then(res => {
         removeDraftHandler()
         navigateHandler()
@@ -101,7 +103,12 @@ const PostNew: FC = () => {
           <Card>
             <Form
               form={form}
-              initialValues={{ title, _private, tags }}
+              initialValues={{
+                title,
+                tags,
+                textContent,
+                _private,
+              }}
               onFinish={onFinish}
               disabled={pushing}
               scrollToFirstError
@@ -133,15 +140,15 @@ const PostNew: FC = () => {
                 rules={[
                   { required: true, message: '请填写帖子标签' },
                   () => ({
-                    validator(_rule, value) {
-                      if (value.length > 8) {
+                    validator(_ruleObject, values) {
+                      if (values.length > 8) {
                         return Promise.reject('最多填写8个帖子标签')
                       }
                       return Promise.resolve()
                     },
                   }),
                   () => ({
-                    validator(_rule, values) {
+                    validator(_ruleObject, values) {
                       if (values.filter((v: string) => v.length > 10).length) {
                         return Promise.reject('标签单个长度不能超过10个字符')
                       }
@@ -155,37 +162,26 @@ const PostNew: FC = () => {
                   notFoundContent={<Empty description={false} />}
                   maxTagTextLength={10}
                   mode="tags"
-                  onChange={values => setTags(values)}
-                  tokenSeparators={[',', '，', '|', ' ']}
+                  onChange={value => setTags(value)}
+                  tokenSeparators={[',', '|', ' ', '，']}
                 />
               </Form.Item>
               <Form.Item
                 label="内容"
                 colon={false}
-                name="html"
+                name="textContent"
                 required
                 rules={[
-                  () => ({
-                    validator() {
-                      if (text.trim().length) {
-                        return Promise.resolve()
-                      }
-                      return Promise.reject('请填写帖子内容')
-                    },
-                  }),
-                  () => ({
-                    validator() {
-                      if (text.trim().length < 30000) {
-                        return Promise.resolve()
-                      }
-                      return Promise.reject('帖子内容不能大于30000个字符')
-                    },
-                  }),
+                  { required: true, message: '请填写帖子内容' },
+                  { whitespace: true, message: '请填写帖子内容' },
+                  { max: 30000, message: '帖子内容不能大于30000个字符' },
                 ]}
               >
                 <TextEditor
-                  pushing={pushing}
-                  onValidateHandler={() => form.validateFields(['html'])}
+                  loading={pushing}
+                  onChange={newValue =>
+                    form.setFieldValue('textContent', newValue)
+                  }
                 />
               </Form.Item>
               <Form.Item name="_private" label="仅自己可见" colon={false}>

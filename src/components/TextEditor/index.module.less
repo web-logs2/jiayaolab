@@ -17,7 +17,9 @@
     }
   }
   .editor {
-    height: 400px;
+    min-height: 330px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 100%);
     border: 1px solid @borderColor;
     padding-block: 4px;
     padding-inline: 1px;
@@ -32,5 +34,8 @@
     font-style: normal;
     top: 16px;
     left: 0;
+  }
+  [class='w-e-max-length-info'] {
+    display: none;
   }
 }
