@@ -1,8 +1,8 @@
-const { Post, User } = require('../../../app')
+const { Post, User, Draft } = require('../../../app')
 const { msg } = require('../../../util/msg')
 
 exports.main = async (req, res) => {
-  const { title, tags, text, html, _private } = req.body
+  const { title, tags, text, html, _private, draftId } = req.body
   const { email, password } = req.auth
 
   try {
@@ -20,6 +20,10 @@ exports.main = async (req, res) => {
         _private,
         userId,
       })
+      if (draftId) {
+        // 删除草稿
+        await Draft.destroy({ where: { uuid: draftId } })
+      }
       res.status(201).json(msg(201, null, '帖子发布成功！'))
     } else {
       res.status(400).json(msg(400, null, '参数无效！'))

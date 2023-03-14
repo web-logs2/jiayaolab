@@ -1,23 +1,19 @@
 import { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor'
 import { Editor, Toolbar } from '@wangeditor/editor-for-react'
 import '@wangeditor/editor/dist/css/style.css'
-import { FC, useEffect, useState } from 'react'
-import { useAppDispatch, useTypedSelector } from '../../hook'
-import { setContentDraft } from '../../store/features/postDraftSlice'
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
 import classes from './index.module.less'
 
-/**
- * 富文本编辑器
- * @param loading 是否正在加载中
- * @param onChange 当编辑器的内容发生变化时调用
- */
 const TextEditor: FC<{
-  loading: boolean
-  onChange: (newValue: string) => void
-}> = ({ loading, onChange }) => {
-  const dispatch = useAppDispatch()
+  disabled: boolean
+  textState: [string, Dispatch<SetStateAction<string>>]
+  htmlState: [string, Dispatch<SetStateAction<string>>]
+  onChange: (value: string) => void
+}> = ({ disabled, textState, htmlState, onChange }) => {
   const [editor, setEditor] = useState<IDomEditor | null>(null)
-  const [onChangeLocked, setOnChangeLocked] = useState<boolean>(true)
+  const [textContent, setTextContent] = textState
+  // HTML格式内容
+  const [htmlContent, setHtmlContent] = htmlState
   const toolbarConfig: Partial<IToolbarConfig> = {
     excludeKeys: [
       'fontFamily',
@@ -35,7 +31,6 @@ const TextEditor: FC<{
     scroll: false,
     placeholder: '内容（必填）',
   }
-  const { textContent, htmlContent } = useTypedSelector(s => s.postDraftSlice)
 
   // 页面切换后销毁编辑器
   useEffect(
@@ -47,20 +42,18 @@ const TextEditor: FC<{
     },
     [editor]
   )
-  // 当编辑器的内容发生变化时调用
-  useEffect(() => {
-    // 编辑器首次发生变化时不调用
-    if (!onChangeLocked) {
-      onChange(textContent)
-    }
-    onChangeLocked && setOnChangeLocked(false)
-  }, [textContent])
   // 在加载中的时候禁用编辑器
   useEffect(() => {
     if (editor) {
-      loading ? editor.disable() : editor.enable()
+      disabled ? editor.disable() : editor.enable()
     }
-  }, [editor, loading])
+  }, [editor, disabled])
+  // 当内容发生改变时调用onChange回调
+  useEffect(() => {
+    if (editor) {
+      onChange(editor.getText())
+    }
+  }, [textContent])
   return (
     <div className={classes.textEditor}>
       <Toolbar
@@ -73,14 +66,11 @@ const TextEditor: FC<{
         defaultConfig={editorConfig}
         value={htmlContent}
         onCreated={setEditor}
-        onChange={({ getText, getHtml }) =>
-          dispatch(
-            setContentDraft({
-              textContent: getText(),
-              htmlContent: getHtml(),
-            })
-          )
-        }
+        onChange={({ getText, getHtml }) => {
+          // 编辑器内容改变时调用
+          setTextContent(getText())
+          setHtmlContent(getHtml())
+        }}
       />
     </div>
   )

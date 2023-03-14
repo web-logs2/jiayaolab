@@ -71,8 +71,37 @@ const Post = app.define('post', {
     allowNull: false,
   },
 })
+// 用户草稿信息
+const Draft = app.define('draft', {
+  uuid: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    allowNull: false,
+  },
+  title: {
+    type: DataTypes.STRING(32),
+    allowNull: false,
+  },
+  tags: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  text: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+  html: {
+    type: DataTypes.TEXT('medium'),
+    allowNull: false,
+  },
+  _private: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+  },
+})
 
 Post.belongsTo(User)
+Draft.belongsTo(User)
 
 const initDB = async () => {
   try {
@@ -90,4 +119,5 @@ module.exports = {
   initDB,
   User,
   Post,
+  Draft,
 }

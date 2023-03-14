@@ -55,6 +55,25 @@ server.get(
   require('./service/user/userPostList').main
 )
 
+// 保存草稿
+server.post(
+  '/draft/save',
+  useVerify(),
+  require('./service/draft/saveDraft').main
+)
+// 获取草稿
+server.get(
+  '/draft/list',
+  useVerify(),
+  require('./service/draft/getDraftList').main
+)
+// 删除草稿
+server.delete(
+  '/draft/remove',
+  useVerify(),
+  require('./service/draft/removeDraft').main
+)
+
 async function main() {
   // 初始化数据库
   await initDB()

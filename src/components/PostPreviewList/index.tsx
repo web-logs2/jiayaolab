@@ -23,7 +23,7 @@ import {
 import { FC, useEffect } from 'react'
 import { POST, USER_POST_LIST_ONLY } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
-import { removePost } from '../../services/user'
+import { removePost } from '../../services/post'
 import { clearPostList, setFetchSize } from '../../store/features/postSlice'
 import ErrorBoundaryOnFetch from '../ErrorBoundaryOnFetch'
 import IconText from '../IconText'

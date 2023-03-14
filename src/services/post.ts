@@ -42,36 +42,56 @@ export const fetchSearchPostList = async (
 
 /**
  * 获取帖子详情
- * @param id 帖子id
+ * @param postId 帖子id
  */
 export const fetchPostDetail = async (
-  id: string | number
+  postId: string | number
 ): Promise<ResponseModelType<PostModelType>> => {
   return await api.get('/post/detail', {
-    params: { id },
+    params: { postId },
   })
 }
 
 /**
  * 发布帖子
- * @param title 帖子标题
- * @param tags 帖子标签列表
- * @param text 帖子原始内容
- * @param html 帖子HTML内容
+ * @param title 标题
+ * @param tags 标签
+ * @param text 文本内容
+ * @param html HTML格式内容
  * @param _private 仅自己可见
+ * @param draftId 草稿id，如果有则帖子发布完成后删除该草稿
  */
-export const submitPost = async (
-  title: string,
-  tags: string[],
-  text: string,
-  html: string,
+export const submitPost = async ({
+  title,
+  tags,
+  text,
+  html,
+  _private,
+  draftId,
+}: {
+  title: string
+  tags: string[]
+  text: string
+  html: string
   _private: boolean
-): Promise<ResponseModelType<string>> => {
+  draftId: string | null
+}): Promise<ResponseModelType<string>> => {
   return await api.post('/post/submit', {
     title: title.trim(),
     tags: tags.join('|'),
     text,
     html,
     _private,
+    draftId,
   })
+}
+
+/**
+ * 删除帖子
+ * @param postId 帖子id
+ */
+export const removePost = async (
+  postId: string
+): Promise<ResponseModelType<null>> => {
+  return await api.delete('/post/remove', { params: { postId } })
 }

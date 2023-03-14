@@ -3,7 +3,7 @@ const { msg } = require('../../../util/msg')
 const { toArrayTags } = require('../../../util/toArrayTags')
 
 exports.main = async (req, res) => {
-  const { id } = req.query
+  const { postId } = req.query
 
   try {
     // 判断是否是用户自身访问
@@ -16,7 +16,7 @@ exports.main = async (req, res) => {
         model: User,
         attributes: ['uuid', 'username', 'bio'],
       },
-      where: { uuid: id },
+      where: { uuid: postId },
     })
 
     // 获取到了指定的帖子
