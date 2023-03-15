@@ -64,6 +64,8 @@ const PostNew: FC = () => {
   // 帖子发布的状态
   const [pushing, setPushing] = useState<boolean>(false)
 
+  // 草稿id获取状态
+  const [draftIdFetching, setDraftIdFetching] = useState<boolean>(false)
   // 草稿id
   const [currentDraftId, setCurrentDraftId] = useState<string | null>(null)
   // 草稿箱打开状态
@@ -177,8 +179,11 @@ const PostNew: FC = () => {
   // 防抖钩子，实现自动保存草稿
   useDebouncedEffect(
     () => {
-      if (formValues) {
+      // 如果表单内容发生改变，并且此时草稿id的获取状态还未开始
+      if (formValues && !draftIdFetching) {
         setSaveMessage('保存中…')
+        // 还未开始获取草稿id，并且当前还没有草稿id，开始获取草稿id
+        !draftIdFetching && !currentDraftId && setDraftIdFetching(true)
         saveDraft({
           uuid: currentDraftId,
           title: formValues.title,
@@ -197,9 +202,15 @@ const PostNew: FC = () => {
           })
       }
     },
-    500,
-    [formValues]
+    1000,
+    [formValues, draftIdFetching]
   )
+  // 当草稿id获取到时，设置草稿id的获取状态
+  useEffect(() => {
+    if (currentDraftId) {
+      setDraftIdFetching(false)
+    }
+  }, [currentDraftId])
   useEffect(() => {
     // 打开草稿箱时开始获取草稿列表
     if (draftOpening) {
@@ -293,7 +304,23 @@ const PostNew: FC = () => {
                     ))}
                   </List>
                 )}
-                {draftListFetching && <Skeleton active />}
+                {draftListFetching && (
+                  <List>
+                    {draftList?.length ? (
+                      draftList.map((_, index) => {
+                        return (
+                          <List.Item key={index}>
+                            <Skeleton active />
+                          </List.Item>
+                        )
+                      })
+                    ) : (
+                      <List.Item>
+                        <Skeleton active />
+                      </List.Item>
+                    )}
+                  </List>
+                )}
                 {!draftListFetching && !draftList?.length && (
                   <Empty description={false} />
                 )}
