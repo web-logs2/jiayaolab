@@ -6,18 +6,19 @@ exports.main = async (req, res) => {
   const { username, bio } = req.body
 
   try {
-    if (username) {
-      // 更新用户信息
-      await User.update({ username, bio }, { where: { email, password } })
-      // 获取更新完成后的用户信息
-      const data = await User.findOne({
-        attributes: ['uuid', 'username', 'bio'],
-        where: { email, password },
-      })
-      res.status(200).json(msg(200, data, '已更新！'))
-    } else {
+    if (!username) {
       res.status(400).json(msg(400, null, '参数无效！'))
+      return
     }
+
+    // 更新用户信息
+    await User.update({ username, bio }, { where: { email, password } })
+    // 获取更新完成后的用户信息
+    const data = await User.findOne({
+      attributes: ['uuid', 'username', 'bio'],
+      where: { email, password },
+    })
+    res.status(200).json(msg(200, data, '已更新！'))
   } catch (e) {
     console.error(e)
     res.status(400).json(msg(400, null, '服务器错误！'))
