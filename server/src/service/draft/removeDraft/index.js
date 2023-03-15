@@ -15,12 +15,15 @@ exports.main = async (req, res) => {
         },
         where: { uuid: draftId },
       })
-
-      if (user.uuid === draft.user.uuid) {
-        await Draft.destroy({ where: { uuid: draftId } })
-        res.status(200).json(msg(200, null, '草稿删除成功！'))
+      if (draft) {
+        if (user.uuid === draft.user.uuid) {
+          await Draft.destroy({ where: { uuid: draftId } })
+          res.status(200).json(msg(200, null, '草稿删除成功！'))
+        } else {
+          res.status(400).json(msg(400, null, '登录用户与草稿所有者不匹配！'))
+        }
       } else {
-        res.status(400).json(msg(400, null, '登录用户与草稿所有者不匹配！'))
+        res.status(400).json(msg(400, null, '该草稿已被删除！'))
       }
     } else {
       res.status(400).json(msg(400, null, '参数无效！'))

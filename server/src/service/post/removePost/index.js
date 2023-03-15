@@ -15,12 +15,15 @@ exports.main = async (req, res) => {
         },
         where: { uuid: postId },
       })
-
-      if (user.uuid === post.user.uuid) {
-        await Post.destroy({ where: { uuid: postId } })
-        res.status(200).json(msg(200, null, '帖子删除成功！'))
+      if (post) {
+        if (user.uuid === post.user.uuid) {
+          await Post.destroy({ where: { uuid: postId } })
+          res.status(200).json(msg(200, null, '帖子删除成功！'))
+        } else {
+          res.status(400).json(msg(400, null, '登录用户与帖子所有者不匹配！'))
+        }
       } else {
-        res.status(400).json(msg(400, null, '登录用户与帖子所有者不匹配！'))
+        res.status(400).json(msg(400, null, '该帖子已被删除！'))
       }
     } else {
       res.status(400).json(msg(400, null, '参数无效！'))

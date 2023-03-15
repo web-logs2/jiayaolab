@@ -32,7 +32,7 @@ exports.main = async (req, res) => {
           )
           res.status(201).json(msg(201, { draftId }, '已保存！'))
         } else {
-          res.status(400).json(msg(400, null, '保存失败，该草稿已删除！'))
+          res.status(400).json(msg(400, null, '该草稿已被删除！'))
         }
       } else {
         // 没有接收到传参过来的draftId，新建一个草稿
