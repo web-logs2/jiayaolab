@@ -1,7 +1,7 @@
 import { App as AntdApp } from 'antd'
 import { useEffect } from 'react'
 import { useAppDispatch, useTypedSelector } from '../../hook'
-import { verifyToken } from '../../services/user'
+import { getUserIdByToken } from '../../services/user'
 import { logout } from '../../store/features/userSlice'
 
 /**
@@ -14,7 +14,7 @@ const VerifyToken = () => {
 
   useEffect(() => {
     if (token) {
-      verifyToken()
+      getUserIdByToken()
         .then(({ data }) => {
           // 判断验证成功后的用户id是否匹配本地存储中的用户id
           if (data.userId !== loginUserId) {

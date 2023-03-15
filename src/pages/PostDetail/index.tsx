@@ -23,7 +23,7 @@ import TagList from '../../components/TagList'
 import UserPreviewCard from '../../components/UserPreviewCard'
 import { useTypedSelector } from '../../hook'
 import { PostModelType } from '../../models/post'
-import { fetchPostDetail } from '../../services/post'
+import { getPostById } from '../../services/post'
 import classes from './index.module.less'
 
 const { useBreakpoint } = Grid
@@ -95,7 +95,7 @@ const PostDetail: FC = () => {
       // 如果有错误信息则清除，确保验证【当前登录用户是否是该帖子的所有者】
       // 即使帖子正常获取了也会显示上一个的错误信息
       errorMsg && setErrorMsg(null)
-      fetchPostDetail(postId)
+      getPostById(postId)
         .then(({ data }) => setPostDetail(data))
         .catch(err => setErrorMsg(err.message))
         .finally(() => setLoading(false))

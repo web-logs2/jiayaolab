@@ -27,8 +27,12 @@ import TimelineDetail from '../../components/TimelineDetail'
 import { POST_NEW, USER_LOGIN } from '../../constant/paths'
 import { useDebouncedEffect, useTypedSelector } from '../../hook'
 import { DraftModuleType } from '../../models/draft'
-import { getDraftList, removeDraft, savePostDraft } from '../../services/draft'
-import { submitPost } from '../../services/post'
+import {
+  listAllByDraft,
+  removeDraftById,
+  saveDraft,
+} from '../../services/draft'
+import { savePost } from '../../services/post'
 import { urlRedirect } from '../../utils/redirect'
 import classes from './index.module.less'
 
@@ -93,7 +97,7 @@ const PostNew: FC = () => {
       duration: 0,
     })
     // 发布帖子
-    submitPost({
+    savePost({
       title,
       tags,
       text: textContent,
@@ -125,7 +129,7 @@ const PostNew: FC = () => {
   // 获取草稿列表处理程序
   const getDraftListHandler = () => {
     setDraftListFetching(true)
-    getDraftList()
+    listAllByDraft()
       .then(({ data }) => setDraftList(data))
       .catch(err => message.error(err.message))
       .finally(() => setDraftListFetching(false))
@@ -139,7 +143,7 @@ const PostNew: FC = () => {
       duration: 0,
     })
     setRemoving(true)
-    removeDraft(draftId)
+    removeDraftById(draftId)
       .then(res => {
         message.open({
           key: removeDraftKey,
@@ -172,7 +176,7 @@ const PostNew: FC = () => {
     () => {
       if (formValues) {
         setSaveMessage('保存中…')
-        savePostDraft({
+        saveDraft({
           uuid: currentDraftId,
           title: formValues.title,
           tags: formValues.tags,

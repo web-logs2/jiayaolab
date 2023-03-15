@@ -8,7 +8,7 @@ import { ResponseModelType } from '../models/response'
  * @param current 当前帖子大小
  * @param sortField 根据依据
  */
-export const fetchRecommendPostList = async (
+export const findByRecommendWithPage = async (
   current: string | number,
   sortField: keyof PostModelType
 ): Promise<ResponseModelType<PostModelType[] | null>> => {
@@ -24,7 +24,7 @@ export const fetchRecommendPostList = async (
  * @param sortOrder 排序方式
  * @param keywords 搜索关键字
  */
-export const fetchSearchPostList = async (
+export const findBySearchWithPage = async (
   current: string | number,
   sortField: keyof PostModelType,
   sortOrder: OrderByModuleType,
@@ -44,7 +44,7 @@ export const fetchSearchPostList = async (
  * 获取帖子详情
  * @param postId 帖子id
  */
-export const fetchPostDetail = async (
+export const getPostById = async (
   postId: string | number
 ): Promise<ResponseModelType<PostModelType>> => {
   return await api.get('/post/detail', {
@@ -61,7 +61,7 @@ export const fetchPostDetail = async (
  * @param _private 仅自己可见
  * @param draftId 草稿id，如果有则帖子发布完成后删除该草稿
  */
-export const submitPost = async ({
+export const savePost = async ({
   title,
   tags,
   text,
@@ -90,7 +90,7 @@ export const submitPost = async ({
  * 删除帖子
  * @param postId 帖子id
  */
-export const removePost = async (
+export const removePostById = async (
   postId: string
 ): Promise<ResponseModelType<null>> => {
   return await api.delete('/post/remove', { params: { postId } })

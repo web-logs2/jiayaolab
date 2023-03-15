@@ -11,7 +11,7 @@ import { ResponseModelType } from '../models/response'
  * @param html 草稿html格式内容
  * @param _private 草稿仅自己可见
  */
-export const savePostDraft = async ({
+export const saveDraft = async ({
   uuid,
   title,
   tags,
@@ -39,7 +39,7 @@ export const savePostDraft = async ({
 /**
  * 获取草稿列表
  */
-export const getDraftList = async (): Promise<
+export const listAllByDraft = async (): Promise<
   ResponseModelType<DraftModuleType[]>
 > => {
   return await api.get('/draft/list')
@@ -49,7 +49,7 @@ export const getDraftList = async (): Promise<
  * 删除草稿
  * @param draftId 草稿的id
  */
-export const removeDraft = async (
+export const removeDraftById = async (
   draftId: string
 ): Promise<ResponseModelType<null>> => {
   return await api.delete('/draft/remove', { params: { draftId } })

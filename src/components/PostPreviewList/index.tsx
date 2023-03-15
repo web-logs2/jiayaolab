@@ -23,7 +23,7 @@ import {
 import { FC, useEffect } from 'react'
 import { POST, USER_POST_LIST_ONLY } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
-import { removePost } from '../../services/post'
+import { removePostById } from '../../services/post'
 import { clearPostList, setFetchSize } from '../../store/features/postSlice'
 import ErrorBoundaryOnFetch from '../ErrorBoundaryOnFetch'
 import IconText from '../IconText'
@@ -49,7 +49,7 @@ const PostPreviewList: FC<{
       content: '帖子删除中…',
       duration: 0,
     })
-    removePost(postId)
+    removePostById(postId)
       .then(res => {
         message.open({
           key,

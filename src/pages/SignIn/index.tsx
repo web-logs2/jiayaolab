@@ -12,7 +12,7 @@ import { FC, useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import HeadTitle from '../../components/HeadTitle'
 import { useAppDispatch, useTypedSelector } from '../../hook'
-import { loginUser } from '../../services/user'
+import { saveUserByLogin } from '../../services/user'
 import { setLoginUserId, setToken } from '../../store/features/userSlice'
 import classes from './index.module.less'
 
@@ -36,7 +36,7 @@ const SignUp: FC = () => {
       content: '登录中…',
       duration: 0,
     })
-    loginUser(email, password)
+    saveUserByLogin(email, password)
       .then(res => {
         message.open({
           key,

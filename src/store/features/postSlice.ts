@@ -2,10 +2,10 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { OrderByModuleType } from '../../models/orderBy'
 import { PostModelType } from '../../models/post'
 import {
-  fetchRecommendPostList,
-  fetchSearchPostList,
+  findByRecommendWithPage,
+  findBySearchWithPage,
 } from '../../services/post'
-import { fetchPostByUser } from '../../services/user'
+import { findPostByUser } from '../../services/user'
 import { RootState } from '../index'
 
 // 响应锁，解决ReactStrict模式会请求多次导致页面重复渲染报错的问题！
@@ -32,7 +32,7 @@ export const getPostByField = createAsyncThunk<
   keyof PostModelType
 >(`${POST_FEATURE_KEY}/getPostByField`, async (sortField, { getState }) => {
   const { postSlice } = getState() as RootState
-  const { data } = await fetchRecommendPostList(postSlice.size, sortField)
+  const { data } = await findByRecommendWithPage(postSlice.size, sortField)
   return data
 })
 export const getPostBySearch = createAsyncThunk<
@@ -46,7 +46,7 @@ export const getPostBySearch = createAsyncThunk<
   `${POST_FEATURE_KEY}/getPostBySearch`,
   async ({ sortField, sortOrder, keywords }, { getState }) => {
     const { postSlice } = getState() as RootState
-    const { data } = await fetchSearchPostList(
+    const { data } = await findBySearchWithPage(
       postSlice.size,
       sortField,
       sortOrder,
@@ -59,7 +59,7 @@ export const getPostByUser = createAsyncThunk<PostModelType[] | null, string>(
   `${POST_FEATURE_KEY}/getPostByUser`,
   async (userId, { getState }) => {
     const { postSlice } = getState() as RootState
-    const { data } = await fetchPostByUser(userId, postSlice.size)
+    const { data } = await findPostByUser(userId, postSlice.size)
     return data
   }
 )

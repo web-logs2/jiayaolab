@@ -27,7 +27,7 @@ import {
 } from '../../constant/paths'
 import { useTypedSelector } from '../../hook'
 import { UserType } from '../../models/user'
-import { fetchUserInfo, updateUserInfo } from '../../services/user'
+import { getUserInfoById, updateUserInfo } from '../../services/user'
 import classes from './index.module.less'
 
 const key = 'UpdateUser'
@@ -60,7 +60,7 @@ const UserInfo: FC = () => {
       // 切换到其他用户，即使用户信息已经获取到了，依然会出现之前的错误
       errorMsg && setErrorMsg(null)
       // 获取用户信息
-      fetchUserInfo(userId)
+      getUserInfoById(userId)
         .then(({ data }) => {
           // 设置用户信息
           setUserInfo({ ...data })

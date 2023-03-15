@@ -8,7 +8,7 @@ import { UserType } from '../models/user'
  * @param email 邮箱
  * @param password 加密后的密码
  */
-export const registerUser = async (
+export const saveUserByRegister = async (
   email: string,
   password: string
 ): Promise<ResponseModelType<{ token: string; userId: string }>> => {
@@ -20,7 +20,7 @@ export const registerUser = async (
  * @param email 邮箱
  * @param password 加密后的密码
  */
-export const loginUser = async (
+export const saveUserByLogin = async (
   email: string,
   password: string
 ): Promise<ResponseModelType<{ token: string; userId: string }>> => {
@@ -30,7 +30,7 @@ export const loginUser = async (
 /**
  * 用户验证
  */
-export const verifyToken = async (): Promise<
+export const getUserIdByToken = async (): Promise<
   ResponseModelType<{ userId: string }>
 > => {
   return await api.post('/user/session/verify')
@@ -40,7 +40,7 @@ export const verifyToken = async (): Promise<
  * 获取用户信息
  * @param userId 用户id
  */
-export const fetchUserInfo = async (
+export const getUserInfoById = async (
   userId: string
 ): Promise<ResponseModelType<UserType>> => {
   return await api.get('/user/info', {
@@ -65,7 +65,7 @@ export const updateUserInfo = async (
  * @param userId 用户id
  * @param size 当前帖子大小
  */
-export const fetchPostByUser = async (
+export const findPostByUser = async (
   userId: string,
   size: string | number
 ): Promise<ResponseModelType<PostModelType[] | null>> => {
