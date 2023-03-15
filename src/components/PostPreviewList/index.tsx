@@ -1,5 +1,4 @@
 import {
-  DeleteOutlined,
   EditOutlined,
   EyeOutlined,
   LikeOutlined,
@@ -13,7 +12,6 @@ import {
   Divider,
   Empty,
   List,
-  Popconfirm,
   Row,
   Skeleton,
   Space,
@@ -27,6 +25,7 @@ import { removePostById } from '../../services/post'
 import { clearPostList, setFetchSize } from '../../store/features/postSlice'
 import ErrorBoundaryOnFetch from '../ErrorBoundaryOnFetch'
 import IconText from '../IconText'
+import PopConfirmOnDelete from '../PopConfirmOnDelete'
 import PostEditInfo from '../PostEditInfo'
 import TagList from '../TagList'
 import TimelineDetail from '../TimelineDetail'
@@ -173,28 +172,12 @@ const PostPreviewList: FC<{
                                 编辑
                               </Button>
                               <Divider type="vertical" />
-                              <Popconfirm
-                                title="二次确认"
-                                description={
-                                  <Text type="danger">
-                                    确定要删除这个帖子吗？
-                                  </Text>
-                                }
+                              <PopConfirmOnDelete
+                                description="确定要删除这个帖子吗？"
                                 onConfirm={() =>
                                   removePostByIdHandler(post.uuid)
                                 }
-                                okText="是"
-                                cancelText="否"
-                              >
-                                <Button
-                                  danger
-                                  type="text"
-                                  size="small"
-                                  icon={<DeleteOutlined />}
-                                >
-                                  删除
-                                </Button>
-                              </Popconfirm>
+                              />
                             </>
                           )}
                       </Space>

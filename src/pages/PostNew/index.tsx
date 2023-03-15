@@ -1,8 +1,4 @@
-import {
-  DeleteOutlined,
-  EditOutlined,
-  FileSearchOutlined,
-} from '@ant-design/icons'
+import { EditOutlined, FileSearchOutlined } from '@ant-design/icons'
 import {
   App as AntdApp,
   Button,
@@ -14,7 +10,6 @@ import {
   Input,
   List,
   Modal,
-  Popconfirm,
   Row,
   Select,
   Skeleton,
@@ -26,6 +21,7 @@ import {
 import { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import HeadTitle from '../../components/HeadTitle'
+import PopConfirmOnDelete from '../../components/PopConfirmOnDelete'
 import TagList from '../../components/TagList'
 import TextEditor from '../../components/TextEditor'
 import TimelineDetail from '../../components/TimelineDetail'
@@ -284,29 +280,12 @@ const PostNew: FC = () => {
                                 编辑
                               </Button>
                               <Divider type="vertical" />
-                              <Popconfirm
-                                title="二次确认"
-                                description={
-                                  <Text type="danger">
-                                    确定要删除这个草稿吗？
-                                  </Text>
-                                }
+                              <PopConfirmOnDelete
+                                description="确定要删除这个草稿吗？"
                                 onConfirm={() =>
                                   removeDraftByIdHandler(draft.uuid)
                                 }
-                                okText="是"
-                                cancelText="否"
-                              >
-                                <Button
-                                  danger
-                                  type="text"
-                                  size="small"
-                                  icon={<DeleteOutlined />}
-                                  disabled={removing}
-                                >
-                                  删除
-                                </Button>
-                              </Popconfirm>
+                              />
                             </Space>
                           </div>
                         </div>
