@@ -27,7 +27,7 @@ const initialState: {
   size: 1,
 }
 
-export const getPostByField = createAsyncThunk<
+export const findByRecommendWithPageHandler = createAsyncThunk<
   PostModelType[] | null,
   keyof PostModelType
 >(`${POST_FEATURE_KEY}/getPostByField`, async (sortField, { getState }) => {
@@ -35,7 +35,7 @@ export const getPostByField = createAsyncThunk<
   const { data } = await findByRecommendWithPage(postSlice.size, sortField)
   return data
 })
-export const getPostBySearch = createAsyncThunk<
+export const findBySearchWithPageHandler = createAsyncThunk<
   PostModelType[] | null,
   {
     sortField: keyof PostModelType
@@ -55,14 +55,14 @@ export const getPostBySearch = createAsyncThunk<
     return data
   }
 )
-export const getPostByUser = createAsyncThunk<PostModelType[] | null, string>(
-  `${POST_FEATURE_KEY}/getPostByUser`,
-  async (userId, { getState }) => {
-    const { postSlice } = getState() as RootState
-    const { data } = await findPostByUser(userId, postSlice.size)
-    return data
-  }
-)
+export const findPostByUserHandler = createAsyncThunk<
+  PostModelType[] | null,
+  string
+>(`${POST_FEATURE_KEY}/getPostByUser`, async (userId, { getState }) => {
+  const { postSlice } = getState() as RootState
+  const { data } = await findPostByUser(userId, postSlice.size)
+  return data
+})
 
 const postSlice = createSlice({
   name: POST_FEATURE_KEY,
@@ -77,12 +77,12 @@ const postSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(getPostByField.pending, state => {
+      .addCase(findByRecommendWithPageHandler.pending, state => {
         state.loading = true
         state.errorMsg = null
         reactStrictModeLock = false
       })
-      .addCase(getPostByField.fulfilled, (state, action) => {
+      .addCase(findByRecommendWithPageHandler.fulfilled, (state, action) => {
         state.loading = false
         if (!reactStrictModeLock) {
           state.posts = [...(state.posts || []), ...(action.payload || [])]
@@ -90,7 +90,7 @@ const postSlice = createSlice({
         }
         state.errorMsg = null
       })
-      .addCase(getPostByField.rejected, (state, action) => {
+      .addCase(findByRecommendWithPageHandler.rejected, (state, action) => {
         state.loading = false
         state.posts = null
         if (action.error.message) {
@@ -98,12 +98,12 @@ const postSlice = createSlice({
         }
       })
     builder
-      .addCase(getPostBySearch.pending, state => {
+      .addCase(findBySearchWithPageHandler.pending, state => {
         state.loading = true
         state.errorMsg = null
         reactStrictModeLock = false
       })
-      .addCase(getPostBySearch.fulfilled, (state, action) => {
+      .addCase(findBySearchWithPageHandler.fulfilled, (state, action) => {
         state.loading = false
         if (!reactStrictModeLock) {
           state.posts = [...(state.posts || []), ...(action.payload || [])]
@@ -111,7 +111,7 @@ const postSlice = createSlice({
         }
         state.errorMsg = null
       })
-      .addCase(getPostBySearch.rejected, (state, action) => {
+      .addCase(findBySearchWithPageHandler.rejected, (state, action) => {
         state.loading = false
         state.posts = null
         if (action.error.message) {
@@ -119,12 +119,12 @@ const postSlice = createSlice({
         }
       })
     builder
-      .addCase(getPostByUser.pending, state => {
+      .addCase(findPostByUserHandler.pending, state => {
         state.loading = true
         state.errorMsg = null
         reactStrictModeLock = false
       })
-      .addCase(getPostByUser.fulfilled, (state, action) => {
+      .addCase(findPostByUserHandler.fulfilled, (state, action) => {
         state.loading = false
         if (!reactStrictModeLock) {
           state.posts = [...(state.posts || []), ...(action.payload || [])]
@@ -132,7 +132,7 @@ const postSlice = createSlice({
         }
         state.errorMsg = null
       })
-      .addCase(getPostByUser.rejected, (state, action) => {
+      .addCase(findPostByUserHandler.rejected, (state, action) => {
         state.loading = false
         state.posts = null
         if (action.error.message) {

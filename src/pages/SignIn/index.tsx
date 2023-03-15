@@ -28,7 +28,7 @@ const SignUp: FC = () => {
   const [logging, setLogging] = useState<boolean>(false)
   const { token } = useTypedSelector(s => s.userSlice)
 
-  const onFinish = () => {
+  const saveUserByLoginHandler = () => {
     setLogging(true)
     message.open({
       key,
@@ -78,7 +78,7 @@ const SignUp: FC = () => {
             登录成功后，经过服务器数字签名的登录凭证，加密后将会保存在客户端（本地），请不要将你的登录凭证（token）泄露给任何人！
           </Paragraph>
           <Form
-            onFinish={onFinish}
+            onFinish={saveUserByLoginHandler}
             disabled={logging}
             onValuesChange={changedValues => {
               changedValues.email && setEmail(changedValues.email)

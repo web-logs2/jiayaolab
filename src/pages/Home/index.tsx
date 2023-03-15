@@ -4,7 +4,7 @@ import GlobalAnnouncement from '../../components/GlobalAnnouncement'
 import HeadTitle from '../../components/HeadTitle'
 import PostPreviewList from '../../components/PostPreviewList'
 import { useAppDispatch } from '../../hook'
-import { getPostByField } from '../../store/features/postSlice'
+import { findByRecommendWithPageHandler } from '../../store/features/postSlice'
 
 const { useBreakpoint } = Grid
 const HomePage: FC = () => {
@@ -18,7 +18,9 @@ const HomePage: FC = () => {
       <Row gutter={[16, 16]}>
         <Col span={isMobile ? 24 : 17}>
           <PostPreviewList
-            fetchPostHandler={() => dispatch(getPostByField('updatedAt'))}
+            fetchPostHandler={() =>
+              dispatch(findByRecommendWithPageHandler('updatedAt'))
+            }
           />
         </Col>
         <Col span={isMobile ? 24 : 7}>

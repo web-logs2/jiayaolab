@@ -28,7 +28,7 @@ const SignUp: FC = () => {
   const [registering, setRegistering] = useState<boolean>(false)
   const { token } = useTypedSelector(s => s.userSlice)
 
-  const onFinish = () => {
+  const saveUserByRegisterHandler = () => {
     setRegistering(true)
     message.open({
       key,
@@ -80,7 +80,7 @@ const SignUp: FC = () => {
             请注意不要使用简单的密码，那样是不安全的，虽然SHA256散列算法非常强大，但还是会有被破解的可能。
           </Paragraph>
           <Form
-            onFinish={onFinish}
+            onFinish={saveUserByRegisterHandler}
             disabled={registering}
             onValuesChange={changedValues => {
               changedValues.email && setEmail(changedValues.email)

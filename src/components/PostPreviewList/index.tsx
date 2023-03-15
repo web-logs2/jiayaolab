@@ -42,7 +42,7 @@ const PostPreviewList: FC<{
   const { loginUserId } = useTypedSelector(s => s.userSlice)
   const { message } = AntdApp.useApp()
   const dispatch = useAppDispatch()
-  const removePostHandler = (postId: string) => {
+  const removePostByIdHandler = (postId: string) => {
     message.open({
       key,
       type: 'loading',
@@ -184,7 +184,9 @@ const PostPreviewList: FC<{
                                     </Text>
                                   </>
                                 }
-                                onConfirm={() => removePostHandler(post.uuid)}
+                                onConfirm={() =>
+                                  removePostByIdHandler(post.uuid)
+                                }
                                 okText="是"
                                 cancelText="否"
                               >

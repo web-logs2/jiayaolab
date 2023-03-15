@@ -19,7 +19,7 @@ import { OrderByModuleType } from '../../models/orderBy'
 import { PostModelType } from '../../models/post'
 import {
   clearPostList,
-  getPostBySearch,
+  findBySearchWithPageHandler,
   setFetchSize,
 } from '../../store/features/postSlice'
 
@@ -34,7 +34,7 @@ const PostList: FC = () => {
   const { xs, lg } = useBreakpoint()
   const isMobile = xs || !lg
   const fetchPostHandler = () =>
-    dispatch(getPostBySearch({ sortField, sortOrder, keywords }))
+    dispatch(findBySearchWithPageHandler({ sortField, sortOrder, keywords }))
   // 搜索按钮
   const searchHandler = () => {
     // 清空帖子列表

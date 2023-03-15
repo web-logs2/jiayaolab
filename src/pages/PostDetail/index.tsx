@@ -88,7 +88,7 @@ const PostDetail: FC = () => {
     )
   }
   // 获取帖子详细信息的处理函数
-  const fetchPostDetailHandler = () => {
+  const getPostByIdHandler = () => {
     if (postId) {
       // 开始加载，确保验证【当前登录用户是否是该帖子的所有者】不会显示加载中组件
       setLoading(true)
@@ -104,7 +104,7 @@ const PostDetail: FC = () => {
 
   // 匹配到路由，当有id参数时执行钩子
   useEffect(() => {
-    fetchPostDetailHandler()
+    getPostByIdHandler()
   }, [postId])
   // 验证当前登录用户是否是该帖子的所有者
   useEffect(() => {
@@ -116,7 +116,7 @@ const PostDetail: FC = () => {
       postDetail.user.uuid !== loginUserId
     ) {
       // 重新获取帖子，返回的应该是空data，并且返回消息：该帖子仅作者可见！
-      fetchPostDetailHandler()
+      getPostByIdHandler()
     }
   }, [postDetail, loginUserId])
   if (errorMsg) {

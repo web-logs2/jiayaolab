@@ -87,7 +87,7 @@ const PostNew: FC = () => {
   }
 
   // 点击发布按钮的处理
-  const onSubmit = () => {
+  const savePostHandler = () => {
     // 开始发布
     setPushing(true)
     message.open({
@@ -127,15 +127,17 @@ const PostNew: FC = () => {
       .finally(() => setPushing(false))
   }
   // 获取草稿列表处理程序
-  const getDraftListHandler = () => {
+  const listAllByDraftHandler = () => {
+    // 显示草稿箱的加载中组件
     setDraftListFetching(true)
+    // 获取草稿列表
     listAllByDraft()
       .then(({ data }) => setDraftList(data))
       .catch(err => message.error(err.message))
       .finally(() => setDraftListFetching(false))
   }
   // 删除草稿处理函数
-  const removeDraftHandler = (draftId: string) => {
+  const removeDraftByIdHandler = (draftId: string) => {
     message.open({
       key: removeDraftKey,
       type: 'loading',
@@ -151,7 +153,7 @@ const PostNew: FC = () => {
           content: res.message,
         })
         // 重新获取草稿列表
-        getDraftListHandler()
+        listAllByDraftHandler()
         // 重置当前编辑器草稿id
         setCurrentDraftId(null)
       })
@@ -200,7 +202,7 @@ const PostNew: FC = () => {
   useEffect(() => {
     // 打开草稿箱时开始获取草稿列表
     if (draftOpening) {
-      getDraftListHandler()
+      listAllByDraftHandler()
     }
   }, [draftOpening])
   return (
@@ -284,7 +286,9 @@ const PostNew: FC = () => {
                                 size="small"
                                 icon={<DeleteOutlined />}
                                 disabled={removing}
-                                onClick={() => removeDraftHandler(draft.uuid)}
+                                onClick={() =>
+                                  removeDraftByIdHandler(draft.uuid)
+                                }
                               >
                                 删除
                               </Button>
@@ -313,7 +317,7 @@ const PostNew: FC = () => {
                 setSaveMessage('保存中…')
                 setFormValues(values)
               }}
-              onFinish={onSubmit}
+              onFinish={savePostHandler}
               disabled={pushing}
               scrollToFirstError
               autoComplete="off"
