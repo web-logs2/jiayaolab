@@ -9,6 +9,7 @@ specifiers:
   morgan: ^1.10.0
   mysql2: ^3.2.0
   sequelize: ^6.29.3
+  silly-datetime: ^0.1.2
 
 dependencies:
   body-parser: 1.20.2
@@ -19,6 +20,7 @@ dependencies:
   morgan: 1.10.0
   mysql2: 3.2.0
   sequelize: 6.29.3_mysql2@3.2.0
+  silly-datetime: 0.1.2
 
 packages:
 
@@ -715,6 +717,10 @@ packages:
       call-bind: 1.0.2
       get-intrinsic: 1.2.0
       object-inspect: 1.12.3
+    dev: false
+
+  /silly-datetime/0.1.2:
+    resolution: {integrity: sha512-q8hnO91rRvQsYTYaZCJc6UpljzfdmWD3bNljDLKGVBT2ukj7snE+ENkVVkXfo529ABLEBeN6PHoEaT1ONEq81w==}
     dev: false
 
   /sqlstring/2.3.3:
