@@ -1,4 +1,8 @@
-import { DeleteOutlined, EditOutlined, FileOutlined } from '@ant-design/icons'
+import {
+  DeleteOutlined,
+  EditOutlined,
+  FileSearchOutlined,
+} from '@ant-design/icons'
 import {
   App as AntdApp,
   Button,
@@ -10,6 +14,7 @@ import {
   Input,
   List,
   Modal,
+  Popconfirm,
   Row,
   Select,
   Skeleton,
@@ -211,14 +216,13 @@ const PostNew: FC = () => {
       <Row gutter={[0, 16]}>
         <Col span={24}>
           <Card>
-            <Paragraph className={classes.draftBox}>
+            <div className={classes.draftBox}>
               <Text type="secondary">{saveMessage}</Text>
               <Button
-                type="link"
+                icon={<FileSearchOutlined />}
                 disabled={pushing}
-                style={{ marginInlineStart: 32 }}
-                icon={<FileOutlined />}
                 onClick={() => setDraftOpening(true)}
+                style={{ marginInlineStart: 50 }}
               >
                 草稿箱
               </Button>
@@ -280,18 +284,29 @@ const PostNew: FC = () => {
                                 编辑
                               </Button>
                               <Divider type="vertical" />
-                              <Button
-                                danger
-                                type="text"
-                                size="small"
-                                icon={<DeleteOutlined />}
-                                disabled={removing}
-                                onClick={() =>
+                              <Popconfirm
+                                title="二次确认"
+                                description={
+                                  <Text type="danger">
+                                    确定要删除这个草稿吗？
+                                  </Text>
+                                }
+                                onConfirm={() =>
                                   removeDraftByIdHandler(draft.uuid)
                                 }
+                                okText="是"
+                                cancelText="否"
                               >
-                                删除
-                              </Button>
+                                <Button
+                                  danger
+                                  type="text"
+                                  size="small"
+                                  icon={<DeleteOutlined />}
+                                  disabled={removing}
+                                >
+                                  删除
+                                </Button>
+                              </Popconfirm>
                             </Space>
                           </div>
                         </div>
@@ -304,7 +319,7 @@ const PostNew: FC = () => {
                   <Empty description={false} />
                 )}
               </Modal>
-            </Paragraph>
+            </div>
             <Form
               form={form}
               initialValues={{

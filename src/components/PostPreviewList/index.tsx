@@ -174,15 +174,11 @@ const PostPreviewList: FC<{
                               </Button>
                               <Divider type="vertical" />
                               <Popconfirm
-                                title="删除帖子"
+                                title="二次确认"
                                 description={
-                                  <>
-                                    <Text>确定要删除帖子吗？</Text>
-                                    <br />
-                                    <Text type="danger">
-                                      （帖子删除后无法还原）
-                                    </Text>
-                                  </>
+                                  <Text type="danger">
+                                    确定要删除这个帖子吗？
+                                  </Text>
                                 }
                                 onConfirm={() =>
                                   removePostByIdHandler(post.uuid)
