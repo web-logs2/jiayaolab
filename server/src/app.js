@@ -1,7 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize')
 
 const [host, port] = process.env.MYSQL_ADDRESS.split(':')
-
 const app = new Sequelize({
   database: 'forum_data',
   username: process.env.MYSQL_USERNAME,
@@ -10,8 +9,7 @@ const app = new Sequelize({
   port,
   dialect: 'mysql',
 })
-
-// 用户信息
+// 用户信息模型定义
 const User = app.define(
   'user',
   {
@@ -20,22 +18,10 @@ const User = app.define(
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
     },
-    email: {
-      type: DataTypes.STRING(50),
-      allowNull: false,
-    },
-    password: {
-      type: DataTypes.STRING(64),
-      allowNull: false,
-    },
-    username: {
-      type: DataTypes.STRING(16),
-      allowNull: false,
-    },
-    bio: {
-      type: DataTypes.STRING(60),
-      allowNull: true,
-    },
+    email: { type: DataTypes.STRING(50), allowNull: false },
+    password: { type: DataTypes.STRING(64), allowNull: false },
+    username: { type: DataTypes.STRING(16), allowNull: false },
+    bio: { type: DataTypes.STRING(60), allowNull: true },
   },
   {
     timestamps: true,
@@ -43,66 +29,38 @@ const User = app.define(
     updatedAt: false,
   }
 )
-// 帖子信息
+// 帖子信息模型定义
 const Post = app.define('post', {
   uuid: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     allowNull: false,
   },
-  title: {
-    type: DataTypes.STRING(32),
-    allowNull: false,
-  },
-  tags: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  text: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-  },
-  html: {
-    type: DataTypes.TEXT('medium'),
-    allowNull: false,
-  },
-  _private: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-  },
+  title: { type: DataTypes.STRING(32), allowNull: false },
+  tags: { type: DataTypes.STRING, allowNull: false },
+  text: { type: DataTypes.TEXT, allowNull: false },
+  html: { type: DataTypes.TEXT('medium'), allowNull: false },
+  _private: { type: DataTypes.BOOLEAN, allowNull: false },
 })
-// 用户草稿信息
+// 用户草稿信息模型定义
 const Draft = app.define('draft', {
   uuid: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     allowNull: false,
   },
-  title: {
-    type: DataTypes.STRING(32),
-    allowNull: false,
-  },
-  tags: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  text: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-  },
-  html: {
-    type: DataTypes.TEXT('medium'),
-    allowNull: false,
-  },
-  _private: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-  },
+  title: { type: DataTypes.STRING(32), allowNull: false },
+  tags: { type: DataTypes.STRING, allowNull: false },
+  text: { type: DataTypes.TEXT, allowNull: false },
+  html: { type: DataTypes.TEXT('medium'), allowNull: false },
+  _private: { type: DataTypes.BOOLEAN, allowNull: false },
 })
 
+// 联表
 Post.belongsTo(User)
 Draft.belongsTo(User)
 
+// 初始化数据库
 const initDB = async () => {
   try {
     await app.authenticate()
@@ -115,9 +73,4 @@ const initDB = async () => {
 }
 
 module.exports = app
-module.exports = {
-  initDB,
-  User,
-  Post,
-  Draft,
-}
+module.exports = { initDB, User, Post, Draft }

@@ -88,7 +88,8 @@ const UserInfo: FC = () => {
     // 只有在用户信息发生改变后，改变后的信息与原先的用户信息不一致时才会执行更新用户处理函数
     if (
       usernameCache &&
-      (usernameCache !== userInfo?.username || bioCache !== userInfo?.bio)
+      userInfo &&
+      (usernameCache !== userInfo.username || bioCache !== userInfo.bio)
     ) {
       message.open({
         key,
@@ -97,7 +98,7 @@ const UserInfo: FC = () => {
         duration: 0,
       })
       // 更新用户信息
-      updateUserInfo(usernameCache, bioCache)
+      updateUserInfo(userInfo.uuid, usernameCache, bioCache)
         .then(res => {
           message.open({
             key,

@@ -18,17 +18,21 @@ exports.main = async (req, res) => {
       },
       where: { uuid: postId },
     })
+    // 判断帖子是否存在，如果不存在就代表已被删除
     if (!post) {
       res.status(400).json(msg(400, null, '该帖子已被删除！'))
       return
     }
 
+    // 获取用户信息
     const user = await User.findOne({ where: { email, password } })
+    // 判断用户id是否和帖子所有者的id匹配
     if (user.uuid !== post.user.uuid) {
       res.status(400).json(msg(400, null, '登录用户与帖子所有者不匹配！'))
       return
     }
 
+    // 删除帖子
     await Post.destroy({ where: { uuid: postId } })
     res.status(200).json(msg(200, null, '帖子删除成功！'))
   } catch (e) {

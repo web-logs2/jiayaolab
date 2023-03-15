@@ -9,16 +9,13 @@ exports.main = async (req, res) => {
   const { current, sortField, sortOrder, keywords } = req.query
 
   try {
-    if (
-      !current &&
-      !sortField &&
-      !sortOrder &&
-      !(keywords || keywords === '')
-    ) {
+    // 判断参数是否符合规则
+    if (!(current && sortField && sortOrder && (keywords || keywords === ''))) {
       res.status(400).json(msg(400, null, '参数无效！'))
       return
     }
 
+    // 获取帖子数据
     const { rows } = await Post.findAndCountAll({
       limit,
       attributes: {

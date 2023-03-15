@@ -6,7 +6,7 @@ exports.main = async (req, res) => {
   const { email, password } = req.body
 
   try {
-    if (!email && !password) {
+    if (!(email && password)) {
       res.status(400).json(msg(400, null, '参数无效！'))
       return
     }
@@ -22,7 +22,7 @@ exports.main = async (req, res) => {
     const { uuid } = await User.create({
       email,
       password,
-      // 默认用户名为邮箱的前缀
+      // 用户名默认为邮箱的前缀
       username: email.split('@')[0].slice(0, 16),
     })
     res.status(201).json(

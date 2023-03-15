@@ -6,7 +6,9 @@ exports.main = async (req, res) => {
   const { email, password } = req.auth
 
   try {
+    // 获取用户id
     const { id: userId } = await User.findOne({ where: { email, password } })
+    // 查找用户的所有草稿
     const { rows } = await Draft.findAndCountAll({
       attributes: {
         exclude: ['id', 'userId'],

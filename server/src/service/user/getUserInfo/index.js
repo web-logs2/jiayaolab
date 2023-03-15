@@ -14,6 +14,7 @@ exports.main = async (req, res) => {
       attributes: ['uuid', 'username', 'bio'],
       where: { uuid: userId },
     })
+    // 判断是否存在该用户
     if (!user) {
       res.status(400).json(msg(400, null, '用户不存在！'))
       return

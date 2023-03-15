@@ -6,12 +6,13 @@ exports.main = async (req, res) => {
   const { email, password } = req.auth
 
   try {
-    if (!title && !tags && !text && !html && typeof _private !== 'boolean') {
+    // 判断参数是否符合规则
+    if (!(title && tags && text && html && typeof _private === 'boolean')) {
       res.status(400).json(msg(400, null, '参数无效！'))
       return
     }
 
-    // 获取用户ID
+    // 获取用户id
     const { id: userId } = await User.findOne({ where: { email, password } })
     // 创建帖子
     await Post.create({
@@ -22,7 +23,7 @@ exports.main = async (req, res) => {
       _private,
       userId,
     })
-    // 删除草稿
+    // 如果有携带了草稿id，则删除这个草稿
     if (draftId) {
       await Draft.destroy({ where: { uuid: draftId } })
     }

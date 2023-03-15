@@ -7,12 +7,15 @@ exports.main = async (req, res) => {
   const { current, sortField } = req.query
 
   try {
-    if (!current && !sortField) {
+    // 判断参数是否存在
+    if (!(current && sortField)) {
       res.status(400).json(msg(400, null, '参数无效！'))
       return
     }
 
+    // 一次最多查询的数量
     const limit = 5
+    // 获取数据
     const { rows } = await Post.findAndCountAll({
       limit,
       attributes: {
