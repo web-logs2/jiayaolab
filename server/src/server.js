@@ -9,10 +9,7 @@ const sd = require('silly-datetime')
 // 服务器日志
 const logger = morgan('combined', {
   stream: fs.createWriteStream(
-    path.join(
-      __dirname,
-      `../logs/${sd.format(new Date(), 'YYYY_MM_DD_HH_mm_ss')}.log`
-    ),
+    path.join(__dirname, `../logs/${sd.format(new Date(), 'YYYY-MM-DD')}.log`),
     { flags: 'a' }
   ),
 })
