@@ -12,6 +12,26 @@ exports.main = async (req, res) => {
       return
     }
 
+    if (title.length > 30) {
+      res.status(400).json(msg(400, null, '帖子标题不能大于30个字符！'))
+      return
+    }
+
+    if (tags.length > 8) {
+      res.status(400).json(msg(400, null, '最多填写8个帖子标签！'))
+      return
+    }
+
+    if (tags.filter(tag => tag.length > 10).length) {
+      res.status(400).json(msg(400, null, '标签单个长度不能大于10个字符！'))
+      return
+    }
+
+    if (text.length > 30000) {
+      res.status(400).json(msg(400, null, '帖子内容不能大于30000个字符！'))
+      return
+    }
+
     // 获取用户id
     const { id: userId } = await User.findOne({ where: { email, password } })
     // 创建帖子

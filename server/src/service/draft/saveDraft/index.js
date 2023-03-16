@@ -28,7 +28,7 @@ exports.main = async (req, res) => {
 
     // 判断标签草稿长度是否符合规则
     if (tags.filter(tag => tag.length > 20).length) {
-      res.status(400).json(msg(400, null, '标签草稿单个长度不能超过20个字符！'))
+      res.status(400).json(msg(400, null, '标签草稿单个长度不能大于20个字符！'))
       return
     }
 

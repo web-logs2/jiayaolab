@@ -402,7 +402,7 @@ const PostNew: FC = () => {
                   () => ({
                     validator(_ruleObject, values) {
                       if (values.filter((v: string) => v.length > 10).length) {
-                        return Promise.reject('标签单个长度不能超过10个字符')
+                        return Promise.reject('标签单个长度不能大于10个字符')
                       }
                       return Promise.resolve()
                     },
