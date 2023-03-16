@@ -6,7 +6,9 @@ const TagList: FC<{ tags: string[] }> = ({ tags }) => {
   return (
     <div className={classes.tagList}>
       {tags.map(tag => (
-        <Tag key={tag}>{tag}</Tag>
+        <Tag key={tag} title={tag}>
+          {tag}
+        </Tag>
       ))}
     </div>
   )

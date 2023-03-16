@@ -39,6 +39,7 @@ import classes from './index.module.less'
 
 const postNewKey = 'PostNew'
 const removeDraftKey = 'RemoveDraft'
+const savingErrorKey = 'SavingError'
 const { Title, Text, Paragraph } = Typography
 const PostNew: FC = () => {
   const navigate = useNavigate()
@@ -77,6 +78,8 @@ const PostNew: FC = () => {
   // 草稿保存状态
   const [saveMessage, setSaveMessage] = useState<string>('')
   const [removing, setRemoving] = useState<boolean>(false)
+  // 是否在保存中发生错误
+  const [savingError, setSavingError] = useState<boolean>(false)
   const formUpdateHandler = (draft: DraftModuleType) => {
     setTitle(draft.title)
     form.setFieldValue('title', draft.title)
@@ -87,8 +90,9 @@ const PostNew: FC = () => {
     setHtmlContent(draft.html)
     setPrivate(draft._private)
     form.setFieldValue('_private', draft._private)
+    // 手动验证表单内容
+    form.validateFields(['title', 'tags', 'textContent', '_private'])
   }
-
   // 点击发布按钮的处理
   const savePostHandler = () => {
     // 开始发布
@@ -179,28 +183,42 @@ const PostNew: FC = () => {
   // 防抖钩子，实现自动保存草稿
   useDebouncedEffect(
     () => {
-      // 如果表单内容发生改变，并且此时草稿id的获取状态还未开始
-      if (formValues && !draftIdFetching) {
-        setSaveMessage('保存中…')
-        // 还未开始获取草稿id，并且当前还没有草稿id，开始获取草稿id
-        !draftIdFetching && !currentDraftId && setDraftIdFetching(true)
-        saveDraft({
-          uuid: currentDraftId,
-          title: formValues.title,
-          tags: formValues.tags,
-          text: formValues.textContent,
-          html: htmlContent,
-          _private: formValues._private,
-        })
-          .then(res => {
-            setCurrentDraftId(res.data.draftId)
-            setSaveMessage(res.message)
-          })
-          .catch(err => {
-            message.error(`保存失败，${err.message}`)
-            setSaveMessage(`保存失败，${err.message}`)
-          })
+      // 表单内容未发生改变
+      // 并且此时草稿id还是未获取到的状态，而且没有在保存中发生过错误
+      if (!formValues || draftIdFetching || savingError) {
+        return
       }
+
+      setSaveMessage('保存中…')
+      // 判断当前草稿id是否不存在，开始尝试获取草稿id
+      !currentDraftId && setDraftIdFetching(true)
+      saveDraft({
+        uuid: currentDraftId,
+        title: formValues.title,
+        tags: formValues.tags,
+        text: formValues.textContent,
+        html: htmlContent,
+        _private: formValues._private,
+      })
+        .then(res => {
+          message.destroy(savingErrorKey)
+          // 获取到草稿id，更新state，并且effect钩子内进行草稿id已获取的处理
+          setCurrentDraftId(res.data.draftId)
+          setSaveMessage(res.message)
+        })
+        .catch(err => {
+          message.open({
+            key: savingErrorKey,
+            type: 'error',
+            content: `保存失败，${err.message}`,
+          })
+          // 保存失败，获取不到草稿id了，此时这里关闭草稿id获取状态
+          setDraftIdFetching(false)
+          // 设置错误状态，代表在保存中发生错误
+          // 每次在表单内容发生改变后，会重置错误状态，作用是依然可以尝试更新草稿
+          setSavingError(true)
+          setSaveMessage(`保存失败，${err.message}`)
+        })
     },
     1000,
     [formValues, draftIdFetching]
@@ -208,6 +226,7 @@ const PostNew: FC = () => {
   // 当草稿id获取到时，设置草稿id的获取状态
   useEffect(() => {
     if (currentDraftId) {
+      // 设置草稿id为未获取的状态，因为草稿id已经获取到了
       setDraftIdFetching(false)
     }
   }, [currentDraftId])
@@ -283,6 +302,8 @@ const PostNew: FC = () => {
                                 icon={<EditOutlined />}
                                 disabled={removing}
                                 onClick={() => {
+                                  message.destroy(savingErrorKey)
+                                  setSaveMessage('')
                                   setDraftOpening(false)
                                   setCurrentDraftId(draft.uuid)
                                   formUpdateHandler(draft)
@@ -336,6 +357,8 @@ const PostNew: FC = () => {
               }}
               onValuesChange={(_changedValues, values) => {
                 setSaveMessage('保存中…')
+                // 每次表单内容更新后重置保存错误内容
+                savingError && setSavingError(false)
                 setFormValues(values)
               }}
               onFinish={savePostHandler}

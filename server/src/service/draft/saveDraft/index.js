@@ -20,6 +20,18 @@ exports.main = async (req, res) => {
       return
     }
 
+    // 判断标签草稿数量是否符合规则
+    if (tags.length > 16) {
+      res.status(400).json(msg(400, null, '标签草稿最多保存16个！'))
+      return
+    }
+
+    // 判断标签草稿长度是否符合规则
+    if (tags.filter(tag => tag.length > 20).length) {
+      res.status(400).json(msg(400, null, '标签草稿单个长度不能超过20个字符！'))
+      return
+    }
+
     // 判断是否有传参过来草稿id
     if (draftId) {
       const draft = await Draft.findOne({ where: { uuid: draftId } })
