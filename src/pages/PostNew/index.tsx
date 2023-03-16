@@ -290,7 +290,7 @@ const PostNew: FC = () => {
                               {draft.text
                                 .replace(/\s+/g, ' ')
                                 .trim()
-                                .slice(0, 200) || '无内容'}
+                                .slice(0, 192) || '无内容'}
                             </Paragraph>
                           </div>
                           {!!draft.tags.length && <TagList tags={draft.tags} />}
