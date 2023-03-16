@@ -77,8 +77,8 @@ export const savePost = async ({
   draftId: string | null
 }): Promise<ResponseModelType<string>> => {
   return await api.post('/post/submit', {
-    title: title.trim(),
-    tags: tags.join('|'),
+    title,
+    tags,
     text,
     html,
     _private,

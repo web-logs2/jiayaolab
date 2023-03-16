@@ -1,11 +1,8 @@
-FROM alpine:3.13
+FROM node:18-alpine
 
-RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo Asia/Shanghai > /etc/timezone
-
-RUN apk add ca-certificates
-
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositories \
-&& apk add --update --no-cache nodejs npm
+RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+&& echo Asia/Shanghai > /etc/timezone  \
+&& apk add ca-certificates
 
 WORKDIR /app
 

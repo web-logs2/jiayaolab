@@ -7,7 +7,15 @@ exports.main = async (req, res) => {
 
   try {
     // 判断参数是否符合规则
-    if (!(title && tags && text && html && typeof _private === 'boolean')) {
+    if (
+      !(
+        typeof title === 'string' &&
+        Array.isArray(tags) &&
+        typeof text === 'string' &&
+        typeof html === 'string' &&
+        typeof _private === 'boolean'
+      )
+    ) {
       res.status(400).json(msg(400, null, '参数无效！'))
       return
     }
@@ -36,8 +44,8 @@ exports.main = async (req, res) => {
     const { id: userId } = await User.findOne({ where: { email, password } })
     // 创建帖子
     await Post.create({
-      title,
-      tags,
+      title: title.trim(),
+      tags: tags.join('|'),
       text,
       html,
       _private,
