@@ -77,7 +77,8 @@ const PostNew: FC = () => {
   const [draftList, setDraftList] = useState<DraftModuleType[] | null>(null)
   // 草稿保存状态
   const [saveMessage, setSaveMessage] = useState<string>('')
-  const [removing, setRemoving] = useState<boolean>(false)
+  // 草稿是否删除中
+  const [draftRemoving, setDraftRemoving] = useState<boolean>(false)
   // 是否在保存中发生错误
   const [savingError, setSavingError] = useState<boolean>(false)
   const formUpdateHandler = (draft: DraftModuleType) => {
@@ -156,7 +157,7 @@ const PostNew: FC = () => {
       content: '草稿删除中…',
       duration: 0,
     })
-    setRemoving(true)
+    setDraftRemoving(true)
     removeDraftById(draftId)
       .then(res => {
         message.open({
@@ -176,7 +177,7 @@ const PostNew: FC = () => {
           content: `草稿删除失败，${err.message}`,
         })
       })
-      .finally(() => setRemoving(false))
+      .finally(() => setDraftRemoving(false))
   }
 
   // 判断用户是否已登录
@@ -190,7 +191,7 @@ const PostNew: FC = () => {
     () => {
       // 表单内容未发生改变
       // 并且此时草稿id还是未获取到的状态，而且没有在保存中发生过错误
-      if (!formValues || draftIdFetching || savingError) {
+      if (!formValues || draftIdFetching || savingError || pushing) {
         return
       }
 
@@ -258,15 +259,16 @@ const PostNew: FC = () => {
                 草稿箱
               </Button>
               <Modal
+                title="草稿箱"
                 destroyOnClose
                 open={draftOpening}
                 onCancel={() => {
-                  if (removing) return
-                  setDraftOpening(false)
+                  if (!draftRemoving) {
+                    setDraftOpening(false)
+                  }
                 }}
-                footer={null}
                 closable={false}
-                title="草稿箱"
+                footer={null}
               >
                 {!draftListFetching && !!draftList?.length && (
                   <List>
@@ -305,7 +307,7 @@ const PostNew: FC = () => {
                                 type="text"
                                 size="small"
                                 icon={<EditOutlined />}
-                                disabled={removing}
+                                disabled={draftRemoving}
                                 onClick={() => {
                                   // 销毁之前还未消失的错误信息
                                   message.destroy(savingErrorKey)
@@ -323,6 +325,7 @@ const PostNew: FC = () => {
                               </Button>
                               <Divider type="vertical" />
                               <PopConfirmOnDelete
+                                removing={draftRemoving}
                                 description="确定要删除这个草稿吗？"
                                 onConfirm={() =>
                                   removeDraftByIdHandler(draft.uuid)
@@ -337,18 +340,15 @@ const PostNew: FC = () => {
                 )}
                 {draftListFetching && (
                   <List>
-                    {draftList?.length ? (
-                      draftList.map((_, index) => {
-                        return (
-                          <List.Item key={index}>
-                            <Skeleton active />
-                          </List.Item>
-                        )
-                      })
-                    ) : (
-                      <List.Item>
-                        <Skeleton active />
-                      </List.Item>
+                    {Array.from({ length: draftList?.length || 1 }).map(
+                      (_, index) => (
+                        <List.Item key={index}>
+                          <Skeleton
+                            active
+                            paragraph={{ style: { marginBlockEnd: 0 } }}
+                          />
+                        </List.Item>
+                      )
                     )}
                   </List>
                 )}

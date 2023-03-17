@@ -18,7 +18,7 @@ import {
   Tag,
   Typography,
 } from 'antd'
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { POST, USER_POST_LIST_ONLY } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { removePostById } from '../../services/post'
@@ -40,6 +40,8 @@ const PostPreviewList: FC<{
   const { loading, posts, errorMsg, size } = useTypedSelector(s => s.postSlice)
   const { loginUserId } = useTypedSelector(s => s.userSlice)
   const { message } = AntdApp.useApp()
+  // 帖子是否正在删除中
+  const [removing, setRemoving] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const removePostByIdHandler = (postId: string) => {
     message.open({
@@ -48,6 +50,7 @@ const PostPreviewList: FC<{
       content: '帖子删除中…',
       duration: 0,
     })
+    setRemoving(true)
     removePostById(postId)
       .then(res => {
         message.open({
@@ -71,6 +74,7 @@ const PostPreviewList: FC<{
           content: `帖子删除失败，${err.message}`,
         })
       })
+      .finally(() => setRemoving(false))
   }
 
   // 组件加载完成开始获取帖子处理函数
@@ -173,6 +177,7 @@ const PostPreviewList: FC<{
                               </Button>
                               <Divider type="vertical" />
                               <PopConfirmOnDelete
+                                removing={removing}
                                 description="确定要删除这个帖子吗？"
                                 onConfirm={() =>
                                   removePostByIdHandler(post.uuid)
