@@ -2,7 +2,7 @@ const { msg } = require('../../../util/msg')
 const { User, Draft } = require('../../../app')
 
 exports.main = async (req, res) => {
-  const { uuid: draftId, title, tags, text, html, _private } = req.body
+  const { draftId, title, tags, text, html, _private } = req.body
   const { email, password } = req.auth
 
   try {

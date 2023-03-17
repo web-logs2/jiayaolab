@@ -81,13 +81,18 @@ const PostNew: FC = () => {
   // 是否在保存中发生错误
   const [savingError, setSavingError] = useState<boolean>(false)
   const formUpdateHandler = (draft: DraftModuleType) => {
+    // 设置标题
     setTitle(draft.title)
     form.setFieldValue('title', draft.title)
+    // 设置标签
     setTags(draft.tags)
     form.setFieldValue('tags', draft.tags)
+    // 设置文本内容
     setTextContent(draft.text)
     form.setFieldValue('textContent', draft.text)
+    // 设置HTML格式内容
     setHtmlContent(draft.html)
+    // 设置仅自己可见
     setPrivate(draft._private)
     form.setFieldValue('_private', draft._private)
     // 手动验证表单内容
@@ -193,7 +198,7 @@ const PostNew: FC = () => {
       // 判断当前草稿id是否不存在，开始尝试获取草稿id
       !currentDraftId && setDraftIdFetching(true)
       saveDraft({
-        uuid: currentDraftId,
+        draftId: currentDraftId,
         title: formValues.title,
         tags: formValues.tags,
         text: formValues.textContent,
@@ -302,10 +307,15 @@ const PostNew: FC = () => {
                                 icon={<EditOutlined />}
                                 disabled={removing}
                                 onClick={() => {
+                                  // 销毁之前还未消失的错误信息
                                   message.destroy(savingErrorKey)
+                                  // 重置当前保存状态信息
                                   setSaveMessage('')
+                                  // 关闭草稿箱Modal
                                   setDraftOpening(false)
+                                  // 设置当前编辑的草稿id
                                   setCurrentDraftId(draft.uuid)
+                                  // 更新表单内容
                                   formUpdateHandler(draft)
                                 }}
                               >

@@ -4,7 +4,7 @@ import { ResponseModelType } from '../models/response'
 
 /**
  * 保存草稿
- * @param uuid 草稿的id，没有则代表新建一个草稿
+ * @param draftId 草稿的id，没有则新建一个草稿
  * @param title 草稿标题
  * @param tags 草稿标签
  * @param text 草稿文本内容
@@ -12,14 +12,14 @@ import { ResponseModelType } from '../models/response'
  * @param _private 草稿仅自己可见
  */
 export const saveDraft = async ({
-  uuid,
+  draftId,
   title,
   tags,
   text,
   html,
   _private,
 }: {
-  uuid: string | null
+  draftId: string | null
   title: string
   tags: string[]
   text: string
@@ -27,7 +27,7 @@ export const saveDraft = async ({
   _private: boolean
 }): Promise<ResponseModelType<{ draftId: string }>> => {
   return await api.post('/draft/save', {
-    uuid,
+    draftId,
     title,
     tags,
     text,
