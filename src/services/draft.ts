@@ -1,4 +1,4 @@
-import api from '../lib/api'
+import myAxios from '../lib/myAxios'
 import { DraftModuleType } from '../models/draft'
 import { ResponseModelType } from '../models/response'
 
@@ -26,7 +26,7 @@ export const saveDraft = async ({
   html: string
   _private: boolean
 }): Promise<ResponseModelType<{ draftId: string }>> => {
-  return await api.post('/draft/save', {
+  return await myAxios.post('/draft/save', {
     draftId,
     title,
     tags,
@@ -42,7 +42,7 @@ export const saveDraft = async ({
 export const listAllByDraft = async (): Promise<
   ResponseModelType<DraftModuleType[]>
 > => {
-  return await api.get('/draft/list')
+  return await myAxios.get('/draft/list')
 }
 
 /**
@@ -52,5 +52,5 @@ export const listAllByDraft = async (): Promise<
 export const removeDraftById = async (
   draftId: string
 ): Promise<ResponseModelType<null>> => {
-  return await api.delete('/draft/remove', { params: { draftId } })
+  return await myAxios.delete('/draft/remove', { params: { draftId } })
 }

@@ -1,4 +1,4 @@
-import api from '../lib/api'
+import myAxios from '../lib/myAxios'
 import { OrderByModuleType } from '../models/orderBy'
 import { PostModelType } from '../models/post'
 import { ResponseModelType } from '../models/response'
@@ -12,7 +12,7 @@ export const findByRecommendWithPage = async (
   current: string | number,
   sortField: keyof PostModelType
 ): Promise<ResponseModelType<PostModelType[] | null>> => {
-  return await api.get('/post/recommend', {
+  return await myAxios.get('/post/recommend', {
     params: { current, sortField },
   })
 }
@@ -30,7 +30,7 @@ export const findBySearchWithPage = async (
   sortOrder: OrderByModuleType,
   keywords: string
 ): Promise<ResponseModelType<PostModelType[] | null>> => {
-  return await api.get('/post/search', {
+  return await myAxios.get('/post/search', {
     params: {
       current,
       sortField,
@@ -47,7 +47,7 @@ export const findBySearchWithPage = async (
 export const getPostById = async (
   postId: string | number
 ): Promise<ResponseModelType<PostModelType>> => {
-  return await api.get('/post/detail', {
+  return await myAxios.get('/post/detail', {
     params: { postId },
   })
 }
@@ -76,7 +76,7 @@ export const savePost = async ({
   _private: boolean
   draftId: string | null
 }): Promise<ResponseModelType<string>> => {
-  return await api.post('/post/submit', {
+  return await myAxios.post('/post/submit', {
     title,
     tags,
     text,
@@ -93,5 +93,5 @@ export const savePost = async ({
 export const removePostById = async (
   postId: string
 ): Promise<ResponseModelType<null>> => {
-  return await api.delete('/post/remove', { params: { postId } })
+  return await myAxios.delete('/post/remove', { params: { postId } })
 }

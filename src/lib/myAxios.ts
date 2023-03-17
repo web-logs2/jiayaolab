@@ -2,18 +2,18 @@ import axios from 'axios'
 import storage from '../utils/storage'
 
 // 基础配置
-const api = axios.create({
+const myAxios = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 })
 
-api.interceptors.request.use(config => {
+myAxios.interceptors.request.use(config => {
   const token = storage.getToken()
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
   return config
 })
-api.interceptors.response.use(
+myAxios.interceptors.response.use(
   response => {
     return Promise.resolve(response.data)
   },
@@ -26,4 +26,4 @@ api.interceptors.response.use(
   }
 )
 
-export default api
+export default myAxios

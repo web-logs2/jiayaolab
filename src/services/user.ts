@@ -1,4 +1,4 @@
-import api from '../lib/api'
+import myAxios from '../lib/myAxios'
 import { PostModelType } from '../models/post'
 import { ResponseModelType } from '../models/response'
 import { UserType } from '../models/user'
@@ -12,7 +12,7 @@ export const saveUserByRegister = async (
   email: string,
   password: string
 ): Promise<ResponseModelType<{ token: string; userId: string }>> => {
-  return await api.post('/user/add', { email, password })
+  return await myAxios.post('/user/add', { email, password })
 }
 
 /**
@@ -24,7 +24,7 @@ export const saveUserByLogin = async (
   email: string,
   password: string
 ): Promise<ResponseModelType<{ token: string; userId: string }>> => {
-  return await api.post('/user/session', { email, password })
+  return await myAxios.post('/user/session', { email, password })
 }
 
 /**
@@ -33,7 +33,7 @@ export const saveUserByLogin = async (
 export const getUserIdByToken = async (): Promise<
   ResponseModelType<{ userId: string }>
 > => {
-  return await api.post('/user/session/verify')
+  return await myAxios.post('/user/session/verify')
 }
 
 /**
@@ -43,7 +43,7 @@ export const getUserIdByToken = async (): Promise<
 export const getUserInfoById = async (
   userId: string
 ): Promise<ResponseModelType<UserType>> => {
-  return await api.get('/user/info', {
+  return await myAxios.get('/user/info', {
     params: { userId },
   })
 }
@@ -59,7 +59,7 @@ export const updateUserInfo = async (
   username: string,
   bio: string | null
 ): Promise<ResponseModelType<UserType>> => {
-  return await api.post('/user/update', { userId, username, bio })
+  return await myAxios.post('/user/update', { userId, username, bio })
 }
 
 /**
@@ -71,7 +71,7 @@ export const findPostByUser = async (
   userId: string,
   size: string | number
 ): Promise<ResponseModelType<PostModelType[] | null>> => {
-  return await api.get('/user/post/list', {
+  return await myAxios.get('/user/post/list', {
     params: { userId, current: size },
   })
 }
