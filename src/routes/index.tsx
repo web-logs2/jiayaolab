@@ -40,14 +40,14 @@ export default [
         children: [
           // 不携带参数访问自动重定向到帖子列表页面
           { index: true, element: <Navigate to={POST_LIST} replace /> },
-          // 携带参数访问，将视为帖子的id，服务器根据帖子id返回相应内容
-          { path: ':postId', element: <PostDetail /> },
           // 帖子列表
           { path: POST_LIST_ONLY, element: <PostList /> },
           // 发布帖子
           { path: POST_NEW_ONLY, element: <PostNew /> },
-          // 捕获无效路径，重定向到帖子列表页面
-          { path: '*', element: <Navigate to={POST_LIST} replace /> },
+          // 携带帖子id访问，服务器根据帖子id返回相应内容
+          { path: ':postId', element: <PostDetail /> },
+          // 捕获无效路径，显示页面不存在
+          { path: '*', element: <PageNotFound /> },
         ],
       },
       // 用户
@@ -56,7 +56,11 @@ export default [
         children: [
           // 不携带参数访问自动重定向到用户页面，用户页面会根据用户登录情况判断跳转页面
           { index: true, element: <UserInfo /> },
-          // 携带参数访问，将视为用户的id，服务器根据用户id返回相应内容
+          // 用户注册
+          { path: USER_REGISTER_ONLY, element: <SignUp /> },
+          // 用户登录
+          { path: USER_LOGIN_ONLY, element: <SignIn /> },
+          // 携带用户id访问，服务器根据用户id返回相应内容
           {
             path: ':userId',
             element: <UserInfo />,
@@ -74,15 +78,10 @@ export default [
               },
             ],
           },
-          // 用户注册
-          { path: USER_REGISTER_ONLY, element: <SignUp /> },
-          // 用户登录
-          { path: USER_LOGIN_ONLY, element: <SignIn /> },
-          // 捕获无效路径，显示页面不存在
-          { path: '*', element: <PageNotFound /> },
         ],
       },
+      // 页面不存在
+      { path: '*', element: <PageNotFound /> },
     ],
   },
-  { path: '*', element: <Navigate to="/" replace /> },
 ] as RouteObject[]
