@@ -63,7 +63,7 @@ const SignUp: FC = () => {
   useEffect(() => {
     if (token) {
       navigate('/')
-      message.warning('请先退出登录！')
+      message.error('你已登录，请先退出登录！')
     }
   }, [token])
   return (
