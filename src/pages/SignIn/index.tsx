@@ -1,20 +1,15 @@
-import {
-  App as AntdApp,
-  Button,
-  Card,
-  Divider,
-  Form,
-  Input,
-  Typography,
-} from 'antd'
+import { App as AntdApp, Card, Divider, Form, Typography } from 'antd'
 import { SHA256 } from 'crypto-js'
 import { FC, useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import FormEmailItem from '../../components/FormEmailItem'
+import FormPasswordItem from '../../components/FormPasswordItem'
+import FormUserLayout from '../../components/FormUserLayout'
+import FormUserSubmitItem from '../../components/FormUserSubmitItem'
 import HeadTitle from '../../components/HeadTitle'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { saveUserByLogin } from '../../services/user'
 import { setLoginUserId, setToken } from '../../store/features/userSlice'
-import classes from './index.module.less'
 
 const key = 'SignIn'
 const { Title, Paragraph } = Typography
@@ -69,7 +64,7 @@ const SignUp: FC = () => {
   return (
     <>
       <HeadTitle layers={['用户登录']} />
-      <div className={classes.login}>
+      <FormUserLayout>
         <Card>
           <Title level={3}>用户登录</Title>
           <Divider />
@@ -92,46 +87,15 @@ const SignUp: FC = () => {
             scrollToFirstError
             autoComplete="off"
           >
-            <Form.Item
-              name="email"
-              colon={false}
-              label="邮箱"
-              rules={[
-                { required: true, message: '请填写邮箱' },
-                { whitespace: true, message: '请填写邮箱' },
-                { max: 50, message: '邮箱长度不得大于50个字符' },
-                {
-                  pattern:
-                    /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/,
-                  message: '邮箱格式不正确',
-                },
-              ]}
-              hasFeedback
-            >
-              <Input autoFocus maxLength={50} showCount />
-            </Form.Item>
-            <Form.Item
-              name="password"
-              colon={false}
-              label="密码"
-              rules={[
-                { required: true, message: '请填写密码' },
-                { whitespace: true, message: '请填写密码' },
-                { min: 8, message: '密码长度不得少于8个字符' },
-                { max: 32, message: '密码长度不得大于32个字符' },
-              ]}
-              hasFeedback
-            >
-              <Input.Password maxLength={32} showCount />
-            </Form.Item>
-            <Form.Item className={classes.submit}>
-              <Button htmlType="submit" type="primary" loading={logging}>
-                {logging ? '登录中…' : '登录'}
-              </Button>
-            </Form.Item>
+            <FormEmailItem />
+            <FormPasswordItem />
+            <FormUserSubmitItem
+              loading={logging}
+              text={logging ? '登录中…' : '登录'}
+            />
           </Form>
         </Card>
-      </div>
+      </FormUserLayout>
     </>
   )
 }
