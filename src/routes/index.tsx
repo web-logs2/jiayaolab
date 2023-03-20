@@ -4,6 +4,7 @@ import GlobalErrorBoundary from '../components/GlobalErrorBoundary'
 import PageNotFound from '../components/PageNotFound'
 import {
   POST,
+  POST_EDIT_ONLY,
   POST_LIST,
   POST_LIST_ONLY,
   POST_NEW_ONLY,
@@ -18,6 +19,7 @@ const BasicLayout = lazy(() => import('../layouts/BasicLayout'))
 
 const HomePage = lazy(() => import('../pages/Home'))
 const PostDetail = lazy(() => import('../pages/PostDetail'))
+const PostEdit = lazy(() => import('../pages/PostEdit'))
 const PostList = lazy(() => import('../pages/PostList'))
 const PostNew = lazy(() => import('../pages/PostNew'))
 const SignIn = lazy(() => import('../pages/SignIn'))
@@ -44,10 +46,16 @@ export default [
           { path: POST_LIST_ONLY, element: <PostList /> },
           // 发布帖子
           { path: POST_NEW_ONLY, element: <PostNew /> },
-          // 携带帖子id访问，服务器根据帖子id返回相应内容
-          { path: ':postId', element: <PostDetail /> },
-          // 捕获无效路径，显示页面不存在
-          { path: '*', element: <PageNotFound /> },
+          // 携带帖子id访问
+          {
+            path: ':postId',
+            children: [
+              // 默认展示帖子内容
+              { index: true, element: <PostDetail /> },
+              // 编辑帖子内容
+              { path: POST_EDIT_ONLY, element: <PostEdit /> },
+            ],
+          },
         ],
       },
       // 用户

@@ -3,6 +3,19 @@ import { OrderByModuleType } from '../models/orderBy'
 import { PostModelType } from '../models/post'
 import { ResponseModelType } from '../models/response'
 
+// 发布/编辑帖子时需要的类型
+interface SubmitPostType {
+  title: string
+  tags: string[]
+  text: string
+  html: string
+  _private: boolean
+}
+// 草稿id类型
+type DraftIdType = { draftId: string | null }
+// 帖子id类型
+type PostIdType = { postId: string }
+
 /**
  * 获取主页面推荐帖子
  * @param current 当前帖子大小
@@ -45,7 +58,7 @@ export const findBySearchWithPage = async (
  * @param postId 帖子id
  */
 export const getPostById = async (
-  postId: string | number
+  postId: string
 ): Promise<ResponseModelType<PostModelType>> => {
   return await myAxios.get('/post/detail', {
     params: { postId },
@@ -68,14 +81,7 @@ export const savePost = async ({
   html,
   _private,
   draftId,
-}: {
-  title: string
-  tags: string[]
-  text: string
-  html: string
-  _private: boolean
-  draftId: string | null
-}): Promise<ResponseModelType<string>> => {
+}: SubmitPostType & DraftIdType): Promise<ResponseModelType<string>> => {
   return await myAxios.post('/post/submit', {
     title,
     tags,
@@ -94,4 +100,43 @@ export const removePostById = async (
   postId: string
 ): Promise<ResponseModelType<null>> => {
   return await myAxios.delete('/post/remove', { params: { postId } })
+}
+
+/**
+ * 获取编辑帖子的详情
+ * @param postId 帖子id
+ */
+export const getEditPostById = async (
+  postId: string | number
+): Promise<ResponseModelType<PostModelType>> => {
+  return await myAxios.get('/post/edit/detail', {
+    params: { postId },
+  })
+}
+
+/**
+ * 更新编辑过的帖子
+ * @param uuid 帖子id
+ * @param title 标题
+ * @param tags 标签
+ * @param text 文本内容
+ * @param html HTML格式内容
+ * @param _private 仅自己可见
+ */
+export const savePostByEdit = async ({
+  postId,
+  title,
+  tags,
+  text,
+  html,
+  _private,
+}: SubmitPostType & PostIdType): Promise<ResponseModelType<null>> => {
+  return await myAxios.post('/post/edit/submit', {
+    postId,
+    title,
+    tags,
+    text,
+    html,
+    _private,
+  })
 }

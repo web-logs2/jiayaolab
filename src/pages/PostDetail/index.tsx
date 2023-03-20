@@ -21,6 +21,7 @@ import IconText from '../../components/IconText'
 import PostEditInfo from '../../components/PostEditInfo'
 import TagList from '../../components/TagList'
 import UserPreviewCard from '../../components/UserPreviewCard'
+import { POST, POST_EDIT_ONLY } from '../../constant/paths'
 import { useTypedSelector } from '../../hook'
 import { PostModelType } from '../../models/post'
 import { getPostById } from '../../services/post'
@@ -115,7 +116,7 @@ const PostDetail: FC = () => {
       postDetail._private &&
       postDetail.user.uuid !== loginUserId
     ) {
-      // 重新获取帖子，返回的应该是空data，并且返回消息：该帖子仅作者可见！
+      // 重新获取帖子，这时候返回的应该是空data，并且返回消息：该帖子仅作者可见！
       getPostByIdHandler()
     }
   }, [postDetail, loginUserId])
@@ -194,13 +195,33 @@ const PostDetail: FC = () => {
                     />
                   </LoadingButton>
                 </Space>
-                {loading ? (
-                  <Skeleton.Button active />
-                ) : (
-                  <Button type="link" danger>
-                    举报
-                  </Button>
-                )}
+                <div className={classes.handle}>
+                  {loading ? (
+                    <>
+                      <Skeleton.Button active />
+                      <Divider type="vertical" />
+                      <Skeleton.Button active />
+                    </>
+                  ) : (
+                    <>
+                      {postDetail?.user.uuid === loginUserId && (
+                        <>
+                          <Button
+                            type="link"
+                            href={`${POST}/${postDetail?.uuid}/${POST_EDIT_ONLY}`}
+                            target="_blank"
+                          >
+                            编辑
+                          </Button>
+                          <Divider type="vertical" />
+                        </>
+                      )}
+                      <Button type="text" danger>
+                        举报
+                      </Button>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </Card>

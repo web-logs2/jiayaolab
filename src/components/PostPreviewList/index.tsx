@@ -19,7 +19,7 @@ import {
   Typography,
 } from 'antd'
 import { FC, useEffect, useState } from 'react'
-import { POST, USER_POST_LIST_ONLY } from '../../constant/paths'
+import { POST, POST_EDIT_ONLY, USER_POST_LIST_ONLY } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { removePostById } from '../../services/post'
 import { clearPostList, setFetchSize } from '../../store/features/postSlice'
@@ -108,7 +108,7 @@ const PostPreviewList: FC<{
                 <Row gutter={[0, 12]}>
                   <Col span={24}>
                     <div className={classes.cardHeader}>
-                      {location.pathname.includes(USER_POST_LIST_ONLY) ? (
+                      {location.pathname.endsWith(USER_POST_LIST_ONLY) ? (
                         <>
                           {post.user.uuid === loginUserId &&
                             (post._private ? (
@@ -163,15 +163,16 @@ const PostPreviewList: FC<{
                         <IconText icon={<MessageOutlined />} text={0} />
                         <Divider type="vertical" />
                         <IconText icon={<LikeOutlined />} text={0} />
-                        {location.pathname.includes(USER_POST_LIST_ONLY) &&
+                        {location.pathname.endsWith(USER_POST_LIST_ONLY) &&
                           post.user.uuid === loginUserId && (
                             <>
                               <Divider type="vertical" />
                               <Button
-                                type="text"
                                 size="small"
+                                type="link"
                                 icon={<EditOutlined />}
-                                disabled
+                                href={`${POST}/${post.uuid}/${POST_EDIT_ONLY}`}
+                                target="_blank"
                               >
                                 编辑
                               </Button>

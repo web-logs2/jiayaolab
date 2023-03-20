@@ -3,23 +3,23 @@ import {
   App as AntdApp,
   Button,
   Card,
-  Col,
   Divider,
   Empty,
   Form,
-  Input,
   List,
   Modal,
-  Row,
-  Select,
   Skeleton,
   Space,
-  Switch,
   Tag,
   Typography,
 } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import FormPrivateItem from '../../components/FormPrivateItem'
+import FormSubmitItem from '../../components/FormSubmitItem'
+import FormTagItem from '../../components/FormTagItem'
+import FormTextContentItem from '../../components/FormTextContentItem'
+import FormTitleItem from '../../components/FormTitleItem'
 import HeadTitle from '../../components/HeadTitle'
 import PopConfirmOnDelete from '../../components/PopConfirmOnDelete'
 import TagList from '../../components/TagList'
@@ -216,14 +216,14 @@ const PostNew: FC = () => {
           message.open({
             key: savingErrorKey,
             type: 'error',
-            content: `保存失败，${err.message}`,
+            content: `草稿保存失败，${err.message}`,
           })
           // 保存失败，获取不到草稿id了，此时这里关闭草稿id获取状态
           setDraftIdFetching(false)
           // 设置错误状态，代表在保存中发生错误
           // 每次在表单内容发生改变后，会重置错误状态，作用是依然可以尝试更新草稿
           setSavingError(true)
-          setSaveMessage(`保存失败，${err.message}`)
+          setSaveMessage(`草稿保存失败，${err.message}`)
         })
     },
     1000,
@@ -245,228 +245,153 @@ const PostNew: FC = () => {
   return (
     <>
       <HeadTitle layers={['发布帖子']} />
-      <Row gutter={[0, 16]}>
-        <Col span={24}>
-          <Card>
-            <div className={classes.draftBox}>
-              <Text type="secondary">{saveMessage}</Text>
-              <Button
-                icon={<FileSearchOutlined />}
-                disabled={pushing}
-                onClick={() => setDraftOpening(true)}
-                style={{ marginInlineStart: 50 }}
-              >
-                草稿箱
-              </Button>
-              <Modal
-                title="草稿箱"
-                destroyOnClose
-                open={draftOpening}
-                onCancel={() => {
-                  if (!draftRemoving) {
-                    setDraftOpening(false)
-                  }
-                }}
-                closable={false}
-                footer={null}
-              >
-                {!draftListFetching && !!draftList?.length && (
-                  <List>
-                    {draftList.map(draft => (
-                      <List.Item key={draft.uuid}>
-                        <div className={classes.draftLayout}>
-                          <div className={classes.draftHeader}>
-                            {draft._private && (
-                              <Tag color="warning">仅自己可见</Tag>
-                            )}
-                            <Text type="secondary">
-                              最后编辑：
-                              <TimelineDetail
-                                date={draft.updatedAt}
-                                placement="bottom"
-                              />
-                            </Text>
-                          </div>
-                          <div>
-                            <Title level={5}>{draft.title || '无标题'}</Title>
-                            <Paragraph
-                              type="secondary"
-                              ellipsis={{ rows: 2 }}
-                              style={{ marginBlockEnd: 0 }}
-                            >
-                              {draft.text
-                                .replace(/\s+/g, ' ')
-                                .trim()
-                                .slice(0, 192) || '无内容'}
-                            </Paragraph>
-                          </div>
-                          {!!draft.tags.length && <TagList tags={draft.tags} />}
-                          <div className={classes.draftFooter}>
-                            <Space>
-                              <Button
-                                type="text"
-                                size="small"
-                                icon={<EditOutlined />}
-                                disabled={draftRemoving}
-                                onClick={() => {
-                                  // 销毁之前还未消失的错误信息
-                                  message.destroy(savingErrorKey)
-                                  // 重置当前保存状态信息
-                                  setSaveMessage('')
-                                  // 关闭草稿箱Modal
-                                  setDraftOpening(false)
-                                  // 设置当前编辑的草稿id
-                                  setCurrentDraftId(draft.uuid)
-                                  // 更新表单内容
-                                  formUpdateHandler(draft)
-                                }}
-                              >
-                                编辑
-                              </Button>
-                              <Divider type="vertical" />
-                              <PopConfirmOnDelete
-                                removing={draftRemoving}
-                                description="确定要删除这个草稿吗？"
-                                onConfirm={() =>
-                                  removeDraftByIdHandler(draft.uuid)
-                                }
-                              />
-                            </Space>
-                          </div>
-                        </div>
-                      </List.Item>
-                    ))}
-                  </List>
-                )}
-                {draftListFetching && (
-                  <List>
-                    {Array.from({ length: draftList?.length || 1 }).map(
-                      (_, index) => (
-                        <List.Item key={index}>
-                          <Skeleton
-                            active
-                            paragraph={{ style: { marginBlockEnd: 0 } }}
+      <Card>
+        <div className={classes.draftBox}>
+          <Title level={3}>发布帖子</Title>
+          <Text type="secondary">{saveMessage}</Text>
+          <Button
+            icon={<FileSearchOutlined />}
+            disabled={pushing}
+            onClick={() => setDraftOpening(true)}
+          >
+            草稿箱
+          </Button>
+          <Modal
+            title="草稿箱"
+            destroyOnClose
+            open={draftOpening}
+            onCancel={() => {
+              if (!draftRemoving) {
+                setDraftOpening(false)
+              }
+            }}
+            closable={false}
+            footer={null}
+          >
+            {!draftListFetching && !!draftList?.length && (
+              <List>
+                {draftList.map(draft => (
+                  <List.Item key={draft.uuid}>
+                    <div className={classes.draftLayout}>
+                      <div className={classes.draftHeader}>
+                        {draft._private && (
+                          <Tag color="warning">仅自己可见</Tag>
+                        )}
+                        <Text type="secondary">
+                          最后编辑：
+                          <TimelineDetail
+                            date={draft.updatedAt}
+                            placement="bottom"
                           />
-                        </List.Item>
-                      )
-                    )}
-                  </List>
+                        </Text>
+                      </div>
+                      <div>
+                        <Title level={5}>{draft.title || '无标题'}</Title>
+                        <Paragraph
+                          type="secondary"
+                          ellipsis={{ rows: 2 }}
+                          style={{ marginBlockEnd: 0 }}
+                        >
+                          {draft.text
+                            .replace(/\s+/g, ' ')
+                            .trim()
+                            .slice(0, 192) || '无内容'}
+                        </Paragraph>
+                      </div>
+                      {!!draft.tags.length && <TagList tags={draft.tags} />}
+                      <div className={classes.draftFooter}>
+                        <Space>
+                          <Button
+                            type="text"
+                            size="small"
+                            icon={<EditOutlined />}
+                            disabled={draftRemoving}
+                            onClick={() => {
+                              // 销毁之前还未消失的错误信息
+                              message.destroy(savingErrorKey)
+                              // 重置当前保存状态信息
+                              setSaveMessage('')
+                              // 关闭草稿箱Modal
+                              setDraftOpening(false)
+                              // 设置当前编辑的草稿id
+                              setCurrentDraftId(draft.uuid)
+                              // 更新表单内容
+                              formUpdateHandler(draft)
+                            }}
+                          >
+                            编辑
+                          </Button>
+                          <Divider type="vertical" />
+                          <PopConfirmOnDelete
+                            removing={draftRemoving}
+                            description="确定要删除这个草稿吗？"
+                            onConfirm={() => removeDraftByIdHandler(draft.uuid)}
+                          />
+                        </Space>
+                      </div>
+                    </div>
+                  </List.Item>
+                ))}
+              </List>
+            )}
+            {draftListFetching && (
+              <List>
+                {Array.from({ length: draftList?.length || 1 }).map(
+                  (_, index) => (
+                    <List.Item key={index}>
+                      <Skeleton
+                        active
+                        paragraph={{ style: { marginBlockEnd: 0 } }}
+                      />
+                    </List.Item>
+                  )
                 )}
-                {!draftListFetching && !draftList?.length && (
-                  <Empty description={false} />
-                )}
-              </Modal>
-            </div>
-            <Form
-              form={form}
-              initialValues={{
-                title,
-                tags,
-                textContent,
-                _private,
-              }}
-              onValuesChange={(_changedValues, values) => {
-                setSaveMessage('保存中…')
-                // 每次表单内容更新后重置保存错误内容
-                savingError && setSavingError(false)
-                setFormValues(values)
-              }}
-              onFinish={savePostHandler}
+              </List>
+            )}
+            {!draftListFetching && !draftList?.length && (
+              <Empty description={false} />
+            )}
+          </Modal>
+        </div>
+        <Divider />
+        <Form
+          form={form}
+          initialValues={{
+            title,
+            tags,
+            textContent,
+            _private,
+          }}
+          onValuesChange={(_changedValues, values) => {
+            setSaveMessage('保存中…')
+            // 每次表单内容更新后重置保存错误内容
+            savingError && setSavingError(false)
+            setFormValues(values)
+          }}
+          onFinish={savePostHandler}
+          disabled={pushing}
+          scrollToFirstError
+          autoComplete="off"
+        >
+          <FormTitleItem onChange={e => setTitle(e.target.value)} />
+          <FormTagItem onChange={value => setTags(value)} />
+          <FormTextContentItem>
+            <TextEditor
               disabled={pushing}
-              scrollToFirstError
-              autoComplete="off"
-            >
-              <Form.Item
-                label="标题"
-                colon={false}
-                name="title"
-                rules={[
-                  { required: true, message: '请填写帖子标题' },
-                  { whitespace: true, message: '请填写帖子标题' },
-                  { max: 30, message: '帖子标题不能大于30个字符' },
-                ]}
-              >
-                <Input
-                  autoFocus
-                  placeholder="标题（必填）"
-                  onPressEnter={e => e.preventDefault()}
-                  onChange={e => setTitle(e.target.value)}
-                  showCount
-                  maxLength={30}
-                />
-              </Form.Item>
-              <Form.Item
-                label="标签"
-                colon={false}
-                name="tags"
-                rules={[
-                  { required: true, message: '请填写帖子标签' },
-                  () => ({
-                    validator(_ruleObject, values) {
-                      if (values.length > 8) {
-                        return Promise.reject('最多填写8个帖子标签')
-                      }
-                      return Promise.resolve()
-                    },
-                  }),
-                  () => ({
-                    validator(_ruleObject, values) {
-                      if (values.filter((v: string) => v.length > 10).length) {
-                        return Promise.reject('标签单个长度不能大于10个字符')
-                      }
-                      return Promise.resolve()
-                    },
-                  }),
-                ]}
-              >
-                <Select
-                  placeholder="标签（必填）"
-                  notFoundContent={<Empty description={false} />}
-                  maxTagTextLength={10}
-                  mode="tags"
-                  onChange={value => setTags(value)}
-                  tokenSeparators={[',', '|', ' ', '，']}
-                />
-              </Form.Item>
-              <Form.Item
-                label="内容"
-                colon={false}
-                name="textContent"
-                required
-                rules={[
-                  { required: true, message: '请填写帖子内容' },
-                  { whitespace: true, message: '请填写帖子内容' },
-                  { max: 30000, message: '帖子内容不能大于30000个字符' },
-                ]}
-              >
-                <TextEditor
-                  disabled={pushing}
-                  textState={[textContent, setTextContent]}
-                  htmlState={[htmlContent, setHtmlContent]}
-                  onChange={value => form.setFieldValue('textContent', value)}
-                />
-              </Form.Item>
-              <Form.Item name="_private" label="仅自己可见" colon={false}>
-                <Switch
-                  checked={_private}
-                  onChange={value => setPrivate(value)}
-                />
-              </Form.Item>
-              <Form.Item style={{ textAlign: 'center' }}>
-                <Button
-                  style={{ paddingInline: 24 }}
-                  size="large"
-                  type="primary"
-                  htmlType="submit"
-                  loading={pushing}
-                >
-                  {pushing ? '发布中…' : '发布'}
-                </Button>
-              </Form.Item>
-            </Form>
-          </Card>
-        </Col>
-      </Row>
+              textState={[textContent, setTextContent]}
+              htmlState={[htmlContent, setHtmlContent]}
+              onChange={value => form.setFieldValue('textContent', value)}
+            />
+          </FormTextContentItem>
+          <FormPrivateItem
+            onChange={[_private, newValue => setPrivate(newValue)]}
+          />
+          <FormSubmitItem
+            loading={pushing}
+            text={pushing ? '发布中…' : '发布'}
+          />
+        </Form>
+      </Card>
     </>
   )
 }

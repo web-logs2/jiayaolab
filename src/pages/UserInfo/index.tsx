@@ -117,7 +117,7 @@ const UserInfo: FC = () => {
           message.open({
             key,
             type: 'error',
-            content: `更新失败，${err.message}`,
+            content: `用户资料更新失败，${err.message}`,
           })
         })
     }
