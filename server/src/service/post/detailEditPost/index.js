@@ -1,9 +1,10 @@
+const { Post, User } = require('../../../app')
 const { msg } = require('../../../util/msg')
-const { User, Post } = require('../../../app')
+const { toArrayTags } = require('../../../util/toArrayTags')
 
 exports.main = async (req, res) => {
-  const { postId } = req.query
   const { email, password } = req.auth
+  const { postId } = req.query
 
   try {
     if (!postId) {
@@ -11,30 +12,40 @@ exports.main = async (req, res) => {
       return
     }
 
+    // 根据帖子id获取帖子内容
     const post = await Post.findOne({
+      attributes: {
+        exclude: ['userId', 'id', 'createdAt', 'updatedAt'],
+      },
       include: {
         model: User,
         attributes: ['uuid'],
       },
       where: { uuid: postId },
     })
-    // 判断帖子是否存在，如果不存在就代表已被删除
+    // 判断是否获取到帖子
     if (!post) {
-      res.status(400).json(msg(400, null, '该帖子已被删除！'))
+      res.status(400).json(msg(400, null, '该帖子不存在！'))
       return
     }
 
-    // 获取用户信息
     const user = await User.findOne({ where: { email, password } })
     // 判断用户id是否和帖子所有者的id匹配
     if (user.uuid !== post.user.uuid) {
-      res.status(400).json(msg(400, null, '你不能删除其他用户的帖子！'))
+      res.status(400).json(msg(400, null, '该帖子仅作者可编辑！'))
       return
     }
 
-    // 删除帖子
-    await Post.destroy({ where: { uuid: postId } })
-    res.status(200).json(msg(200, null, '帖子删除成功！'))
+    // 返回帖子内容
+    res
+      .status(200)
+      .json(
+        msg(
+          200,
+          { ...post.dataValues, tags: toArrayTags(post.dataValues.tags) },
+          'ok'
+        )
+      )
   } catch (e) {
     console.error(e)
     res.status(400).json(msg(400, null, '服务器错误！'))

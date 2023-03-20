@@ -22,7 +22,7 @@ exports.main = async (req, res) => {
     const user = await User.findOne({ where: { email, password } })
     // 判断更新的用户信息是否和当前登录用户的信息匹配
     if (user.uuid !== userId) {
-      res.status(400).json(msg(400, null, '当前修改用户和登录用户信息不匹配！'))
+      res.status(400).json(msg(400, null, '你不能更改其他用户的个人资料！'))
       return
     }
 
@@ -33,7 +33,7 @@ exports.main = async (req, res) => {
       attributes: ['uuid', 'username', 'bio'],
       where: { email, password },
     })
-    res.status(200).json(msg(200, data, '已更新！'))
+    res.status(200).json(msg(200, data, '用户资料已更新！'))
   } catch (e) {
     console.error(e)
     res.status(400).json(msg(400, null, '服务器错误！'))

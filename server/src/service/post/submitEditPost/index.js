@@ -1,14 +1,15 @@
-const { Post, User, Draft } = require('../../../app')
 const { msg } = require('../../../util/msg')
+const { User, Post } = require('../../../app')
 
 exports.main = async (req, res) => {
-  const { title, tags, text, html, _private, draftId } = req.body
   const { email, password } = req.auth
+  const { postId, title, tags, text, html, _private } = req.body
 
   try {
-    // 判断参数是否符合规则
     if (
+      // 判断参数是否符合规则
       !(
+        typeof postId === 'string' &&
         typeof title === 'string' &&
         Array.isArray(tags) &&
         tags.length &&
@@ -23,6 +24,28 @@ exports.main = async (req, res) => {
 
     if (tags.join('').includes('|')) {
       res.status(400).json(msg(400, null, '帖子标签内含有非法字符！'))
+      return
+    }
+
+    // 根据id获取帖子
+    const post = await Post.findOne({
+      include: {
+        model: User,
+        attributes: ['uuid'],
+      },
+      where: { uuid: postId },
+    })
+    // 判断该帖子是否存在
+    if (!post) {
+      res.status(400).json(msg(400, null, '帖子不存在！'))
+      return
+    }
+
+    // 获取用户id
+    const user = await User.findOne({ where: { email, password } })
+    // 判断用户id是否和帖子所有者的id匹配
+    if (user.uuid !== post.user.uuid) {
+      res.status(400).json(msg(400, null, '你不能编辑其他用户的帖子！'))
       return
     }
 
@@ -46,22 +69,18 @@ exports.main = async (req, res) => {
       return
     }
 
-    // 获取用户id
-    const { id: userId } = await User.findOne({ where: { email, password } })
-    // 创建帖子
-    await Post.create({
-      title: title.trim(),
-      tags: tags.join('|'),
-      text,
-      html,
-      _private,
-      userId,
-    })
-    // 如果有携带了草稿id，则删除这个草稿
-    if (draftId) {
-      await Draft.destroy({ where: { uuid: draftId } })
-    }
-    res.status(201).json(msg(201, null, '帖子发布成功！'))
+    // 更新指定帖子
+    await Post.update(
+      {
+        title,
+        tags: tags.join('|'),
+        text,
+        html,
+        _private,
+      },
+      { where: { uuid: postId } }
+    )
+    res.status(200).json(msg(200, null, '帖子已更新！'))
   } catch (e) {
     console.error(e)
     res.status(400).json(msg(400, null, '服务器错误！'))

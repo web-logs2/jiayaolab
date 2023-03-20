@@ -27,9 +27,9 @@ exports.main = async (req, res) => {
 
     // 获取用户信息
     const user = await User.findOne({ where: { email, password } })
-    // 用户的uuid不匹配草稿所有者的uuid
+    // 判断用户id是否和帖子所有者的id匹配
     if (user.uuid !== draft.user.uuid) {
-      res.status(400).json(msg(400, null, '登录用户与草稿所有者不匹配！'))
+      res.status(400).json(msg(400, null, '你不能删除其他用户的草稿！'))
       return
     }
 

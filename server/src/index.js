@@ -29,6 +29,18 @@ server.delete(
   useVerify(),
   require('./service/post/removePost').main
 )
+// 获取需要编辑的帖子
+server.get(
+  '/post/edit/detail',
+  useVerify(),
+  require('./service/post/detailEditPost').main
+)
+// 更新编辑后的帖子
+server.post(
+  '/post/edit/submit',
+  useVerify(),
+  require('./service/post/submitEditPost').main
+)
 
 // 用户注册
 server.post('/user/add', require('./service/user/addUser').main)
