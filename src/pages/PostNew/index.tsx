@@ -45,7 +45,7 @@ const PostNew: FC = () => {
   const navigate = useNavigate()
   const [form] = Form.useForm()
   const { message } = AntdApp.useApp()
-  const { token } = useTypedSelector(s => s.userSlice)
+  const { loginUserId } = useTypedSelector(s => s.userSlice)
   // 帖子标题
   const [title, setTitle] = useState<string>('')
   // 帖子标签
@@ -182,10 +182,10 @@ const PostNew: FC = () => {
 
   // 判断用户是否已登录
   useEffect(() => {
-    if (!token) {
+    if (!loginUserId) {
       navigate(urlRedirect(USER_LOGIN, POST_NEW), { replace: true })
     }
-  }, [token])
+  }, [loginUserId])
   // 防抖钩子，实现自动保存草稿
   useDebouncedEffect(
     () => {

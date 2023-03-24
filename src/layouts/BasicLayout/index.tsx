@@ -57,7 +57,7 @@ const BasicLayout: FC = () => {
   const { message } = AntdApp.useApp()
   const dispatch = useAppDispatch()
   const [params] = useSearchParams()
-  const { token, loginUserId } = useTypedSelector(s => s.userSlice)
+  const { loginUserId } = useTypedSelector(s => s.userSlice)
   const { xs, lg } = useBreakpoint()
   const isMobile = xs || !lg
   // 接受点击 注册/登录 前的页面，在 注册/登录 完成后自动跳转之前的页面
@@ -124,18 +124,18 @@ const BasicLayout: FC = () => {
             { icon: <FileTextOutlined />, key: POST_LIST, label: '帖子' },
             {
               icon: <EditOutlined />,
-              key: token ? POST_NEW : UnauthorizedPostNewKey,
+              key: loginUserId ? POST_NEW : UnauthorizedPostNewKey,
               label: '发帖',
             },
             {
               icon: <UserOutlined />,
-              key: token ? USER_KEY_ONLY : UnauthorizedUserInfoKey,
+              key: loginUserId ? USER_KEY_ONLY : UnauthorizedUserInfoKey,
               label: '我的',
             },
           ]}
         />
         <FlexGrow />
-        {token ? (
+        {loginUserId ? (
           <Dropdown
             destroyPopupOnHide
             trigger={['click']}

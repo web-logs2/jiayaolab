@@ -21,7 +21,7 @@ const SignUp: FC = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [logging, setLogging] = useState<boolean>(false)
-  const { token } = useTypedSelector(s => s.userSlice)
+  const { loginUserId } = useTypedSelector(s => s.userSlice)
 
   const saveUserByLoginHandler = () => {
     setLogging(true)
@@ -56,11 +56,11 @@ const SignUp: FC = () => {
   }
 
   useEffect(() => {
-    if (token) {
+    if (loginUserId) {
       navigate('/')
       message.error('你已登录，请先退出登录！')
     }
-  }, [token])
+  }, [loginUserId])
   return (
     <>
       <HeadTitle layers={['用户登录']} />

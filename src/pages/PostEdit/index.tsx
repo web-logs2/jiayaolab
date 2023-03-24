@@ -1,6 +1,6 @@
 import { App as AntdApp, Card, Divider, Form, Skeleton, Typography } from 'antd'
 import { FC, useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import ErrorBoundaryOnFetch from '../../components/ErrorBoundaryOnFetch'
 import FormPrivateItem from '../../components/FormPrivateItem'
 import FormSubmitItem from '../../components/FormSubmitItem'
@@ -9,17 +9,21 @@ import FormTextContentItem from '../../components/FormTextContentItem'
 import FormTitleItem from '../../components/FormTitleItem'
 import HeadTitle from '../../components/HeadTitle'
 import TextEditor from '../../components/TextEditor'
-import { POST, POST_EDIT_ONLY } from '../../constant/paths'
+import { POST, POST_EDIT_ONLY, USER_LOGIN } from '../../constant/paths'
+import { useTypedSelector } from '../../hook'
 import { PostModelType } from '../../models/post'
 import { getEditPostById, savePostByEdit } from '../../services/post'
+import { urlRedirect } from '../../utils/redirect'
 
 const editPostKey = 'EditPostKey'
 const { Title } = Typography
 const PostEdit: FC = () => {
   const { message } = AntdApp.useApp()
   const navigate = useNavigate()
+  const location = useLocation()
   // 需要编辑的帖子id
   const { postId } = useParams<{ postId: string }>()
+  const { loginUserId } = useTypedSelector(s => s.userSlice)
   // 需要编辑帖子的详情
   const [editPostDetail, setEditPostDetail] = useState<PostModelType | null>(
     null
@@ -74,6 +78,13 @@ const PostEdit: FC = () => {
     }
   }
 
+  // 判断用户是否登录
+  useEffect(() => {
+    if (!loginUserId) {
+      // 用户没有登录则前往登录页面并添加重定向
+      navigate(urlRedirect(USER_LOGIN, location.pathname), { replace: true })
+    }
+  }, [loginUserId])
   useEffect(() => {
     if (postId) {
       // 开始获取帖子详情
