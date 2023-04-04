@@ -19,6 +19,7 @@ import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import ChunkLoading from '../../components/ChunkLoading'
 import ErrorBoundaryOnFetch from '../../components/ErrorBoundaryOnFetch'
 import HeadTitle from '../../components/HeadTitle'
+import PageNotFound from '../../components/PageNotFound'
 import {
   USER,
   USER_COMMENT_LIST_ONLY,
@@ -28,6 +29,7 @@ import {
 import { useTypedSelector } from '../../hook'
 import { UserType } from '../../models/user'
 import { getUserInfoById, updateUserInfo } from '../../services/user'
+import uuidTest from '../../utils/uuidTest'
 import classes from './index.module.less'
 
 const key = 'UpdateUser'
@@ -226,4 +228,11 @@ const UserInfo: FC = () => {
   )
 }
 
-export default UserInfo
+// 判断用户id是否符合规则，减少服务器压力
+const UserInfoWrapper: FC = () => {
+  // 用户id
+  const { userId } = useParams<{ userId: string }>()
+  return uuidTest(userId) ? <UserInfo /> : <PageNotFound />
+}
+
+export default UserInfoWrapper

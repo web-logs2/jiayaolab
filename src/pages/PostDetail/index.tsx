@@ -18,6 +18,7 @@ import FlexGrow from '../../components/FlexGrow'
 import GlobalAnnouncement from '../../components/GlobalAnnouncement'
 import HeadTitle from '../../components/HeadTitle'
 import IconText from '../../components/IconText'
+import PageNotFound from '../../components/PageNotFound'
 import PostEditInfo from '../../components/PostEditInfo'
 import TagList from '../../components/TagList'
 import UserPreviewCard from '../../components/UserPreviewCard'
@@ -25,6 +26,7 @@ import { POST, POST_EDIT_ONLY } from '../../constant/paths'
 import { useTypedSelector } from '../../hook'
 import { PostModelType } from '../../models/post'
 import { getPostById } from '../../services/post'
+import uuidTest from '../../utils/uuidTest'
 import classes from './index.module.less'
 
 const { useBreakpoint } = Grid
@@ -252,4 +254,11 @@ const PostDetail: FC = () => {
   )
 }
 
-export default PostDetail
+// 判断帖子id是否符合规则，减少服务器压力
+const PostDetailWrapper: FC = () => {
+  // 帖子id
+  const { postId } = useParams<{ postId: string }>()
+  return uuidTest(postId) ? <PostDetail /> : <PageNotFound />
+}
+
+export default PostDetailWrapper

@@ -8,12 +8,14 @@ import FormTagItem from '../../components/FormTagItem'
 import FormTextContentItem from '../../components/FormTextContentItem'
 import FormTitleItem from '../../components/FormTitleItem'
 import HeadTitle from '../../components/HeadTitle'
+import PageNotFound from '../../components/PageNotFound'
 import TextEditor from '../../components/TextEditor'
 import { POST, POST_EDIT_ONLY, USER_LOGIN } from '../../constant/paths'
 import { useTypedSelector } from '../../hook'
 import { PostModelType } from '../../models/post'
 import { getEditPostById, savePostByEdit } from '../../services/post'
 import { urlRedirect } from '../../utils/redirect'
+import uuidTest from '../../utils/uuidTest'
 
 const editPostKey = 'EditPostKey'
 const { Title } = Typography
@@ -150,4 +152,11 @@ const PostEdit: FC = () => {
   )
 }
 
-export default PostEdit
+// 判断帖子id是否符合规则，减少服务器压力
+const PostEditWrapper: FC = () => {
+  // 帖子id
+  const { postId } = useParams<{ postId: string }>()
+  return uuidTest(postId) ? <PostEdit /> : <PageNotFound />
+}
+
+export default PostEditWrapper
