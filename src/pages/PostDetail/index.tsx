@@ -258,7 +258,7 @@ const PostDetail: FC = () => {
 const PostDetailWrapper: FC = () => {
   // 帖子id
   const { postId } = useParams<{ postId: string }>()
-  return uuidTest(postId) ? <PostDetail /> : <PageNotFound />
+  return postId && uuidTest(postId) ? <PostDetail /> : <PageNotFound />
 }
 
 export default PostDetailWrapper

@@ -156,7 +156,7 @@ const PostEdit: FC = () => {
 const PostEditWrapper: FC = () => {
   // 帖子id
   const { postId } = useParams<{ postId: string }>()
-  return uuidTest(postId) ? <PostEdit /> : <PageNotFound />
+  return postId && uuidTest(postId) ? <PostEdit /> : <PageNotFound />
 }
 
 export default PostEditWrapper

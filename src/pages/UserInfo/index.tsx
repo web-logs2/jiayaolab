@@ -232,7 +232,7 @@ const UserInfo: FC = () => {
 const UserInfoWrapper: FC = () => {
   // 用户id
   const { userId } = useParams<{ userId: string }>()
-  return uuidTest(userId) ? <UserInfo /> : <PageNotFound />
+  return userId && uuidTest(userId) ? <UserInfo /> : <PageNotFound />
 }
 
 export default UserInfoWrapper
