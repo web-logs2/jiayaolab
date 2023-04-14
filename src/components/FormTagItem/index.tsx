@@ -1,6 +1,11 @@
 import { Empty, Form, Select } from 'antd'
 import { FC } from 'react'
 
+/**
+ * 标签选择
+ * @param onChange 标签发生改变时
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const FormTagItem: FC<{ onChange?: (value: any) => void }> = ({ onChange }) => {
   return (
     <Form.Item

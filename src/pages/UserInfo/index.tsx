@@ -20,6 +20,7 @@ import ChunkLoading from '../../components/ChunkLoading'
 import ErrorBoundaryOnFetch from '../../components/ErrorBoundaryOnFetch'
 import HeadTitle from '../../components/HeadTitle'
 import PageNotFound from '../../components/PageNotFound'
+import { UPDATE_USER_KEY } from '../../constant/messageKeys'
 import {
   USER,
   USER_COMMENT_LIST_ONLY,
@@ -32,7 +33,6 @@ import { getUserInfoById, updateUserInfo } from '../../services/user'
 import uuidTest from '../../utils/uuidTest'
 import classes from './index.module.less'
 
-const key = 'UpdateUser'
 const { Title, Paragraph, Text } = Typography
 const { useBreakpoint } = Grid
 const UserInfo: FC = () => {
@@ -94,7 +94,7 @@ const UserInfo: FC = () => {
       (usernameCache !== userInfo.username || bioCache !== userInfo.bio)
     ) {
       message.open({
-        key,
+        key: UPDATE_USER_KEY,
         type: 'loading',
         content: '更新中…',
         duration: 0,
@@ -103,7 +103,7 @@ const UserInfo: FC = () => {
       updateUserInfo(userInfo.uuid, usernameCache, bioCache)
         .then(res => {
           message.open({
-            key,
+            key: UPDATE_USER_KEY,
             type: 'success',
             content: res.message,
           })
@@ -117,7 +117,7 @@ const UserInfo: FC = () => {
             setBioCache(userInfo.bio)
           }
           message.open({
-            key,
+            key: UPDATE_USER_KEY,
             type: 'error',
             content: `用户资料更新失败，${err.message}`,
           })
@@ -155,7 +155,7 @@ const UserInfo: FC = () => {
                             setUsernameCache(username)
                           } else {
                             message.open({
-                              key,
+                              key: UPDATE_USER_KEY,
                               type: 'error',
                               content: '用户名不能为空！',
                             })

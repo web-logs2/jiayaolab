@@ -1,6 +1,9 @@
 import { Form, Input } from 'antd'
 import { FC } from 'react'
 
+/**
+ * 密码输入框
+ */
 const FormPasswordItem: FC = () => {
   return (
     <Form.Item

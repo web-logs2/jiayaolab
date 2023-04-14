@@ -7,11 +7,11 @@ import FormPasswordItem from '../../components/FormPasswordItem'
 import FormUserLayout from '../../components/FormUserLayout'
 import FormUserSubmitItem from '../../components/FormUserSubmitItem'
 import HeadTitle from '../../components/HeadTitle'
+import { SIGN_UP_KEY } from '../../constant/messageKeys'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { saveUserByRegister } from '../../services/user'
 import { setLoginUserId, setToken } from '../../store/features/userSlice'
 
-const key = 'SignUp'
 const { Title, Paragraph } = Typography
 const SignUp: FC = () => {
   const dispatch = useAppDispatch()
@@ -26,7 +26,7 @@ const SignUp: FC = () => {
   const saveUserByRegisterHandler = () => {
     setRegistering(true)
     message.open({
-      key,
+      key: SIGN_UP_KEY,
       type: 'loading',
       content: '注册中…',
       duration: 0,
@@ -34,7 +34,7 @@ const SignUp: FC = () => {
     saveUserByRegister(email, password)
       .then(res => {
         message.open({
-          key,
+          key: SIGN_UP_KEY,
           type: 'success',
           content: res.message,
         })
@@ -47,7 +47,7 @@ const SignUp: FC = () => {
       })
       .catch(err => {
         message.open({
-          key,
+          key: SIGN_UP_KEY,
           type: 'error',
           content: `注册失败，${err.message}`,
         })

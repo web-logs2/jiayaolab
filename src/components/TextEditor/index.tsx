@@ -4,6 +4,13 @@ import '@wangeditor/editor/dist/css/style.css'
 import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
 import classes from './index.module.less'
 
+/**
+ * 富文本编辑器
+ * @param disabled 是否禁用
+ * @param textState 纯文本的状态
+ * @param htmlState HTML格式的状态
+ * @param onChange 当纯文本内容发生改变时调用
+ */
 const TextEditor: FC<{
   disabled: boolean
   textState: [string, Dispatch<SetStateAction<string>>]

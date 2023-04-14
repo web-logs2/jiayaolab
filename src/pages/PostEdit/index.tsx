@@ -10,6 +10,7 @@ import FormTitleItem from '../../components/FormTitleItem'
 import HeadTitle from '../../components/HeadTitle'
 import PageNotFound from '../../components/PageNotFound'
 import TextEditor from '../../components/TextEditor'
+import { EDIT_POST_KEY } from '../../constant/messageKeys'
 import { POST, POST_EDIT_ONLY, USER_LOGIN } from '../../constant/paths'
 import { useTypedSelector } from '../../hook'
 import { PostModelType } from '../../models/post'
@@ -17,7 +18,6 @@ import { getEditPostById, savePostByEdit } from '../../services/post'
 import { urlRedirect } from '../../utils/redirect'
 import uuidTest from '../../utils/uuidTest'
 
-const editPostKey = 'EditPostKey'
 const { Title } = Typography
 const PostEdit: FC = () => {
   const { message } = AntdApp.useApp()
@@ -45,7 +45,7 @@ const PostEdit: FC = () => {
       // 开始更新
       setUpdating(true)
       message.open({
-        key: editPostKey,
+        key: EDIT_POST_KEY,
         type: 'loading',
         content: '帖子更新中…',
         duration: 0,
@@ -61,7 +61,7 @@ const PostEdit: FC = () => {
       })
         .then(res => {
           message.open({
-            key: editPostKey,
+            key: EDIT_POST_KEY,
             type: 'success',
             content: res.message,
           })
@@ -71,7 +71,7 @@ const PostEdit: FC = () => {
         })
         .catch(err => {
           message.open({
-            key: editPostKey,
+            key: EDIT_POST_KEY,
             type: 'error',
             content: `帖子更新失败，${err.message}`,
           })

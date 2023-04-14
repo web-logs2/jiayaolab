@@ -5,6 +5,10 @@ import TimelineDetail from '../TimelineDetail'
 import classes from './index.module.less'
 
 const { Paragraph, Text } = Typography
+/**
+ * 帖子编辑信息
+ * @param post 帖子
+ */
 const PostEditInfo: FC<{ post: PostModelType | null }> = ({ post }) => {
   return (
     <Paragraph className={classes.postEditInfo}>

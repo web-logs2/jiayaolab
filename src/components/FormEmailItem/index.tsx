@@ -1,6 +1,9 @@
 import { Form, Input } from 'antd'
 import { FC } from 'react'
 
+/**
+ * 邮箱输入框
+ */
 const FormEmailItem: FC = () => {
   return (
     <Form.Item

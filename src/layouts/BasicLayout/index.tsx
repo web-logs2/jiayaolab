@@ -36,6 +36,10 @@ import FlexGrow from '../../components/FlexGrow'
 import HeadTitle from '../../components/HeadTitle'
 import IconText from '../../components/IconText'
 import {
+  UNAUTHORIZED_POST_NEW_KEY,
+  UNAUTHORIZED_USER_INFO_KEY,
+} from '../../constant/messageKeys'
+import {
   POST_LIST,
   POST_NEW,
   USER,
@@ -70,8 +74,6 @@ const BasicLayout: FC = () => {
         : location.pathname
     navigate(urlRedirect(path, params.get('redirect') || pathname))
   }
-  const UnauthorizedUserInfoKey = 'UnauthorizedUserInfoKey'
-  const UnauthorizedPostNewKey = 'UnauthorizedPostNewKey'
   const USER_KEY_ONLY = `${USER}/${loginUserId}`
   const USER_KEY_FULL = `${USER_KEY_ONLY}/${USER_POST_LIST_ONLY}`
 
@@ -99,16 +101,16 @@ const BasicLayout: FC = () => {
               : location.pathname,
           ]}
           onSelect={e => {
-            if (e.key === UnauthorizedPostNewKey) {
+            if (e.key === UNAUTHORIZED_POST_NEW_KEY) {
               message.open({
-                key: UnauthorizedPostNewKey,
+                key: UNAUTHORIZED_POST_NEW_KEY,
                 type: 'error',
                 content: '登录后才能发布帖子！',
               })
               navigate(urlRedirect(USER_LOGIN, POST_NEW))
-            } else if (e.key === UnauthorizedUserInfoKey) {
+            } else if (e.key === UNAUTHORIZED_USER_INFO_KEY) {
               message.open({
-                key: UnauthorizedUserInfoKey,
+                key: UNAUTHORIZED_USER_INFO_KEY,
                 type: 'error',
                 content: '请先登录！',
               })
@@ -124,12 +126,12 @@ const BasicLayout: FC = () => {
             { icon: <FileTextOutlined />, key: POST_LIST, label: '帖子' },
             {
               icon: <EditOutlined />,
-              key: loginUserId ? POST_NEW : UnauthorizedPostNewKey,
+              key: loginUserId ? POST_NEW : UNAUTHORIZED_POST_NEW_KEY,
               label: '发帖',
             },
             {
               icon: <UserOutlined />,
-              key: loginUserId ? USER_KEY_ONLY : UnauthorizedUserInfoKey,
+              key: loginUserId ? USER_KEY_ONLY : UNAUTHORIZED_USER_INFO_KEY,
               label: '我的',
             },
           ]}

@@ -7,11 +7,11 @@ import FormPasswordItem from '../../components/FormPasswordItem'
 import FormUserLayout from '../../components/FormUserLayout'
 import FormUserSubmitItem from '../../components/FormUserSubmitItem'
 import HeadTitle from '../../components/HeadTitle'
+import { SIGN_IN_KEY } from '../../constant/messageKeys'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { saveUserByLogin } from '../../services/user'
 import { setLoginUserId, setToken } from '../../store/features/userSlice'
 
-const key = 'SignIn'
 const { Title, Paragraph } = Typography
 const SignUp: FC = () => {
   const dispatch = useAppDispatch()
@@ -26,7 +26,7 @@ const SignUp: FC = () => {
   const saveUserByLoginHandler = () => {
     setLogging(true)
     message.open({
-      key,
+      key: SIGN_IN_KEY,
       type: 'loading',
       content: '登录中…',
       duration: 0,
@@ -34,7 +34,7 @@ const SignUp: FC = () => {
     saveUserByLogin(email, password)
       .then(res => {
         message.open({
-          key,
+          key: SIGN_IN_KEY,
           type: 'success',
           content: res.message,
         })
@@ -47,7 +47,7 @@ const SignUp: FC = () => {
       })
       .catch(err => {
         message.open({
-          key,
+          key: SIGN_IN_KEY,
           type: 'error',
           content: `登录失败，${err.message}`,
         })

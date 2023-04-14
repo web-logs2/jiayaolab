@@ -1,6 +1,11 @@
 import { Form, Input } from 'antd'
 import { ChangeEvent, FC } from 'react'
 
+/**
+ * 帖子标题
+ * @param onChange 标题发生改变时
+ * @constructor
+ */
 const FormTitleItem: FC<{
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
 }> = ({ onChange }) => {

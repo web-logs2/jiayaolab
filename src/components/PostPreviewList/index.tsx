@@ -19,6 +19,7 @@ import {
   Typography,
 } from 'antd'
 import { FC, useEffect, useState } from 'react'
+import { REMOVE_POST_KEY } from '../../constant/messageKeys'
 import { POST, POST_EDIT_ONLY, USER_POST_LIST_ONLY } from '../../constant/paths'
 import { useAppDispatch, useTypedSelector } from '../../hook'
 import { removePostById } from '../../services/post'
@@ -32,8 +33,11 @@ import TimelineDetail from '../TimelineDetail'
 import UserPreviewCard from '../UserPreviewCard'
 import classes from './index.module.less'
 
-const key = 'RemovePost'
 const { Text, Paragraph, Link, Title } = Typography
+/**
+ * 帖子预览列表
+ * @param fetchPostHandler 获取更多帖子的函数
+ */
 const PostPreviewList: FC<{
   fetchPostHandler: () => void
 }> = ({ fetchPostHandler }) => {
@@ -45,7 +49,7 @@ const PostPreviewList: FC<{
   const dispatch = useAppDispatch()
   const removePostByIdHandler = (postId: string) => {
     message.open({
-      key,
+      key: REMOVE_POST_KEY,
       type: 'loading',
       content: '帖子删除中…',
       duration: 0,
@@ -54,7 +58,7 @@ const PostPreviewList: FC<{
     removePostById(postId)
       .then(res => {
         message.open({
-          key,
+          key: REMOVE_POST_KEY,
           type: 'success',
           content: res.message,
         })
@@ -69,7 +73,7 @@ const PostPreviewList: FC<{
       })
       .catch(err => {
         message.open({
-          key,
+          key: REMOVE_POST_KEY,
           type: 'error',
           content: `帖子删除失败，${err.message}`,
         })

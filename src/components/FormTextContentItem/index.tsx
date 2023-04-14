@@ -1,6 +1,10 @@
 import { Form } from 'antd'
 import { FC, PropsWithChildren } from 'react'
 
+/**
+ * 帖子内容
+ * @param children 一般放文本编辑器组件
+ */
 const FormTextContentItem: FC<PropsWithChildren> = ({ children }) => {
   return (
     <Form.Item

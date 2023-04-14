@@ -25,6 +25,11 @@ import PopConfirmOnDelete from '../../components/PopConfirmOnDelete'
 import TagList from '../../components/TagList'
 import TextEditor from '../../components/TextEditor'
 import TimelineDetail from '../../components/TimelineDetail'
+import {
+  POST_NEW_KEY,
+  REMOVE_DRAFT_KEY,
+  SAVING_ERROR_KEY,
+} from '../../constant/messageKeys'
 import { POST_NEW, USER_LOGIN } from '../../constant/paths'
 import { useDebouncedEffect, useTypedSelector } from '../../hook'
 import { DraftModuleType } from '../../models/draft'
@@ -37,9 +42,6 @@ import { savePost } from '../../services/post'
 import { urlRedirect } from '../../utils/redirect'
 import classes from './index.module.less'
 
-const postNewKey = 'PostNew'
-const removeDraftKey = 'RemoveDraft'
-const savingErrorKey = 'SavingError'
 const { Title, Text, Paragraph } = Typography
 const PostNew: FC = () => {
   const navigate = useNavigate()
@@ -104,7 +106,7 @@ const PostNew: FC = () => {
     // 开始发布
     setPushing(true)
     message.open({
-      key: postNewKey,
+      key: POST_NEW_KEY,
       type: 'loading',
       content: '帖子发布中…',
       duration: 0,
@@ -120,7 +122,7 @@ const PostNew: FC = () => {
     })
       .then(res => {
         message.open({
-          key: postNewKey,
+          key: POST_NEW_KEY,
           type: 'success',
           content: res.message,
         })
@@ -132,7 +134,7 @@ const PostNew: FC = () => {
       })
       .catch(err =>
         message.open({
-          key: postNewKey,
+          key: POST_NEW_KEY,
           type: 'error',
           content: `帖子发布失败，${err.message}`,
         })
@@ -152,7 +154,7 @@ const PostNew: FC = () => {
   // 删除草稿处理函数
   const removeDraftByIdHandler = (draftId: string) => {
     message.open({
-      key: removeDraftKey,
+      key: REMOVE_DRAFT_KEY,
       type: 'loading',
       content: '草稿删除中…',
       duration: 0,
@@ -161,7 +163,7 @@ const PostNew: FC = () => {
     removeDraftById(draftId)
       .then(res => {
         message.open({
-          key: removeDraftKey,
+          key: REMOVE_DRAFT_KEY,
           type: 'success',
           content: res.message,
         })
@@ -172,7 +174,7 @@ const PostNew: FC = () => {
       })
       .catch(err => {
         message.open({
-          key: removeDraftKey,
+          key: REMOVE_DRAFT_KEY,
           type: 'error',
           content: `草稿删除失败，${err.message}`,
         })
@@ -207,14 +209,14 @@ const PostNew: FC = () => {
         _private: formValues._private,
       })
         .then(res => {
-          message.destroy(savingErrorKey)
+          message.destroy(SAVING_ERROR_KEY)
           // 获取到草稿id，更新state，并且effect钩子内进行草稿id已获取的处理
           setCurrentDraftId(res.data.draftId)
           setSaveMessage(res.message)
         })
         .catch(err => {
           message.open({
-            key: savingErrorKey,
+            key: SAVING_ERROR_KEY,
             type: 'error',
             content: `草稿保存失败，${err.message}`,
           })
@@ -308,7 +310,7 @@ const PostNew: FC = () => {
                             disabled={draftRemoving}
                             onClick={() => {
                               // 销毁之前还未消失的错误信息
-                              message.destroy(savingErrorKey)
+                              message.destroy(SAVING_ERROR_KEY)
                               // 重置当前保存状态信息
                               setSaveMessage('')
                               // 关闭草稿箱Modal
