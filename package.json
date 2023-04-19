@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
-    "@reduxjs/toolkit": "^1.9.3",
+    "@reduxjs/toolkit": "^1.9.5",
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-react": "^1.0.6",
     "antd": "^5.4.2",
@@ -28,10 +28,10 @@
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",
     "@types/node": "^18.15.11",
-    "@types/react": "^18.0.35",
+    "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
-    "@typescript-eslint/eslint-plugin": "^5.58.0",
-    "@typescript-eslint/parser": "^5.58.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.0",
+    "@typescript-eslint/parser": "^5.59.0",
     "@vitejs/plugin-react-swc": "^3.3.0",
     "eslint": "^8.38.0",
     "eslint-config-prettier": "^8.8.0",
@@ -44,6 +44,6 @@
     "prettier-plugin-organize-imports": "^3.2.2",
     "prettier-plugin-packagejson": "^2.4.3",
     "typescript": "^5.0.4",
-    "vite": "^4.2.1"
+    "vite": "^4.2.2"
   }
 }
