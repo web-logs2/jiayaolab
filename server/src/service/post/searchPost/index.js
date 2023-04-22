@@ -1,8 +1,7 @@
-const { Post, User } = require('../../../app')
+const { Post, User } = require('@/app')
 const { Op } = require('sequelize')
-const { msg } = require('../../../util/msg')
-const { toArrayTags } = require('../../../util/toArrayTags')
-const { sliceText } = require('../../../util/sliceText')
+const result = require('@/util/result')
+const { toArray, slices } = require('@/util/string')
 
 exports.main = async (req, res) => {
   const limit = 5
@@ -11,7 +10,7 @@ exports.main = async (req, res) => {
   try {
     // 判断参数是否符合规则
     if (!(current && sortField && sortOrder && (keywords || keywords === ''))) {
-      res.status(400).json(msg(400, null, '参数无效！'))
+      res.status(400).json(result(400, null, '参数无效！'))
       return
     }
 
@@ -45,18 +44,18 @@ exports.main = async (req, res) => {
       },
     })
     res.status(200).json(
-      msg(
+      result(
         200,
         rows.map(row => ({
           ...row.dataValues,
-          text: sliceText(row.dataValues.text),
-          tags: toArrayTags(row.dataValues.tags),
+          text: slices(row.dataValues.text),
+          tags: toArray(row.dataValues.tags),
         })),
         'ok'
       )
     )
   } catch (e) {
     console.error(e)
-    res.status(400).json(msg(400, null, '服务器错误！'))
+    res.status(400).json(result(400, null, '服务器错误！'))
   }
 }

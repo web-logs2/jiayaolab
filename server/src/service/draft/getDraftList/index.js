@@ -1,6 +1,6 @@
-const { msg } = require('../../../util/msg')
-const { User, Draft } = require('../../../app')
-const { toArrayTags } = require('../../../util/toArrayTags')
+const result = require('@/util/result')
+const { User, Draft } = require('@/app')
+const { toArray } = require('@/util/string')
 
 exports.main = async (req, res) => {
   const { email, password } = req.auth
@@ -19,17 +19,17 @@ exports.main = async (req, res) => {
       },
     })
     res.status(200).json(
-      msg(
+      result(
         200,
         rows.map(row => ({
           ...row.dataValues,
-          tags: toArrayTags(row.dataValues.tags),
+          tags: toArray(row.dataValues.tags),
         })),
         'ok'
       )
     )
   } catch (e) {
     console.error(e)
-    res.status(400).json(msg(400, null, '服务器错误！'))
+    res.status(400).json(result(400, null, '服务器错误！'))
   }
 }

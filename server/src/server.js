@@ -1,5 +1,4 @@
 const express = require('express')
-const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
 
@@ -9,13 +8,17 @@ const logger = morgan('combined')
 class CloudBaseRunServer {
   constructor() {
     this.express = express()
-    this.express.use(express.urlencoded({ extended: false }))
-    this.express.use(bodyParser.json({ limit: '50mb' }))
     this.express.use(
-      bodyParser.urlencoded({
-        limit: '50mb',
+      express.json({
+        // number类型的默认单位是bytes
+        // 字符串需要带上数据单位
+        limit: '500kb',
+      })
+    )
+    this.express.use(
+      express.urlencoded({
         extended: true,
-        parameterLimit: 50000,
+        limit: '500kb',
       })
     )
     this.express.use(cors())
@@ -23,4 +26,4 @@ class CloudBaseRunServer {
   }
 }
 
-module.exports.CloudBaseRunServer = CloudBaseRunServer
+module.exports = CloudBaseRunServer

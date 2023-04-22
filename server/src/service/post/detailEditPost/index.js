@@ -1,6 +1,6 @@
-const { Post, User } = require('../../../app')
-const { msg } = require('../../../util/msg')
-const { toArrayTags } = require('../../../util/toArrayTags')
+const { Post, User } = require('@/app')
+const result = require('@/util/result')
+const { toArray } = require('@/util/string')
 
 exports.main = async (req, res) => {
   const { email, password } = req.auth
@@ -8,7 +8,7 @@ exports.main = async (req, res) => {
 
   try {
     if (!postId) {
-      res.status(400).json(msg(400, null, '参数无效！'))
+      res.status(400).json(result(400, null, '参数无效！'))
       return
     }
 
@@ -25,14 +25,14 @@ exports.main = async (req, res) => {
     })
     // 判断是否获取到帖子
     if (!post) {
-      res.status(400).json(msg(400, null, '该帖子不存在！'))
+      res.status(400).json(result(400, null, '该帖子不存在！'))
       return
     }
 
     const user = await User.findOne({ where: { email, password } })
     // 判断用户id是否和帖子所有者的id匹配
     if (user.uuid !== post.user.uuid) {
-      res.status(400).json(msg(400, null, '该帖子仅作者可编辑！'))
+      res.status(400).json(result(400, null, '该帖子仅作者可编辑！'))
       return
     }
 
@@ -40,14 +40,14 @@ exports.main = async (req, res) => {
     res
       .status(200)
       .json(
-        msg(
+        result(
           200,
-          { ...post.dataValues, tags: toArrayTags(post.dataValues.tags) },
+          { ...post.dataValues, tags: toArray(post.dataValues.tags) },
           'ok'
         )
       )
   } catch (e) {
     console.error(e)
-    res.status(400).json(msg(400, null, '服务器错误！'))
+    res.status(400).json(result(400, null, '服务器错误！'))
   }
 }

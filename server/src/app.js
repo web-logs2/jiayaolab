@@ -122,7 +122,6 @@ const initDB = async () => {
   }
 }
 
-module.exports = app
 module.exports = {
   initDB,
   User,

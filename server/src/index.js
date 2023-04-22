@@ -1,6 +1,7 @@
-const { CloudBaseRunServer } = require('./server.js')
+require('module-alias/register')
+const CloudBaseRunServer = require('./server.js')
 const { initDB } = require('./app')
-const { msg } = require('./util/msg')
+const result = require('./util/result')
 const { TokenExpiredError } = require('jsonwebtoken')
 const { useVerify } = require('./util/jwt')
 
@@ -99,7 +100,7 @@ async function main() {
         res
           .status(err.status)
           .send(
-            msg(
+            result(
               err.status,
               null,
               err.inner instanceof TokenExpiredError

@@ -1,5 +1,5 @@
-const { msg } = require('../../../util/msg')
-const { User } = require('../../../app')
+const result = require('@/util/result')
+const { User } = require('@/app')
 
 exports.main = async (req, res) => {
   const { email, password } = req.auth
@@ -7,14 +7,14 @@ exports.main = async (req, res) => {
 
   try {
     if (!(userId && username)) {
-      res.status(400).json(msg(400, null, '参数无效！'))
+      res.status(400).json(result(400, null, '参数无效！'))
       return
     }
 
     // 判断需要更新信息的用户是否存在
     const targetUser = await User.findOne({ where: { uuid: userId } })
     if (!targetUser) {
-      res.status(400).json(msg(400, null, '用户不存在！'))
+      res.status(400).json(result(400, null, '用户不存在！'))
       return
     }
 
@@ -22,7 +22,7 @@ exports.main = async (req, res) => {
     const user = await User.findOne({ where: { email, password } })
     // 判断更新的用户信息是否和当前登录用户的信息匹配
     if (user.uuid !== userId) {
-      res.status(400).json(msg(400, null, '你不能更改其他用户的个人资料！'))
+      res.status(400).json(result(400, null, '你不能更改其他用户的个人资料！'))
       return
     }
 
@@ -33,9 +33,9 @@ exports.main = async (req, res) => {
       attributes: ['uuid', 'username', 'bio'],
       where: { email, password },
     })
-    res.status(200).json(msg(200, data, '用户资料已更新！'))
+    res.status(200).json(result(200, data, '用户资料已更新！'))
   } catch (e) {
     console.error(e)
-    res.status(400).json(msg(400, null, '服务器错误！'))
+    res.status(400).json(result(400, null, '服务器错误！'))
   }
 }

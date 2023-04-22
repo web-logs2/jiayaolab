@@ -1,5 +1,5 @@
-const { msg } = require('../../../util/msg')
-const { User, Draft } = require('../../../app')
+const result = require('@/util/result')
+const { User, Draft } = require('@/app')
 
 exports.main = async (req, res) => {
   const { draftId, title, tags, text, html, _private } = req.body
@@ -17,7 +17,7 @@ exports.main = async (req, res) => {
       userId,
     })
     // 返回草稿id，以便后续更新
-    res.status(201).json(msg(201, { draftId }, '已保存！'))
+    res.status(201).json(result(201, { draftId }, '已保存！'))
   }
 
   try {
@@ -31,19 +31,21 @@ exports.main = async (req, res) => {
         typeof _private === 'boolean'
       )
     ) {
-      res.status(400).json(msg(400, null, '参数无效！'))
+      res.status(400).json(result(400, null, '参数无效！'))
       return
     }
 
     // 判断标签草稿数量是否符合规则
     if (tags.length > 16) {
-      res.status(400).json(msg(400, null, '标签草稿最多保存16个！'))
+      res.status(400).json(result(400, null, '标签草稿最多保存16个！'))
       return
     }
 
     // 判断标签草稿长度是否符合规则
     if (tags.filter(tag => tag.length > 20).length) {
-      res.status(400).json(msg(400, null, '标签草稿单个长度不能大于20个字符！'))
+      res
+        .status(400)
+        .json(result(400, null, '标签草稿单个长度不能大于20个字符！'))
       return
     }
 
@@ -73,9 +75,9 @@ exports.main = async (req, res) => {
       },
       { where: { uuid: draftId } }
     )
-    res.status(201).json(msg(201, { draftId }, '已保存！'))
+    res.status(201).json(result(201, { draftId }, '已保存！'))
   } catch (e) {
     console.error(e)
-    res.status(400).json(msg(400, null, '服务器错误！'))
+    res.status(400).json(result(400, null, '服务器错误！'))
   }
 }

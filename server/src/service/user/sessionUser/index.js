@@ -1,13 +1,13 @@
-const { User } = require('../../../app')
-const jwt = require('../../../util/jwt')
-const { msg } = require('../../../util/msg')
+const { User } = require('@/app')
+const jwt = require('@/util/jwt')
+const result = require('@/util/result')
 
 exports.main = async (req, res) => {
   const { email, password } = req.body
 
   try {
     if (!(email && password)) {
-      res.status(400).json(msg(400, null, '参数无效！'))
+      res.status(400).json(result(400, null, '参数无效！'))
       return
     }
 
@@ -17,12 +17,12 @@ exports.main = async (req, res) => {
     })
     // 用户不存在，邮箱或密码错误
     if (!user) {
-      res.status(400).json(msg(400, null, '邮箱或密码错误！'))
+      res.status(400).json(result(400, null, '邮箱或密码错误！'))
       return
     }
 
     res.status(200).json(
-      msg(
+      result(
         200,
         {
           token: jwt.getToken(email, password),
@@ -33,6 +33,6 @@ exports.main = async (req, res) => {
     )
   } catch (e) {
     console.error(e)
-    res.status(400).json(msg(400, null, '服务器错误！'))
+    res.status(400).json(result(400, null, '服务器错误！'))
   }
 }

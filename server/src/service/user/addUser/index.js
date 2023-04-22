@@ -1,20 +1,22 @@
-const { User } = require('../../../app')
-const jwt = require('../../../util/jwt')
-const { msg } = require('../../../util/msg')
+const { User } = require('@/app')
+const jwt = require('@/util/jwt')
+const result = require('@/util/result')
 
 exports.main = async (req, res) => {
   const { email, password } = req.body
 
   try {
     if (!(email && password)) {
-      res.status(400).json(msg(400, null, '参数无效！'))
+      res.status(400).json(result(400, null, '参数无效！'))
       return
     }
 
     const hasRegistered = await User.findOne({ where: { email } })
     // 判断邮箱是否已经被注册
     if (hasRegistered) {
-      res.status(400).json(msg(400, null, '该邮箱已存在！请更换邮箱并重试。'))
+      res
+        .status(400)
+        .json(result(400, null, '该邮箱已存在！请更换邮箱并重试。'))
       return
     }
 
@@ -26,7 +28,7 @@ exports.main = async (req, res) => {
       username: email.split('@')[0].slice(0, 16),
     })
     res.status(201).json(
-      msg(
+      result(
         201,
         {
           token: jwt.getToken(email, password),
@@ -37,6 +39,6 @@ exports.main = async (req, res) => {
     )
   } catch (e) {
     console.error(e)
-    res.status(400).json(msg(400, null, '服务器错误！'))
+    res.status(400).json(result(400, null, '服务器错误！'))
   }
 }

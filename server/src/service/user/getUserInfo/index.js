@@ -1,12 +1,12 @@
-const { msg } = require('../../../util/msg')
-const { User } = require('../../../app')
+const result = require('@/util/result')
+const { User } = require('@/app')
 
 exports.main = async (req, res) => {
   const { userId } = req.query
 
   try {
     if (!userId) {
-      res.status(400).json(msg(400, null, '参数无效！'))
+      res.status(400).json(result(400, null, '参数无效！'))
       return
     }
 
@@ -16,13 +16,13 @@ exports.main = async (req, res) => {
     })
     // 判断是否存在该用户
     if (!user) {
-      res.status(400).json(msg(400, null, '用户不存在！'))
+      res.status(400).json(result(400, null, '用户不存在！'))
       return
     }
 
-    res.status(200).json(msg(200, user, 'ok'))
+    res.status(200).json(result(200, user, 'ok'))
   } catch (e) {
     console.error(e)
-    res.status(400).json(msg(400, null, '服务器错误！'))
+    res.status(400).json(result(400, null, '服务器错误！'))
   }
 }
