@@ -91,30 +91,28 @@ async function main() {
   // 初始化数据库
   await initDB()
   // token验证中间件
-  server
-    .use(function (err, req, res, next) {
+  server.use((err, _req, res, next) => {
+    if (err.name === 'UnauthorizedError') {
       // err.inner可能抛出的错误类型
       // JsonWebTokenError = token格式错误
       // TokenExpiredError = token已过期
-      if (err.name === 'UnauthorizedError') {
-        res
-          .status(err.status)
-          .send(
-            result(
-              err.status,
-              null,
-              err.inner instanceof TokenExpiredError
-                ? '登录已过期，请重新登录！'
-                : '请先登录！'
-            )
-          )
-      } else {
-        next(err)
-      }
-    })
-    .listen(port, () =>
-      console.log(`Server ready at: http://localhost:${port}`)
-    )
+      const errorMsg =
+        err.inner instanceof TokenExpiredError
+          ? '登录已过期，请重新登录！'
+          : '请先登录！'
+
+      res.status(err.status).send(result(err.status, null, errorMsg))
+    } else {
+      next(err)
+    }
+  })
+  // 匹配不到任何路由
+  server.use((_req, res) => {
+    res.status(404).send(null)
+  })
+  server.listen(port, () =>
+    console.log(`Server ready at: http://localhost:${port}`)
+  )
 }
 
 main()
