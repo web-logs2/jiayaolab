@@ -47,6 +47,10 @@ pnpm start
 
 ![new_service.png](../assets/server/new_service.png)
 
+自行后端代码压缩包，请务必排除 `node_modules` 以减少压缩包的体积
+
+![zip.png](../assets/server/zip.png)
+
 进入刚刚创建的服务进行部署发布，选择手动上传代码包，端口为 3000，填写正确的环境变量，选择有 Dockerfile，点击发布
 
 ![select_code_pkg.png](../assets/server/select_code_pkg.png)
