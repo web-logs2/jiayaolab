@@ -227,7 +227,7 @@ const BasicLayout: FC = () => {
           <Col span={24}>
             <Text type="secondary">
               Copyright <CopyrightOutlined /> 2023{' '}
-              <AntdLink href="https://github.com/hnjx-studios" target="_blank">
+              <AntdLink href="https://github.com/hnjsxy" target="_blank">
                 Haining Technician Institute Studios
               </AntdLink>
               . All rights reserved.

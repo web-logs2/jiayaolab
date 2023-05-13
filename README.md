@@ -46,15 +46,15 @@ Fork 本项目到自己的仓库中
 
 使用 GitHub 登录 [vercel.com](https://vercel.com)
 
-![signin_with_github](assets/signin_with_github.png)
+![signin_with_github](assets/fronted/signin_with_github.png)
 
 点击 Add New... 并选择 Project
 
-![add_new_project](assets/add_new_project.png)
+![add_new_project](assets/fronted/add_new_project.png)
 
 选择刚刚 fork 的仓库
 
-![import_git_repository](assets/import_git_repository.png)
+![import_git_repository](assets/fronted/import_git_repository.png)
 
 重写 Install Command 参数，打开 OVERRIDE 选项，输入 `pnpm install`
 
@@ -62,19 +62,19 @@ Fork 本项目到自己的仓库中
 
 上述步骤完成后点击 Deploy 即可开始部署
 
-![configure_project](assets/configure_project.png)
+![configure_project](assets/fronted/configure_project.png)
 
 耐心等待项目部署完成
 
-![deploying](assets/deploying.png)
+![deploying](assets/fronted/deploying.png)
 
 部署完成后点击 Continue to Dashboard 前往主页
 
-![deploying](assets/done.png)
+![deploying](assets/fronted/done.png)
 
 点击 Visit 即可查看刚刚部署的网页
 
-![visit](assets/visit.png)
+![visit](assets/fronted/visit.png)
 
 至此，完成了在 Vercel 平台上部署
 
