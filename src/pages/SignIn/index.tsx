@@ -13,7 +13,7 @@ import { saveUserByLogin } from '../../services/user'
 import { setLoginUserId, setToken } from '../../store/features/userSlice'
 
 const { Title, Paragraph } = Typography
-const SignUp: FC = () => {
+const SignIn: FC = () => {
   const dispatch = useAppDispatch()
   const { message } = AntdApp.useApp()
   const navigate = useNavigate()
@@ -100,4 +100,4 @@ const SignUp: FC = () => {
   )
 }
 
-export default SignUp
+export default SignIn
