@@ -1,5 +1,4 @@
 import { App as AntdApp, Card, Divider, Form, Typography } from 'antd'
-import { SHA256 } from 'crypto-js'
 import { FC, useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import FormEmailItem from '../../components/FormEmailItem'
@@ -77,8 +76,7 @@ const SignIn: FC = () => {
             disabled={logging}
             onValuesChange={changedValues => {
               changedValues.email && setEmail(changedValues.email)
-              changedValues.password &&
-                setPassword(SHA256(changedValues.password).toString())
+              changedValues.password && setPassword(changedValues.password)
             }}
             initialValues={{
               email,

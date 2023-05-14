@@ -19,9 +19,6 @@ dependencies:
   axios:
     specifier: ^1.4.0
     version: 1.4.0
-  crypto-js:
-    specifier: ^4.1.1
-    version: 4.1.1
   dayjs:
     specifier: ^1.11.7
     version: 1.11.7
@@ -1482,10 +1479,6 @@ packages:
       shebang-command: 2.0.0
       which: 2.0.2
     dev: true
-
-  /crypto-js@4.1.1:
-    resolution: {integrity: sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==}
-    dev: false
 
   /csstype@3.1.1:
     resolution: {integrity: sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==}
