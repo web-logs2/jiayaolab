@@ -211,7 +211,6 @@ const PostDetail: FC = () => {
                           <Button
                             type="link"
                             href={`${POST}/${postDetail?.uuid}/${POST_EDIT_ONLY}`}
-                            target="_blank"
                           >
                             编辑
                           </Button>
