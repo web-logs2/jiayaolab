@@ -13,6 +13,7 @@ import {
   USER_LOGIN_ONLY,
   USER_POST_LIST_ONLY,
   USER_REGISTER_ONLY,
+  USER_SETTINGS_ONLY,
 } from '../constant/paths'
 
 const BasicLayout = lazy(() => import('../layouts/BasicLayout'))
@@ -27,6 +28,7 @@ const SignUp = lazy(() => import('../pages/SignUp'))
 const UserCommentList = lazy(() => import('../pages/UserCommentList'))
 const UserInfo = lazy(() => import('../pages/UserInfo'))
 const UserPostList = lazy(() => import('../pages/UserPostList'))
+const UserSettings = lazy(() => import('../pages/UserSettings'))
 
 export default [
   {
@@ -79,6 +81,7 @@ export default [
               },
               { path: USER_POST_LIST_ONLY, element: <UserPostList /> },
               { path: USER_COMMENT_LIST_ONLY, element: <UserCommentList /> },
+              { path: USER_SETTINGS_ONLY, element: <UserSettings /> },
               // 捕获无效路径，重定向到用户帖子列表页面
               {
                 path: '*',

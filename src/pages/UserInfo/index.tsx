@@ -1,6 +1,7 @@
 import {
   CommentOutlined,
   FileTextOutlined,
+  SettingOutlined,
   UserOutlined,
 } from '@ant-design/icons'
 import {
@@ -26,6 +27,7 @@ import {
   USER_COMMENT_LIST_ONLY,
   USER_LOGIN,
   USER_POST_LIST_ONLY,
+  USER_SETTINGS_ONLY,
 } from '../../constant/paths'
 import { useTypedSelector } from '../../hook'
 import { UserType } from '../../models/user'
@@ -213,7 +215,20 @@ const UserInfo: FC = () => {
                     }的评论`,
                     icon: <CommentOutlined />,
                   },
-                ]}
+                ].concat(
+                  userInfo.uuid === loginUserId
+                    ? [
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        { type: 'divider' },
+                        {
+                          key: USER_SETTINGS_ONLY,
+                          label: '设置',
+                          icon: <SettingOutlined />,
+                        },
+                      ]
+                    : []
+                )}
               />
             </Card>
           </Col>

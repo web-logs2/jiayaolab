@@ -31,3 +31,5 @@ export const USER_LOGIN_ONLY = 'login'
 export const USER_POST_LIST_ONLY = 'postList'
 // 用户评论列表路径
 export const USER_COMMENT_LIST_ONLY = 'commentList'
+// 用户隐私设置
+export const USER_SETTINGS_ONLY = 'settings'
